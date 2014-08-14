@@ -17,11 +17,12 @@ clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 distclean: clean
-	rm -f $(NAME).pdf $(NAME)-slides.pdf $(NAME).cls README
+	rm -f $(NAME).pdf $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty README
 inst: all
 	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
 	cp $(NAME).dtx $(UTREE)/source/latex/$(NAME)
 	cp $(NAME).cls $(UTREE)/tex/latex/$(NAME)
+	cp rdamsdwg.sty  $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(UTREE)/doc/latex/$(NAME)
 	cp $(NAME)-slides.pdf $(UTREE)/doc/latex/$(NAME)
 	cp README $(UTREE)/doc/latex/$(NAME)
@@ -29,6 +30,7 @@ install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo cp $(NAME).dtx $(LOCAL)/source/latex/$(NAME)
 	sudo cp $(NAME).cls $(LOCAL)/tex/latex/$(NAME)
+	sudo cp rdamsdwg.sty $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(LOCAL)/doc/latex/$(NAME)
 	sudo cp $(NAME)-slides.pdf $(LOCAL)/doc/latex/$(NAME)
 	sudo cp README $(LOCAL)/doc/latex/$(NAME)
@@ -36,6 +38,7 @@ workmf: all
 	sudo mkdir -p $(WORKMF)/{tex,source,doc}/latex/$(NAME)
 	sudo cp $(NAME).dtx $(WORKMF)/source/latex/$(NAME)
 	sudo cp $(NAME).cls $(WORKMF)/tex/latex/$(NAME)
+	sudo cp rdamsdwg.sty $(WORKMF)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(WORKMF)/doc/latex/$(NAME)
 	sudo cp $(NAME)-slides.pdf $(WORKMF)/doc/latex/$(NAME)
 	sudo cp README $(WORKMF)/doc/latex/$(NAME)
