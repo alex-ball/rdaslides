@@ -850,31 +850,31 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
   , basicstyle=\ttfamily
   , language={[LaTeX]TeX}
   , texcsstyle=*\color{red!75!black}
-  , moretexcs=
-    { Version
-    , ProvidesClass
-    , DeclareOption
-    , ifArticle
-    , Articletrue
-    , Articlefalse
-    , ifHandout
-    , Handouttrue
-    , Handoutfalse
-    , ProcessOptions
-    , LoadClass
-    , RequirePackage
-    , usefonttheme
-    , pgfpagesuselayout
-    , IfFileExists
-    , ifPDFTeX
-  }
   , moredelim=**[s][\color{violet}]{[}{]}
   , moredelim=**[s][\color{blue!75!black}]{\{}{\}}
   , commentstyle=\itshape\color{gray}
   , mathescape
   , escapechar=~
   }
-\newcommand*{\cmd}[1]{\textcolor{red!75!black}{\textbackslash\texttt{#1}}}
+\def\cmds
+{ Version
+, ProvidesClass
+, DeclareOption
+, ifArticle
+, Articletrue
+, Articlefalse
+, ifHandout
+, Handouttrue
+, Handoutfalse
+, ProcessOptions
+, LoadClass
+, RequirePackage
+, usefonttheme
+, pgfpagesuselayout
+, IfFileExists
+, ifPDFTeX
+}
+\newcommand*{\cmd}[1]{\gappto\cmds{, #1}\textcolor{red!75!black}{\textbackslash\texttt{#1}}}
 \newcommand*{\barg}[1]{$\langle$\textit{\rmfamily#1}$\rangle$}
 \newcommand*{\marg}[1]{\textcolor{blue!75!black}{\texttt{\{}{$\langle$\textit{\rmfamily#1}$\rangle$}\texttt{\}}}}
 \newcommand*{\oarg}[1]{\textcolor{violet}{\texttt{[}{$\ensuremath$\langle\textit{\rmfamily#1}$\rangle$}\texttt{]}}}
@@ -1022,6 +1022,8 @@ This removes the background entirely.
 \newpage
 \section{Implementation}
 
+\renewcommand*{\do}[1]{\lstset{moretexcs={#1}}}
+\expandafter\docsvlist\expandafter{\cmds}
 \lstset
   { aboveskip=0pt
   , belowskip=0pt
