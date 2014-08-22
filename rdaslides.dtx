@@ -467,12 +467,10 @@ presentations, or an accompanying transcript, or both.
         \raisebox{-1mm}[0pt][0pt]{%
           \usebeamercolor{progress}%
           \begin{tikzpicture}
-            \pgfmathqparse{\inserttotalframenumber pt == 1pt}%
+            \pgfmathparse{equal(\inserttotalframenumber,1)}%
             \ifnum1=\pgfmathresult%
-              \message{^^JOnly one slide.^^J}
               \def\PerCentComplete{360}%
             \else
-              \message{^^JMore than one slide.^^J}
               \pgfmathqparse{(360pt * (\insertframenumber pt - 1pt)) / (\inserttotalframenumber pt - 1pt)}%
               \let\PerCentComplete\pgfmathresult
             \fi
@@ -683,7 +681,9 @@ presentations, or an accompanying transcript, or both.
 		\setlength{\MSDWGLUnitLength}{1pt}%
 	}%
 }%
-% Draw diagram, 62.091\MSDWGLUnitLength x 59.690\MSDWGLUnitLength
+%
+% Draw diagram, 62.091|\MSDWGLUnitLength| by 59.690|\MSDWGLUnitLength|.
+%
 \begin{tikzpicture}
   [ inner sep = 0pt
   , outer sep = 0pt
@@ -860,19 +860,76 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 { Version
 , ProvidesClass
 , DeclareOption
-, ifArticle
-, Articletrue
-, Articlefalse
-, ifHandout
-, Handouttrue
-, Handoutfalse
 , ProcessOptions
 , LoadClass
 , RequirePackage
-, usefonttheme
-, pgfpagesuselayout
+, PassOptionsToPackage
 , IfFileExists
+, AtBeginDocument
+, description
+, enddescription
+, undefined
+, @empty
+, @gobble
+, @title
+, @author
+, @maketitle
+, z@
+, @plus
+, @minus
+, @tempdima
+, @tempdimb
+, if@tempswa
+, setlength
+, usefonttheme
+, setbeamerfont
+, usebeamerfont
+, setbeamercolor
+, usebeamercolor
+, ifbeamercolorempty
+, defbeamertemplate
+, setbeamertemplate
+, addtobeamertemplate
+, mode
+, subject
+, frametitle
+, insertframetitle
+, insertframesubtitle
+, inserttitle
+, insertsubtitle
+, insertauthor
+, insertinstitute
+, insertdate
+, inserttitlegraphic
+, insertframenumber
+, inserttotalframenumber
+, pgfpagesuselayout
+, pgfmathparse
+, pgfmathqparse
+, pgfmathresult
+, beamer@originstitute
+, beamer@andinst
+, beamer@insttitle
+, beamer@instinst
+, beamer@reseteecodes
+, beamerleftmargin
+, beamerrightmargin
+, xdefinecolor
+, providecolor
+, usetikzlibrary
+, ifthenelse
 , ifPDFTeX
+, IfEndWith
+, setlist
+, newlist
+, hypersetup
+, define@key
+, setkeys
+, preto
+, includegraphics
+, printdate
+, extrarowheight
+, tabularxcolumn
 }
 \newcommand*{\cmd}[1]{\gappto\cmds{, #1}\textcolor{red!75!black}{\textbackslash\texttt{#1}}}
 \newcommand*{\barg}[1]{$\langle$\textit{\rmfamily#1}$\rangle$}
@@ -1022,6 +1079,30 @@ This removes the background entirely.
 \newpage
 \section{Implementation}
 
+\gappto{\cmds}{%
+, ifArticle
+, Articletrue
+, Articlefalse
+, ifSet
+, Settrue
+, Setfalse
+, ifHandout
+, Handouttrue
+, Handoutfalse
+, insertoccasion
+, inserthashtag
+, insertauthorurl
+, fixeddescription
+, endfixeddescription
+, ifbgpicture
+, bgpicturetrue
+, bgpicturefalse
+, bgpicture
+, iftitlepage
+, titlepagetrue
+, titlepagefalse
+, PerCentComplete
+}
 \renewcommand*{\do}[1]{\lstset{moretexcs={#1}}}
 \expandafter\docsvlist\expandafter{\cmds}
 \lstset
@@ -1042,6 +1123,11 @@ This removes the background entirely.
 \renewcommand*{\mdSectionLevelOne}{\expandafter\string\csname subsubsection\endcsname}
 \CopyFDconditionFromTo{PScomment}{comment}
 \MakeInputJobDoc[cls]{0}{\SectionLevelOneParseInput}
+
+\subsection{rdamsdwg.sty}
+
+\renewcommand*{\mdJobName}{rdamsdwg}
+\MakeInputJobDoc[sty]{0}{\SectionLevelOneParseInput}
 
 \end{document}
 %</driver>
