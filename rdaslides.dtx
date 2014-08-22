@@ -114,28 +114,16 @@ presentations, or an accompanying transcript, or both.
 %
 % == Typography ==
 %
-% I use British orthography.
+% I use British orthography. If there is a demand for it, I might convert the
+% following lines to respect class options instead of a hard-coded language, but
+% it is easy enough to patch them with |\PassOptionsToPackage| before loading
+% the class.
 %
 \RequirePackage[british]{babel}
 \RequirePackage[british,cleanlook]{isodate}
 %
-% We handle fonts a little differently depending on the engine used. If 
-% fontspec is available, we load Charis SIL, Source Sans Pro and Source 
-% Code Pro. Either way, we take advantage of 'microtype' enhancements.
+% We take advantage of 'microtype' enhancements.
 %
-\RequirePackage{iftex}
-\ifPDFTeX
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T1]{fontenc}
-%LITERATE
-%<class>\else
-%<<LITERATE
-  \IfFileExists{charity.sty}{%
-    \RequirePackage{charity}%
-  }{}
-%LITERATE
-%<class>\fi
-%<<LITERATE
 \RequirePackage{microtype}
 %
 % Some sensible font sizes for use on slides.
@@ -815,6 +803,39 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
     [\Version\ Class for Research Data Alliance presentations]
 \documentclass[set]{rdaslides}
 
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[scaled=0.96,sups]{XCharter}
+  \usepackage[scaled=0.95,tabular]{sourcesanspro}
+  \usepackage[varl,varqu]{zi4}
+\else
+  \usepackage{fontspec}
+  \setmainfont
+    [Scale=0.96
+    ,Ligatures=TeX
+    ]%
+    {Charis SIL}
+  \setsansfont
+    [Scale=MatchLowercase
+    ,Ligatures=TeX
+    ,StylisticSet=4
+    ,BoldFont={Source Sans Pro Bold}
+    ,ItalicFont={Source Sans Pro Italic}
+    ,BoldItalicFont={Source Sans Pro Bold Italic}
+    ]%
+    {Source Sans Pro}
+  \setmonofont
+    [Scale=MatchLowercase
+    ,RawFeature={extend=0.83}
+    ,BoldFont={Source Code Pro Bold}
+    ,BoldItalicFont={Source Code Pro Bold}
+    ,AutoFakeSlant=0.2
+    ,ItalicFeatures={StylisticSet=2,StylisticSet=3}
+    ,BoldItalicFeatures={FakeSlant=0.2,StylisticSet=2,StylisticSet=3}
+    ]%
+    {Source Code Pro}
+\fi
 \usepackage{metalogo}
 
 \usepackage{tcolorbox}
