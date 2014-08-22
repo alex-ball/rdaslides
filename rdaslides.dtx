@@ -471,8 +471,15 @@ presentations, or an accompanying transcript, or both.
         \raisebox{-1mm}[0pt][0pt]{%
           \usebeamercolor{progress}%
           \begin{tikzpicture}
-            \pgfmathqparse{(360pt * (\insertframenumber pt - 1pt)) / (\inserttotalframenumber pt - 1pt)}%
-            \let\PerCentComplete\pgfmathresult
+            \pgfmathqparse{\inserttotalframenumber pt == 1pt}%
+            \ifnum1=\pgfmathresult%
+              \message{^^JOnly one slide.^^J}
+              \def\PerCentComplete{360}%
+            \else
+              \message{^^JMore than one slide.^^J}
+              \pgfmathqparse{(360pt * (\insertframenumber pt - 1pt)) / (\inserttotalframenumber pt - 1pt)}%
+              \let\PerCentComplete\pgfmathresult
+            \fi
             \draw[fg,fill=bg] (0,0mm)
               -- (90:2.1mm)
               arc[start angle=90, delta angle=-\PerCentComplete, radius=2.1mm]
