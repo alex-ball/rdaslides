@@ -10,9 +10,9 @@ WORKMF = "/home/ab318/Data/TeX/workmf"
 all:	$(NAME).pdf $(NAME)-slides.pdf clean
 	test -e README.md && pandoc README.md -t rst -o README || exit 0
 $(NAME).pdf: $(NAME).dtx
-	latexmk -pdf -silent -pdflatex="lualatex --shell-escape -synctex=1 -interaction=batchmode %O %S" $(NAME).dtx >/dev/null
+	latexmk -pdf -silent -pdflatex="lualatex -synctex=1 -interaction=batchmode %O %S" $(NAME).dtx >/dev/null
 $(NAME)-slides.pdf: $(NAME).dtx
-	latexmk -pdf -silent -pdflatex="lualatex --shell-escape -synctex=1 -interaction=batchmode %O %S" -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
+	latexmk -pdf -silent -pdflatex="lualatex -synctex=1 -interaction=batchmode %O %S" -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
 clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
