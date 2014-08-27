@@ -611,12 +611,19 @@ presentations, or an accompanying transcript, or both.
       \ifx\undefined\licenseLogo\else
         \parbox[c]{\hsize}{\includegraphics[width=\hsize]{cc_by}}
       \fi &
-      \licenseStatement:
-      \ifx\undefined\licenseUrl\else\url{\licenseUrl}\fi \\
+      \licenseStatement
+      \ifx\undefined\licenseUrl\else: \url{\licenseUrl}\fi \\
     \fi
-    \ifx\undefined\rdaGroupUrl
+    \ifx\undefined\rdaGroupLogo\else
+      \parbox[c]{\hsize}{\rdaGroupLogo}
+    \fi &
+    \ifx\undefined\rdaGroupName
+      The Research Data Alliance is supported by the
+      European Commission, the US Government and the Australian Government.\par
+      \vspace{1ex}
+      For more information, please visit \url{https://rd-alliance.org/}\\
     \else
-      \parbox[c]{\hsize}{\rdaGroupLogo} & The \rdaGroupName\ \rdaGroupType
+      The \rdaGroupName\ \rdaGroupType
       \ is part of the Research Data Alliance, which is supported by the
       European Commission, the US Government and the Australian Government.\par
       \vspace{1ex}
@@ -1082,6 +1089,8 @@ This should insert the logo of an RDA group. For best results, scale it to fit t
 The name of the RDA group, e.g. ‘Metadata’.
 \item[\cmd{rdaGroupType}]
 The type of RDA group, e.g. ‘Interest Group’.
+\item[\cmd{rdaGroupUrl}]
+The URL of the group web page.
 \end{describe}
 \end{frame}
 
@@ -1099,7 +1108,7 @@ released, if applicable, e.g.\ \cmd{insertgraphics}%
 \item[\cmd{licenseStatement}]
 A notice concerning the licence, e.g.\ ‘Released under an X licence.’
 \item[\cmd{licenseUrl}]
-The URL of the full licence text, if applicable. Do not wrap the URL in another command.
+The URL of the full licence text, if applicable.
 \end{describe}
 \end{frame}
 
@@ -1129,16 +1138,21 @@ These two options have no effect in article mode.
 
 \begin{frame}[fragile]{Finishing off}
 You can insert a closing slide in your presentation to parallel your opening slide.
-Simply use \cmd{finale} instead of \cmd{maketitle}:
 
+\begin{describe}
+\item[\cmd{finale}\oarg{important note}]
+The optional argument lets you add an important note, such as a key link or date, to the end of the slide. There is not much room, so be sparing.
+
+Wrap it in a bare frame, as you would for \cmd{maketitle}:
 \begin{tcolorbox}
 \cmd{begin}\prm{\{frame\}}\\
 \cmd{finale}\\
 \cmd{end}\prm{\{frame\}}
 \end{tcolorbox}
+\end{describe}
 \end{frame}
 
-In article mode, \cmd{finale} inserts a postscript consisting of a horizontal line, followed by the licence and RDA group information.
+In article mode, \cmd{finale} inserts a postscript consisting of a horizontal line, followed by the licence and RDA group information, or failing that, a brief statement about RDA.
 
 \begin{frame}
 \finale
