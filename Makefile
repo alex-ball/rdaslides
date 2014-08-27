@@ -16,6 +16,7 @@ $(NAME)-slides.pdf: $(NAME).dtx
 clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
+	rm -f rdamsdwg.doc
 distclean: clean
 	rm -f $(NAME).pdf $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty README
 inst: all
