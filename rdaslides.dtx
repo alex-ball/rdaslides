@@ -932,9 +932,10 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 , tabularxcolumn
 }
 \newcommand*{\cmd}[1]{\gappto\cmds{, #1}\textcolor{red!75!black}{\textbackslash\texttt{#1}}}
-\newcommand*{\barg}[1]{$\langle$\textit{\rmfamily#1}$\rangle$}
-\newcommand*{\marg}[1]{\textcolor{blue!75!black}{\texttt{\{}{$\langle$\textit{\rmfamily#1}$\rangle$}\texttt{\}}}}
-\newcommand*{\oarg}[1]{\textcolor{violet}{\texttt{[}{$\ensuremath$\langle\textit{\rmfamily#1}$\rangle$}\texttt{]}}}
+\newcommand*{\barg}[1]{$\langle${\normalfont\emph{#1}}$\rangle$}
+\newcommand*{\marg}[1]{\textcolor{blue!75!black}{\texttt{\{}\barg{#1}\texttt{\}}}}
+\newcommand*{\prm}[1]{\textcolor{blue!75!black}{\texttt{#1}}}
+\newcommand*{\oarg}[1]{\textcolor{violet}{\texttt{[}\barg{#1}\texttt{]}}}
 \newcommand*{\opt}[2][\empty]{\textcolor{violet}{\ttfamily #2}\ifx\empty#1\else\hfill(#1)\fi}
 \usepackage{enumitem}
 \def\ChangeItem{%
@@ -1024,6 +1025,8 @@ This is the documentation for and a demonstration of \filename, ‘\fileinfo’,
 
 \section{Usage}
 
+\subsection{Loading the class}
+
 \begin{frame}[fragile]{Using the class}
 The class is loaded in the usual way.
 
@@ -1045,6 +1048,8 @@ Produce a document in article mode, plus a set of slides (suffixed with
 
 Note that the \texttt{set} option makes a \lstinline{\write18} call to \textsf{latexmk}, so if \lstinline{\write18} is not enabled, or \textsf{latexmk} is not installed, it will act much like the \opt{article} option.
 
+\subsection{Preamble metadata}
+
 \begin{frame}{Metadata}
 When filling out the document metadata, you can use the regular \textsf{beamer} conventions, with a few differences:
 
@@ -1060,6 +1065,50 @@ Use this to specify one or more hashtags for sharing on social media. Do include
 \end{describe}
 \end{frame}
 
+\subsection{Customizing the title slide}
+
+You can add elements to the title slide by using the hooks provided. (The hooks are also recognized in article mode but they mainly affect the \cmd{finale} command, of which more later.) You use the hooks by defining them, so to use \cmd{rdaGroupName}, for example, you would need to do something like this:
+\begin{tcolorbox}
+\cmd{def}\cmd{rdaGroupName}\texttt{\{Metadata\}}
+\end{tcolorbox}
+
+\begin{frame}{Hooks (RDA Group)}
+You can associate your presentation with a particular group by defining the following hooks.
+
+\begin{describe}
+\item[\cmd{rdaGroupLogo}]
+This should insert the logo of an RDA group. For best results, scale it to fit the width of the bounding box, e.g.\ \cmd{insertgraphics}\opt{[width=\cmd{hsize}]}\marg{filename}.
+\item[\cmd{rdaGroupName}]
+The name of the RDA group, e.g. ‘Metadata’.
+\item[\cmd{rdaGroupType}]
+The type of RDA group, e.g. ‘Interest Group’.
+\end{describe}
+\end{frame}
+
+See the package \textsf{rdamsdwg.sty} for an example of how to use these hooks.
+
+\begin{frame}{Hooks (Licence)}
+If releasing the presentation under licence, you can declare this by defining
+the following hooks.
+
+\begin{describe}
+\item[\cmd{licenseLogo}]
+This should insert the logo of the licence under which the presentation is
+released, if applicable, e.g.\ \cmd{insertgraphics}%
+\opt{[width=\cmd{hsize}]}\marg{filename}.
+\item[\cmd{licenseStatement}]
+A notice concerning the licence, e.g.\ ‘Released under an X licence.’
+\item[\cmd{licenseUrl}]
+The URL of the full licence text, if applicable. Do not wrap the URL in another command.
+\end{describe}
+\end{frame}
+
+\subsection{Composing your presentation}
+
+The class is set up to ignore non-frame text in presentation mode, and ignore frame titles in article mode. The idea is that you put additional commentary outside frames, and it shows up in the transcript but not the slides. With pictorial slides, you can wrap them in \texttt{figure} environments, and with textual slides you can run them into the text of the commentary.
+
+In article mode, article-only text is shown in a serif font, while text that also appears on a slide is shown in a sans serif font, so you can tell them apart.
+
 \begin{frame}[fragile]{New frame options}
 The class provides two new options for frames.
 
@@ -1071,6 +1120,25 @@ Use it with an image filename to use that image as the background instead.
 This removes the background entirely.
 \end{describe}
 \end{frame}
+
+Note that the background image should suit a 4:3 aspect ratio as it will be stretched to fit. As a reminder, \textsf{beamer} slides are 128\,mm $\times$ 96\,mm.
+
+These two options have no effect in article mode.
+
+\subsection{Finishing off}
+
+\begin{frame}[fragile]{Finishing off}
+You can insert a closing slide in your presentation to parallel your opening slide.
+Simply use \cmd{finale} instead of \cmd{maketitle}:
+
+\begin{tcolorbox}
+\cmd{begin}\prm{\{frame\}}\\
+\cmd{finale}\\
+\cmd{end}\prm{\{frame\}}
+\end{tcolorbox}
+\end{frame}
+
+In article mode, \cmd{finale} inserts a postscript consisting of a horizontal line, followed by the licence and RDA group information.
 
 \begin{frame}
 \finale
