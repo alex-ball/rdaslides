@@ -72,7 +72,7 @@ presentations, or an accompanying transcript, or both.
   \RequirePackage[hmargin=3cm,vmargin=2.5cm]{geometry}
 %
 % The 'beamerarticle' package provides compatibility with 'beamer' code. It
-% loads xcolor, so any additional options we want have to be declared
+% loads 'xcolor', so any additional options we want have to be declared
 % beforehand.
 %
   \PassOptionsToPackage{table}{xcolor}
@@ -854,14 +854,17 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 \lstloadlanguages{[LaTeX]TeX}
 \lstset
   { columns=fullflexible
+  , aboveskip=0pt
+  , belowskip=0pt
   , basicstyle=\ttfamily
   , language={[LaTeX]TeX}
   , texcsstyle=*\color{red!75!black}
   , moredelim=**[s][\color{violet}]{[}{]}
   , moredelim=**[s][\color{blue!75!black}]{\{}{\}}
   , commentstyle=\itshape\color{gray}
-  , mathescape
-  , escapechar=~
+  , basicstyle=\small\ttfamily
+  , breaklines=true
+  , escapechar=
   }
 \def\cmds
 { Version
@@ -901,6 +904,7 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 , subject
 , frametitle
 , insertframetitle
+, framesubtitle
 , insertframesubtitle
 , inserttitle
 , insertsubtitle
@@ -1037,7 +1041,7 @@ This is the documentation for and a demonstration of \filename, ‘\fileinfo’,
 \begin{frame}[fragile]{Using the class}
 The class is loaded in the usual way.
 
-\begin{tcblisting}{listing only}
+\begin{tcblisting}{listing only, no listing options}
 \documentclass{rdaslides}
 \end{tcblisting}
 
@@ -1058,7 +1062,7 @@ Note that the \texttt{set} option makes a \lstinline{\write18} call to \textsf{l
 \subsection{Preamble metadata}
 
 \begin{frame}{Metadata}
-When filling out the document metadata, you can use the regular \textsf{beamer} conventions, with a few differences:
+When filling out the document metadata, you can use the regular \textsf{beamer} conventions with a few differences:
 
 \begin{describe}
 \item[\cmd{date}\marg{ISO date}]
@@ -1068,16 +1072,18 @@ Use this to provide the name of the event where the presentation will be given.
 \item[\cmd{authorurl}\marg{URL}]
 Use this to provide a URL where more details about the author may be consulted (not so useful for multi-author presentations).
 \item[\cmd{hashtag}\marg{hashtag}]
-Use this to specify one or more hashtags for sharing on social media. Do include the hash.
+Use this to specify one or more hashtags for sharing on social media. Remember to include the hash (\#).
 \end{describe}
 \end{frame}
 
 \subsection{Customizing the title slide}
 
 You can add elements to the title slide by using the hooks provided. (The hooks are also recognized in article mode but they mainly affect the \cmd{finale} command, of which more later.) You use the hooks by defining them, so to use \cmd{rdaGroupName}, for example, you would need to do something like this:
-\begin{tcolorbox}
-\cmd{def}\cmd{rdaGroupName}\texttt{\{Metadata\}}
-\end{tcolorbox}
+\renewcommand*{\do}[1]{\lstset{moretexcs={#1}}}%
+\expandafter\docsvlist\expandafter{\cmds}%
+\begin{tcblisting}{listing only, no listing options}
+\def\rdaGroupName{Metadata}
+\end{tcblisting}
 
 \begin{frame}{Hooks (RDA Group)}
 You can associate your presentation with a particular group by defining the following hooks.
@@ -1094,7 +1100,11 @@ The URL of the group web page.
 \end{describe}
 \end{frame}
 
-See the package \textsf{rdamsdwg.sty} for an example of how to use these hooks.
+By way of demonstration, the package \textsf{rdamsdwg.sty} is provided for associating presentations with the Metadata Standards Directory Working Group. Use it in the usual way:
+
+\begin{tcblisting}{listing only, no listing options}
+\usepackage{rdamsdwg}
+\end{tcblisting}
 
 \begin{frame}{Hooks (Licence)}
 If releasing the presentation under licence, you can declare this by defining
@@ -1102,8 +1112,7 @@ the following hooks.
 
 \begin{describe}
 \item[\cmd{licenseLogo}]
-This should insert the logo of the licence under which the presentation is
-released, if applicable, e.g.\ \cmd{insertgraphics}%
+This should insert the logo of the licence under which the presentation is released, if applicable. Again, for best results, scale it to fit the width of the bounding box, e.g.\ \cmd{insertgraphics}%
 \opt{[width=\cmd{hsize}]}\marg{filename}.
 \item[\cmd{licenseStatement}]
 A notice concerning the licence, e.g.\ ‘Released under an X licence.’
@@ -1126,7 +1135,7 @@ The class provides two new options for frames.
 Use this option on its own to restore the usual slide background.
 Use it with an image filename to use that image as the background instead.
 \item[\opt{nobackground}]
-This removes the background entirely.
+This gives the slide a plain white background.
 \end{describe}
 \end{frame}
 
@@ -1152,7 +1161,7 @@ Wrap it in a bare frame, as you would for \cmd{maketitle}:
 \end{describe}
 \end{frame}
 
-In article mode, \cmd{finale} inserts a postscript consisting of a horizontal line, followed by the licence and RDA group information, or failing that, a brief statement about RDA.
+In article mode, \cmd{finale} inserts a postscript consisting of a horizontal line followed by the licence and RDA group information or, failing that, a brief statement about RDA.
 
 \begin{frame}
 \finale
@@ -1188,14 +1197,9 @@ In article mode, \cmd{finale} inserts a postscript consisting of a horizontal li
 \renewcommand*{\do}[1]{\lstset{moretexcs={#1}}}
 \expandafter\docsvlist\expandafter{\cmds}
 \lstset
-  { aboveskip=0pt
-  , belowskip=0pt
-  , numbers=left
+  { numbers=left
   , numberstyle=\footnotesize\itshape\color{gray}
   , numbersep=20pt
-  , basicstyle=\footnotesize\ttfamily
-  , breaklines=true
-  , escapechar=
   }%
 \useNiceVerb
 
@@ -1207,6 +1211,8 @@ In article mode, \cmd{finale} inserts a postscript consisting of a horizontal li
 \MakeInputJobDoc[cls]{0}{\SectionLevelOneParseInput}
 
 \subsection{rdamsdwg.sty}
+
+This package is provided to demonstrate how to associate a presentation with a particular RDA group.
 
 \renewcommand*{\mdJobName}{rdamsdwg}
 \MakeInputJobDoc[sty]{0}{\SectionLevelOneParseInput}
