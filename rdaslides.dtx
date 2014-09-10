@@ -639,95 +639,148 @@ presentations, or an accompanying transcript, or both.
 %<*msdwg>
 %<<LITERATE
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesClass{rdaslides}
+\ProvidesPackage{rdamsdwg}
     [\Version\space Logo and details of the RDA Metadata Standards Directory Working Group]
-% Scaling mechanism
-\newlength{\MSDWGLUnitLength}
-
-% Dependencies
+%
+% For perfect fidelity we draw the logo with 'tikz' rather than use a bitmap.
+% This means we need to ensure it is loaded, along with 'keyval' for option
+% handling, 'ifthen' for implementing the option handling logic, and 'calc' for
+% calculating lengths.
+% 
 \RequirePackage{ifthen,calc,keyval}
 \RequirePackage{tikz}
 \usetikzlibrary{shapes.geometric,positioning}
 
-% Colour palette for the diagram
-\providecolor{rdabrown}{RGB}{113,50,33}%    brown in RDA logo
-\providecolor{rdagreen}{RGB}{117,169,82}%   green in RDA logo
-\providecolor{rdayellow}{RGB}{243,235,48}%  yellow in RDA logo
+%
+% There are three colours in the logo, based on those in the main RDA logo. We
+% provide, rather than define, them as they are also defined by `rdaslides.cls'.
+%
+\providecolor{rdabrown}{RGB}{113,50,33}
+\providecolor{rdagreen}{RGB}{117,169,82}
+\providecolor{rdayellow}{RGB}{243,235,48}
 
-% Keys for optional argument
-\newlength{\MSDWGLHeight}
-\newlength{\MSDWGLWidth}
-\define@key{msdwgl}{height}{\setlength{\MSDWGLHeight}{#1}}
-\define@key{msdwgl}{width}{\setlength{\MSDWGLWidth}{#1}}
-\newcommand{\MSDWGLLineColour}{none}
-\define@key{msdwgl}{outline}[true]{\renewcommand{\MSDWGLLineColour}{white}}
+%
+% We provide options for scaling the logo without changing the aspect ratio.
+% Two lengths are needed to scale the logo:
+% \begin{itemize}
+% \item |\msdwgl@unit| is the actual scale factor;
+% \item |\msdwgl@unit@calc| is the scale factor calculated from the options.
+% \end{itemize}
+%
+\newlength{\msdwgl@unit}
+\newlength{\msdwgl@unit@calc}
+%
+% The `height' option sets the maximum height for the logo.
+% With |\msdwgl@unit| set to 1pt, the logo ends up 59.690pt high. So we
+% calculate what |\msdwgl@unit| would need to be to achieve the target height.
+% We store this in |\msdwgl@unit@calc| unless |\msdwgl@unit@calc| is a shorter
+% (but non-zero) length.
+%
+\define@key{msdwgl}{height}{%
+  \setlength{\@tempdima}{#1}%
+  \setlength{\@tempdimb}{\@tempdima / \real{59.690}}%
+  \ifthenelse{%
+    \lengthtest{\msdwgl@unit@calc = 0pt}\OR
+    \lengthtest{\@tempdimb < \msdwgl@unit@calc}%
+  }{%
+    \setlength{\msdwgl@unit@calc}{\@tempdimb}%
+  }{}%
+}
+%
+% The `width' option sets the maximum width for the logo.
+% With |\msdwgl@unit| set to 1pt, the logo ends up 62.091pt wide. So we
+% calculate what |\msdwgl@unit| would need to be to achieve the target width.
+% We store this in |\msdwgl@unit@calc| unless |\msdwgl@unit@calc| is a shorter
+% (but non-zero) length.
+%
+\define@key{msdwgl}{width}{%
+  \setlength{\@tempdima}{#1}%
+  \setlength{\@tempdimb}{\@tempdima / \real{62.091}}%
+  \ifthenelse{%
+    \lengthtest{\msdwgl@unit@calc = 0pt}\OR
+    \lengthtest{\@tempdimb < \msdwgl@unit@calc}%
+  }{%
+    \setlength{\msdwgl@unit@calc}{\@tempdimb}%
+  }{}%
+}
+%
+% We also provide the option `scale' for unconditionally setting the scale to a
+% given numeric factor, where 1 means |\msdwgl@unit| equals 1pt.
+%
+\define@key{msdwgl}{scale}{%
+  \setlength{\@tempdima}{1pt}%
+  \setlength{\msdwgl@unit@calc}{#1\@tempdima}%
+}
+%
+% In case the logo is put on a coloured background, we provide the option
+% `outline' for outlining it in a given colour (white by default).
+%
+\newcommand{\msdwgl@line@color}{none}
+\define@key{msdwgl}{outline}[white]{\renewcommand{\msdwgl@line@color}{#1}}
 
-% The command itself
+%
+% The logo itself is drawn with the |\MSDWGLogo| command. The 'keyval' options
+% are read from the optional argument. There is no mandatory argument.
+%
 \newcommand{\MSDWGLogo}[1][]{%
-\bgroup
-% Read in the keys
-\setkeys{msdwgl}{width=0pt,height=0pt,#1}%
-\ifthenelse{\lengthtest{\MSDWGLHeight > 0pt}}{%
-	\ifthenelse{\lengthtest{\MSDWGLWidth > 0pt}}{%
-		% Both given
-		\setlength{\@tempdima}{\MSDWGLWidth / \real{62.091}}%
-		\setlength{\@tempdimb}{\MSDWGLHeight / \real{59.690}}%
-		\ifthenelse{\lengthtest{\@tempdima > \@tempdimb}}%
-			{\setlength{\MSDWGLUnitLength}{\@tempdimb}}%
-			{\setlength{\MSDWGLUnitLength}{\@tempdima}}%
-	}{%
-		% Just height
-		\setlength{\MSDWGLUnitLength}{\MSDWGLHeight / \real{59.690}}%
-	}%
-}{%
-	\ifthenelse{\lengthtest{\MSDWGLWidth > 0pt}}{%
-		% Just width
-		\setlength{\MSDWGLUnitLength}{\MSDWGLWidth / \real{62.091}}%
-	}{%
-		% Neither: default
-		\setlength{\MSDWGLUnitLength}{1pt}%
-	}%
-}%
+  \bgroup
 %
-% Draw diagram, 62.091|\MSDWGLUnitLength| by 59.690|\MSDWGLUnitLength|.
+% First we reset |\msdwgl@unit@calc| to 0pt, then read in the user keys.
 %
-\begin{tikzpicture}
-  [ inner sep = 0pt
-  , outer sep = 0pt
-  , baseline = (text.base)
-  , line width = 0.4pt
-  ]
-\matrix
-  [ ampersand replacement = \&
-  , nodes =
-    { cylinder
-    , cylinder uses custom fill
-    , cylinder end fill=yellow
-    , aspect=1.0
-    , rotate=43
-    , anchor=center
-    , draw=\MSDWGLLineColour
-    }
-  , row 1 column 1/.style = {cylinder body fill=rdagreen}
-  , row 1 column 2/.style = {cylinder body fill=rdabrown}
-  , row 2 column 1/.style = {cylinder body fill=rdabrown}
-  , row 2 column 2/.style = {cylinder body fill=rdagreen}
-  , column sep = -3\MSDWGLUnitLength
-  , row sep = -4\MSDWGLUnitLength
-  ]
-  (logo)
-  {
-    \node{\phantom{\rule{4\MSDWGLUnitLength}{20\MSDWGLUnitLength}}}; \&
-    \node{\phantom{\rule{4\MSDWGLUnitLength}{20\MSDWGLUnitLength}}}; \\
-    \node{\phantom{\rule{4\MSDWGLUnitLength}{20\MSDWGLUnitLength}}}; \&
-    \node{\phantom{\rule{4\MSDWGLUnitLength}{20\MSDWGLUnitLength}}}; \\
-  };
-\node (text) at (logo.center) {\phantom{RDA}};
-\end{tikzpicture}%
-\egroup
+  \setkeys{msdwgl}{scale=0,#1}%
+%
+% If |\msdwgl@unit@calc| has been set, we scale the logo accordingly. Otherwise
+% we use the default scale of |\msdwgl@unit| = 1pt.
+%
+  \ifthenelse{\lengthtest{\msdwgl@unit@calc > 0pt}}{%
+    \setlength{\msdwgl@unit}{\msdwgl@unit@calc}%
+  }{%
+    \setlength{\msdwgl@unit}{1pt}%
+  }%
+%
+% Now we come to draw the logo. The `text' node is used to centre the logo
+% vertically with respect to the surrounding text. The graphic itself is
+% achieved as a matrix of cylinders.
+%
+  \begin{tikzpicture}
+    [ inner sep = 0pt
+    , outer sep = 0pt
+    , baseline = (text.base)
+    , line width = 0.4pt
+    ]
+  \matrix
+    [ ampersand replacement = \&
+    , nodes =
+      { cylinder
+      , cylinder uses custom fill
+      , cylinder end fill=yellow
+      , aspect=1.0
+      , rotate=43
+      , anchor=center
+      , draw=\msdwgl@line@color
+      }
+    , row 1 column 1/.style = {cylinder body fill=rdagreen}
+    , row 1 column 2/.style = {cylinder body fill=rdabrown}
+    , row 2 column 1/.style = {cylinder body fill=rdabrown}
+    , row 2 column 2/.style = {cylinder body fill=rdagreen}
+    , column sep = -3\msdwgl@unit
+    , row sep = -4\msdwgl@unit
+    ]
+    (logo)
+    {
+      \node{\phantom{\rule{4\msdwgl@unit}{20\msdwgl@unit}}}; \&
+      \node{\phantom{\rule{4\msdwgl@unit}{20\msdwgl@unit}}}; \\
+      \node{\phantom{\rule{4\msdwgl@unit}{20\msdwgl@unit}}}; \&
+      \node{\phantom{\rule{4\msdwgl@unit}{20\msdwgl@unit}}}; \\
+    };
+  \node (text) at (logo.center) {\phantom{RDA}};
+  \end{tikzpicture}%
+  \egroup
 }
 
-% Hooks that modify the behaviour of rdaslides.cls
+%
+% Finally, we define hooks that are recognized by `rdaslides.cls'.
+%
 \def\rdaGroupLogo{\MSDWGLogo[width=\hsize]}
 \def\rdaGroupName{Metadata Standards Directory}
 \def\rdaGroupType{Working Group}
@@ -869,6 +922,7 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 \def\cmds
 { Version
 , ProvidesClass
+, ProvidesPackage
 , DeclareOption
 , ProcessOptions
 , LoadClass
