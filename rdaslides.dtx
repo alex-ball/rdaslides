@@ -184,6 +184,7 @@ presentations, or an accompanying transcript, or both.
     \let\enddescription=\endfixeddescription
   }%
 }
+
 %
 % == Metadata handling ==
 %
@@ -348,29 +349,37 @@ presentations, or an accompanying transcript, or both.
 % this, we reset it as part of the set-up of `frame' environments.
 %
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{background}}
+
 %
 % We introduce a switch, |\iftitlepage|, that can be used to provide a
-% different footline depending on whether this is a normal or a title slide.
+% different layout depending on whether this is a normal or a title slide.
 %
 \newif\iftitlepage\titlepagefalse
+%
+% This is our new version of the `frametitle' template.
+%
 \defbeamertemplate*{frametitle}{rdatitle}{%
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+%
+% The title page background image does not lend itself to a frame title (though
+% why would anyone add one?). We use the template instead, however, to provide
+% RDA group branding if required.
+%
   \iftitlepage
-%
-% We insert some hooks so that we can later customize the title space with
-% details of the group by defining |\rdaGroupLogo|, |\rdaGroupName| and
-% |\rdaGroupType|.
-%
     {%
+%
+% We need to widen the text block and strip out vertical white space to fit
+% everything in.
+%
     \parindent \z@
     \leftskip \z@ \@plus 1fil \@minus \textwidth
     \rightskip\leftskip
     \parfillskip \z@skip
 %
-% We set the |\fboxsep| to zero so we can use |\fbox| to help debug positions
-% of boxes.
+% Here we insert some hooks so that users can customize the title space with
+% details of an RDA group by defining |\rdaGroupLogo|, |\rdaGroupName| and
+% |\rdaGroupType|.
 %
-    \setlength{\fboxsep}{0pt}%
     \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}
       \usebeamercolor{frametitle}
       \ifx\undefined\rdaGroupLogo\else\parbox[c]{16mm}{\rdaGroupLogo}\fi
@@ -386,14 +395,15 @@ presentations, or an accompanying transcript, or both.
       \fi
     \end{minipage}\par
     }
+%
+% The frame title block in the default background image curves down in the
+% middle, so we need to tell 'beamer' to make its `frametitle' template a little
+% deeper to cover it. The following code mimics the default, but adds a `dp'
+% option to the `beamercolorbox' environment.
+%
 %LITERATE
 %<class>  \else
 %<<LITERATE
-%
-% The frame title block in the default background image curves down in the
-% middle, so we need to tell 'beamer' to make its frametitle template a little
-% deeper to cover it.
-%
     \@tempdima=\textwidth%
     \advance\@tempdima by\beamer@leftmargin%
     \advance\@tempdima by\beamer@rightmargin%
@@ -414,7 +424,11 @@ presentations, or an accompanying transcript, or both.
 %<class>  \fi
 %<<LITERATE
 }
+%
+% We use our new version of `frametitle' as default.
+%
 \setbeamertemplate{frametitle}[rdatitle]
+
 %
 % The 'beamer' footline template lays out elements along the bottom of the screen.
 % We set the height of the footline to 8mm so it fits over the RDA logo in the
@@ -448,10 +462,7 @@ presentations, or an accompanying transcript, or both.
     }%
     \hfill
 %
-% On the title slide, we use the right hand box for the licence image. In the
-% standard background image it is occupied by the RDA logo, but since it is
-% shorter than the strapline, we can balance it with another element: a
-% clock-style progress indicator. 
+% On the title slide, we use the right hand box for the licence image.
 %
     \makebox[0pt][r]{%
       \iftitlepage
@@ -462,13 +473,23 @@ presentations, or an accompanying transcript, or both.
         }}%
         \hspace*{3mm}%
         \global\titlepagefalse
+%
+% In the standard background image the right hand box is occupied by the RDA
+% logo, but since it is shorter than the strapline on the left, we can balance
+% it with another element: a clock-style progress indicator.
+% 
+% The mathematics here makes sure the indicator would start at 0° on the
+% first slide and end up at 360° on the last, with linear variation
+% between. The case of the first slide is handled differently to prevent
+% division by zero.
+%
 %LITERATE
 %<class>      \else
         \raisebox{-1mm}[0pt][0pt]{%
           \usebeamercolor{progress}%
           \begin{tikzpicture}
             \pgfmathparse{equal(\inserttotalframenumber,1)}%
-            \ifnum1=\pgfmathresult%
+            \ifnum1=\pgfmathresult
               \def\PerCentComplete{360}%
             \else
               \pgfmathqparse{(360pt * (\insertframenumber pt - 1pt)) / (\inserttotalframenumber pt - 1pt)}%
@@ -489,10 +510,12 @@ presentations, or an accompanying transcript, or both.
     \vfil
   }%
 }
+
 %
 % By default we remove the tell-tale and seldom used 'beamer' navigation symbols.
 %
 \setbeamertemplate{navigation symbols}{}
+
 %
 % By default 'beamer' uses Roman numerals for split frames. We change this to
 % Arabic numerals.
@@ -500,6 +523,7 @@ presentations, or an accompanying transcript, or both.
 \setbeamertemplate{frametitle continuation}{%
   (\insertcontinuationcount)%
 }
+
 %
 % The 'beamer' title page template lays out the elements of the title page.
 %
@@ -510,18 +534,13 @@ presentations, or an accompanying transcript, or both.
 %
   \setkeys{beamerframe}{background=rda-bg-title1}%
 %
-% The following line ensures the title is drawn.
+% The following line ensures the title block is drawn.
 %
   \frametitle{Reserved for group information}%
 %
-% We set the |\fboxsep| to zero so we can use |\fbox| to help debug positions
-% of boxes.
-%
-  \setlength{\fboxsep}{0pt}%
-%
-% We provide the presentation metadata in two parts: the title, author and
-% institute lines go in the middle third of the slide, while the date goes in
-% the lower third.
+% We provide the presentation metadata in two parts. The title, author and
+% institute lines go in the middle third of the slide. We use stretchy skips
+% to ensure the elements are evenly spaced.
 %
   \begin{minipage}[b][32mm][c]{\textwidth}
     \vspace*{\stretch{1}}%
@@ -544,6 +563,9 @@ presentations, or an accompanying transcript, or both.
     \vspace*{\stretch{1}}%
   \end{minipage}
   \par\vspace*{2mm}
+%
+% The occasion and date squeeze in at the top of the lower third.
+%
   \begin{minipage}[b][10mm][c]{\textwidth}
     \begin{beamercolorbox}[sep=0pt,center]{date}
       \usebeamerfont{date}%
@@ -555,26 +577,40 @@ presentations, or an accompanying transcript, or both.
   \end{minipage}
   \vspace*{2mm}
 }
+
 %
 % We provide a |\finale| command for use on the last slide, to parallel
-% |\maketitle|.
+% |\maketitle|. It behaves differently depending on the mode; the article
+% version uses 'tabularx'.
 %
 \RequirePackage{tabularx}
 \newcommand{\finale}[1][\empty]{
+%
+% Finale slides act like title slides, but have a slightly different background.
+%
 \mode<presentation>{%
   \global\titlepagetrue
   \setkeys{beamerframe}{background=rda-bg-title2}%
+%
+% The following line ensures the title block is drawn.
+%
   \frametitle{Reserved for group information}%
 %
-% We set the |\fboxsep| to zero so we can use |\fbox| to help debug positions
-% of boxes.
+% The background image again leaves us with the middle third of the slide into
+% which to cram some text. We use stretchy skips to ensure the elements are
+% evenly spaced.
 %
-  \setlength{\fboxsep}{0pt}%
   \begin{minipage}[b][32mm][s]{\textwidth}
     \vspace*{\stretch{1}}%
+%
+% We start with a thank you.
+%
     \begin{beamercolorbox}[sep=0pt,center]{title}
       \usebeamerfont{title}Thank you for your attention\par%
     \end{beamercolorbox}%
+%
+% If the author URL has been provided, we display that.
+%
     \ifx\empty\insertauthorurl
     \else
       \vfill
@@ -582,6 +618,9 @@ presentations, or an accompanying transcript, or both.
         \usebeamerfont{institute}\insertauthor: \url{\insertauthorurl}\par%
       \end{beamercolorbox}%
     \fi
+%
+% If the RDA group URL has been provided, we display that.
+%
     \ifx\undefined\rdaGroupUrl
     \else
       \vfill
@@ -589,6 +628,10 @@ presentations, or an accompanying transcript, or both.
         \usebeamerfont{institute}\rdaGroupName\ \rdaGroupType: \url{\rdaGroupUrl}\par%
       \end{beamercolorbox}%
     \fi
+%
+% Lastly, we display whatever is in the optional argument, if one has been
+% provided.
+%
     \ifx\empty#1
     \else
       \vfill
@@ -600,13 +643,23 @@ presentations, or an accompanying transcript, or both.
   \end{minipage}
   \vspace*{15mm}
 }
+%
+% In article mode, we begin with a horizontal rule.
+%
 \mode<article>{
   \vbox{}
   \begin{small}
     \rule[1em]{\textwidth}{0.8pt}\par
+%
+% We then draw a table with logos on the left and corresponding text on the
+% right.
+%
     \setlength{\extrarowheight}{1ex}%
     \renewcommand{\tabularxcolumn}[1]{m{##1}}
     \begin{tabularx}{\textwidth}{@{}m{22mm}X@{}}
+%
+% If a licence statement has been provided, we add a row displaying it.
+%
     \ifx\undefined\licenseStatement\else
       \ifx\undefined\licenseLogo\else
         \parbox[c]{\hsize}{\includegraphics[width=\hsize]{cc_by}}
@@ -614,22 +667,36 @@ presentations, or an accompanying transcript, or both.
       \licenseStatement
       \ifx\undefined\licenseUrl\else: \url{\licenseUrl}\fi \\
     \fi
+%
+% We then add a row about the RDA. If a group logo has been defined we display
+% it.
+%
     \ifx\undefined\rdaGroupLogo\else
       \parbox[c]{\hsize}{\rdaGroupLogo}
     \fi &
+%
+% If group information has not been defined, we explain what the RDA is.
+%
     \ifx\undefined\rdaGroupName
       The Research Data Alliance is supported by the
       European Commission, the US Government and the Australian Government.\par
       \vspace{1ex}
       For more information, please visit \url{https://rd-alliance.org/}\\
+%
+% Otherwise we explain about the group.
+%
     \else
-      The \rdaGroupName\ \rdaGroupType
-      \ is part of the Research Data Alliance, which is supported by the
+      The \rdaGroupName\ \rdaGroupType\ 
+      is part of the Research Data Alliance, which is supported by the
       European Commission, the US Government and the Australian Government.\par
       \vspace{1ex}
       For more information, please visit \url{\rdaGroupUrl}\\
     \fi
     \end{tabularx}
+%
+% Lastly, if the optional argument has been provided, we typeset it below the
+% table.
+%
     \ifx\empty#1\else\par\vskip2pt #1\par\fi
   \end{small}
 }
