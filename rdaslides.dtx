@@ -219,6 +219,13 @@ presentations, or an accompanying transcript, or both.
 	\renewcommand*{\insertauthorurl}{#1}%
 }
 %
+% In case the author forgets to include some key metadata, we provide some
+% safety values to allow the document to compile.
+%
+\def\@title{Please provide a title}
+\def\@author{Please specify the author}
+\edef\@date{\the\year-\ifnum\month<10 0\fi\the\month-\ifnum\day<10 0\fi\the\day}
+%
 % The 'beamer' class takes care of adding presentation metadata to the PDF
 % properties, but the 'article' class doesn't. We achieve parity with some
 % additional |\hypersetup|.
@@ -267,13 +274,19 @@ presentations, or an accompanying transcript, or both.
         \end{tabular}\par
       }%
       \vskip 1em%
-      {%
-        \small\lineskip .5em%
-        \begin{tabular}[t]{c}%
-          \insertinstitute
-        \end{tabular}%
-      }%
-      \par\vskip 1em%
+%LITERATE
+%<class>      \ifx\undefined\insertinstitute\else
+%<<LITERATE
+        {%
+          \small\lineskip .5em%
+          \begin{tabular}[t]{c}%
+            \insertinstitute
+          \end{tabular}%
+        }%
+        \par\vskip 1em%
+%LITERATE
+%<class>      \fi
+%<<LITERATE
       {%
         \large
 %LITERATE
