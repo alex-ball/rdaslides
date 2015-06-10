@@ -18,7 +18,7 @@ clean:
 	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
 	rm -f rdamsdwg.doc
 distclean: clean
-	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty README.md
+	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty
 inst: all
 	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
 	cp $(NAME).dtx $(NAME).ins $(UTREE)/source/latex/$(NAME)
