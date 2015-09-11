@@ -259,9 +259,8 @@ Ball][me].
 % The |\occasion| command is used to record the event at which the presentation
 % is given. The content is available again via |\insertoccasion|.
 %
-\let\insertoccasion\empty
 \newcommand*{\occasion}[1]{%
-  \renewcommand*{\insertoccasion}{#1}%
+  \def\insertoccasion{#1}%
   \subject{Presentation given at #1}%
   \mode<article>{%
     \AtBeginDocument{\hypersetup{pdfsubject={Presentation given at #1}}}%
@@ -272,18 +271,16 @@ Ball][me].
 % this presentation on social media. The content is available again via
 % |\inserthashtag|
 %
-\let\inserthashtag\empty
 \newcommand*{\hashtag}[1]{%
-  \renewcommand*{\inserthashtag}{#1}%
+  \def\inserthashtag{#1}%
 }
 %
 % The |\authorurl| command is used to give a URL where more information about
 % the speaker is available. The content is available again via
 % |\insertauthorurl|
 %
-\let\insertauthorurl\empty
 \newcommand*{\authorurl}[1]{%
-	\renewcommand*{\insertauthorurl}{#1}%
+  \def\insertauthorurl{#1}%
 }
 %
 % In case the author forgets to include some key metadata, we provide some
@@ -301,13 +298,7 @@ Ball][me].
   \AtBeginDocument{
     \begingroup
       \hypersetup{pdftitle={\@title
-        \ifx\undefined\insertsubtitle
-        \else
-          \ifx\@empty\insertsubtitle
-          \else
-            \ - \insertsubtitle
-          \fi
-        \fi
+        \ifdefvoid{\insertsubtitle}{}{\ - \insertsubtitle}%
       }}%
     \def\and{\unskip, }%
     \let\thanks=\@gobble
@@ -320,11 +311,11 @@ Ball][me].
 % add in a line for the |\institute|, include details of the occasion and
 % print the date pleasingly.
 %
-  \ifx\undefined\beamer@originstitute
-    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}}
-  \else
-    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}\beamer@originstitute{#2}}
-  \fi
+  \ifundef{\beamer@originstitute}{%
+    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}}%
+  }{%
+    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}\beamer@originstitute{#2}}%
+  }%
   \def\@maketitle{%
     \newpage
     \null
@@ -335,15 +326,11 @@ Ball][me].
       {%
         \large\lineskip .5em%
         \begin{tabular}[t]{c}%
-%LITERATE
-%<class>          \ifx\empty\insertauthorurl\@author\else\href{\insertauthorurl}{\@author}\fi
-%<<LITERATE
+          \ifdefvoid{\insertauthorurl}{\@author}{\href{\insertauthorurl}{\@author}}%
         \end{tabular}\par
       }%
       \vskip 1em%
-%LITERATE
-%<class>      \ifx\undefined\insertinstitute\else
-%<<LITERATE
+      \ifdefvoid{\insertinstitute}{}{%
         {%
           \small\lineskip .5em%
           \begin{tabular}[t]{c}%
@@ -351,14 +338,10 @@ Ball][me].
           \end{tabular}%
         }%
         \par\vskip 1em%
-%LITERATE
-%<class>      \fi
-%<<LITERATE
+      }
       {%
         \large
-%LITERATE
-%<class>        \ifx\empty\insertoccasion\else\insertoccasion, \fi
-%<<LITERATE
+        \ifdefvoid{\insertoccasion}{}{\insertoccasion, }%
         \printdate{\@date}%
       }%
     \end{center}%
@@ -462,17 +445,15 @@ Ball][me].
 %
     \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}
       \usebeamercolor{frametitle}
-      \ifx\undefined\rdaGroupLogo\else\parbox[c]{16mm}{\rdaGroupLogo}\fi
+      \ifdefvoid{\rdaGroupLogo}{}{\parbox[c]{16mm}{\rdaGroupLogo}}%
       \hfill
-      \ifx\undefined\rdaGroupName\else
+      \ifdefvoid{\rdaGroupName}{}{%
         \parbox[c]{42mm}{%
           \raggedleft\rdaGroupName
-          \ifx\undefined\rdaGroupType\else
-            \large\par{\small\textsc{\rdaGroupType}}%
-          \fi
+          \ifdefvoid{\rdaGroupType}{}{\large\par{\small\textsc{\rdaGroupType}}}%
           \par
         }%
-      \fi
+      }%
     \end{minipage}\par
     }
 %
@@ -492,10 +473,11 @@ Ball][me].
       \vbox{}\vskip-1ex%
       \strut\insertframetitle\strut\par%
       {%
-        \ifx\insertframesubtitle\@empty%
-        \else%
-        {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
-        \fi
+        \ifdefvoid{\insertframesubtitle}{}{%
+          \usebeamerfont{framesubtitle}%
+          \usebeamercolor[fg]{framesubtitle}%
+          \insertframesubtitle\strut\par
+        }%
       }%
       \vskip-1ex%
       \if@tempswa\else\vskip-.3cm\fi%
@@ -536,9 +518,9 @@ Ball][me].
     \parbox{0.5\paperwidth}{\centering
       \usebeamerfont{footline}%
 %LITERATE
-%<class>    \iftitlepage\usebeamercolor[fg]{date}\else\usebeamercolor[fg]{footline}\fi
-%<class>		\ifx\empty\inserthashtag\else\inserthashtag\fi\par
+%<class>      \iftitlepage\usebeamercolor[fg]{date}\else\usebeamercolor[fg]{footline}\fi
 %<<LITERATE
+      \ifdefvoid{\inserthashtag}{}{\inserthashtag}\par
     }%
     \hfill
 %
@@ -547,9 +529,9 @@ Ball][me].
     \makebox[0pt][r]{%
       \iftitlepage
         \parbox{18mm}{\raisebox{2mm}{%
-          \ifx\undefined\licenseLogo\else
-            \href{\licenseUrl}{\licenseLogo}%
-          \fi
+          \ifdefvoid{\licenseLogo}{}{%
+            \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
+          }%
         }}%
         \hspace*{3mm}%
         \global\titlepagefalse
@@ -626,11 +608,10 @@ Ball][me].
     \vspace*{\stretch{1}}%
     \begin{beamercolorbox}[sep=0pt,center]{title}
       \usebeamerfont{title}\inserttitle\par%
-      \ifx\@empty\insertsubtitle%
-      \else
+      \ifdefvoid{\insertsubtitle}{}{%
         \vskip0.25em%
         {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-      \fi  
+      }%
     \end{beamercolorbox}%
     \vfill
     \begin{beamercolorbox}[sep=0pt,center]{author}
@@ -649,9 +630,7 @@ Ball][me].
   \begin{minipage}[b][10mm][c]{\textwidth}
     \begin{beamercolorbox}[sep=0pt,center]{date}
       \usebeamerfont{date}%
-%LITERATE
-%<class>      \ifx\empty\insertoccasion\else\insertoccasion\\\fi
-%<<LITERATE
+      \ifdefvoid{\insertoccasion}{}{\insertoccasion\\}%
       \printdate{\insertdate}
     \end{beamercolorbox}
   \end{minipage}
@@ -691,23 +670,24 @@ Ball][me].
 %
 % If the author URL has been provided, we display that.
 %
-    \ifx\empty\insertauthorurl
-    \else
+    \ifdefvoid{\insertauthorurl}{}{%
       \vfill
       \begin{beamercolorbox}[sep=0pt,center]{institute}
         \usebeamerfont{institute}\insertauthor: \url{\insertauthorurl}\par%
       \end{beamercolorbox}%
-    \fi
+    }%
 %
 % If the RDA group URL has been provided, we display that.
 %
-    \ifx\undefined\rdaGroupUrl
-    \else
+    \ifdefvoid{\rdaGroupUrl}{}{%
       \vfill
       \begin{beamercolorbox}[sep=0pt,center]{institute}
-        \usebeamerfont{institute}\rdaGroupName\ \rdaGroupType: \url{\rdaGroupUrl}\par%
+        \usebeamerfont{institute}%
+        \ifdefvoid{\rdaGroupName}{}{\rdaGroupName
+          \ifdefvoid{\rdaGroupType}{}{ \rdaGroupType}:
+        }\url{\rdaGroupUrl}\par%
       \end{beamercolorbox}%
-    \fi
+    }%
 %
 % Lastly, we display whatever is in the optional argument, if one has been
 % provided.
@@ -740,38 +720,36 @@ Ball][me].
 %
 % If a licence statement has been provided, we add a row displaying it.
 %
-    \ifx\undefined\licenseStatement\else
-      \ifx\undefined\licenseLogo\else
-        \parbox[c]{\hsize}{\licenseLogo}
-      \fi &
+    \ifdefvoid{\licenseStatement}{}{%
+      \ifdefvoid{\licenseLogo}{}{\parbox[c]{\hsize}{\licenseLogo}} &
       \licenseStatement
-      \ifx\undefined\licenseUrl\else: \url{\licenseUrl}\fi \\
-    \fi
+      \ifdefvoid{\licenseUrl}{}{: \url{\licenseUrl}} \\
+    }%
 %
 % We then add a row about the RDA. If a group logo has been defined we display
 % it.
 %
-    \ifx\undefined\rdaGroupLogo\else
-      \parbox[c]{\hsize}{\rdaGroupLogo}
-    \fi &
+    \ifdefvoid{\rdaGroupLogo}{}{\parbox[c]{\hsize}{\rdaGroupLogo}} &
 %
 % If group information has not been defined, we explain what the RDA is.
 %
-    \ifx\undefined\rdaGroupName
+    \ifdefvoid{\rdaGroupName}{%
       The Research Data Alliance is supported by the
       European Commission, the US Government and the Australian Government.\par
-      \vspace{1ex}
-      For more information, please visit \url{https://rd-alliance.org/}\\
+      \vspace{1ex}%
+      For more information, please visit \url{https://rd-alliance.org/}%
 %
 % Otherwise we explain about the group.
 %
-    \else
-      The \rdaGroupName\ \rdaGroupType\ 
+    }{%
+      The \rdaGroupName\ifdefvoid{\rdaGroupType}{}{ \rdaGroupType}
       is part of the Research Data Alliance, which is supported by the
-      European Commission, the US Government and the Australian Government.\par
-      \vspace{1ex}
-      For more information, please visit \url{\rdaGroupUrl}\\
-    \fi
+      European Commission, the US Government and the Australian Government.
+      \ifdefvoid{\rdaGroupUrl}{}{%
+        \par\vspace{1ex}%
+        For more information, please visit \url{\rdaGroupUrl}%
+      }%
+    }\\
     \end{tabularx}
 %
 % Lastly, if the optional argument has been provided, we typeset it below the
