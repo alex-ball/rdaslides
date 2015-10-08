@@ -188,9 +188,12 @@ Ball][me].
 \RequirePackage[british]{babel}
 \RequirePackage[british,cleanlook]{isodate}
 %
-% We take advantage of 'microtype' enhancements.
+% We take advantage of 'microtype' enhancements. We defer loading it until the
+% end of the preamble in case the author loads 'fontspec'.
 %
-\RequirePackage{microtype}
+\AtEndPreamble{%
+  \RequirePackage{microtype}%
+}
 %
 % Some sensible font sizes and weights for use on slides.
 %
