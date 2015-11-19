@@ -11,9 +11,9 @@ all:	$(NAME).pdf $(NAME)-slides.pdf clean
 	exit 0
 $(NAME).cls: $(NAME).dtx
 	lualatex -synctex=1 -interaction=batchmode $(NAME).dtx >/dev/null
-$(NAME).pdf: $(NAME).dtx $(NAME).cls
+$(NAME).pdf: $(NAME).cls
 	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(NAME).dtx >/dev/null
-$(NAME)-slides.pdf: $(NAME).dtx $(NAME).cls
+$(NAME)-slides.pdf: $(NAME).cls
 	latexmk -lualatex -synctex=1 -interaction=batchmode -silent -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
 clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
