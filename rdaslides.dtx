@@ -105,8 +105,12 @@ Ball][me].
 % The user answers by means of options, of course.
 %
 \DeclareOption{article}{\Articletrue}
-\DeclareOption{handout}{\Handouttrue\PassOptionsToClass{handout}{beamer}}
-\DeclareOption{set}{\Settrue}
+\DeclareOption{set}{\Articletrue\Settrue}
+\DeclareOption{handout}{\Articlefalse\Handouttrue\PassOptionsToClass{handout}{beamer}}
+%
+% We also support the `trans` mode of standard 'beamer'.
+%
+\DeclareOption{trans}{\Articlefalse\Setfalse\Handoutfalse\PassOptionsToClass{trans}{beamer}}
 \ProcessOptions\relax
 
 %
@@ -1230,7 +1234,10 @@ The class defaults to producing slides. You can change this with an option:
 \begin{describe}
 \item[\opt{handout}]
 Lay slides out two to an A4 page, for easy printing.
-\item[\opt{article}]
+\item[\opt{trans}]
+Produce less dynamic slides: useful for archival versions.
+\only<article>{See the \textsf{beamer} manual for a more detailed explanation
+  of how this ‘transparencies version’ behaves.}\item[\opt{article}]
 Produce a document in article mode: useful for transcripts.
 \item[\opt{set}]
 Produce a document in article mode, plus a set of slides (suffixed with
