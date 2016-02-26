@@ -251,9 +251,13 @@ Ball][me].
   \patchcmd{\enumerate}{\usecounter\@enumctr}{\usecounter\@enumctr\topsep\z@}{}{}
   \patchcmd{\description}{\labelwidth\z@}{\labelwidth\z@\topsep\z@}{}{}
 %
-% We make captions easier to spot.
+% We make captions easier to spot. We try to make the placement of the final
+% period more intelligent using `\@addpunct' from 'amsthm'.
 %
   \usepackage[format=hang,justification=raggedright,labelfont=bf]{caption}
+  \usepackage{amsthm}
+  \DeclareCaptionTextFormat{condperiod}{#1\@addpunct{.}}
+  \captionsetup{textformat=condperiod}
 %
 % We also make footnotes look a little neater.
 %
