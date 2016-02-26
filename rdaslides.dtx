@@ -242,21 +242,17 @@ Ball][me].
   \setlength{\parindent}{0pt}%
   \setlength{\parskip}{1em plus 0.2em minus 0.2em}%
 %
-% But this makes lists a bit too open, so we tighten them up again with
-% 'enumitem'.
+% But this makes lists a bit too open, so we tighten them up again by reducing
+% the `\topsep' to zero. We do this by injecting the appropriate code into the
+% second argument of `\list' where this appears in the definition of the three
+% main list environments.
 %
-  \RequirePackage{enumitem}%
-  \setlist{topsep=0pt}%
+  \patchcmd{\itemize}{\def}{\topsep\z@\def}{}{}
+  \patchcmd{\enumerate}{\usecounter\@enumctr}{\usecounter\@enumctr\topsep\z@}{}{}
+  \patchcmd{\description}{\labelwidth\z@}{\labelwidth\z@\topsep\z@}{}{}
 %
-% There is, however, a bug caused by loading both 'beamerarticle' and 'enumitem'
-% that makes description lists unusable. Happily we can work around it by
-% throwing away some of the modifications made |\AtBeginDocument|.
+% We make captions easier to spot.
 %
-  \newlist{fixeddescription}{description}{3}%
-  \AtBeginDocument{
-    \let\description=\fixeddescription
-    \let\enddescription=\endfixeddescription
-  }%
 }
 
 %
