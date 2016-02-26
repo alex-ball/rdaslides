@@ -768,16 +768,18 @@ Ball][me].
 }
 %LITERATE
 %</class>
-%<*msdwg>
+%<*mscwg>
 %<<LITERATE
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesPackage{rdamsdwg}
-    [\Version\space Logo and details of the RDA Metadata Standards Directory Working Group]
+\ProvidesPackage{rdamscwg}
+    [\Version\space Logo and details of the RDA Metadata Standards Catalog Working Group]
 %
 % For perfect fidelity we draw the logo with 'tikz' rather than use a bitmap.
 % This means we need to ensure it is loaded, along with 'keyval' for option
 % handling, 'ifthen' for implementing the option handling logic, and 'calc' for
-% calculating lengths.
+% calculating lengths. Note that the Metadata Standards Catalog Working Group
+% recycles the logo of the Metadata Standards Directory Working Group, hence
+% the macros below use `msd' instead of `msc'.
 % 
 \RequirePackage{ifthen,calc,keyval}
 \RequirePackage{tikz}
@@ -914,9 +916,24 @@ Ball][me].
 % Finally, we define hooks that are recognized by `rdaslides.cls'.
 %
 \def\rdaGroupLogo{\MSDWGLogo[width=\hsize]}
-\def\rdaGroupName{Metadata Standards Directory}
+\def\rdaGroupName{Metadata Standards Catalog}
 \def\rdaGroupType{Working Group}
-\def\rdaGroupUrl{https://rd-alliance.org/working-groups/metadata-standards-directory-working-group.html}
+\def\rdaGroupUrl{https://rd-alliance.org/groups/metadata-standards-catalog-working-group.html}
+%LITERATE
+%</mscwg>
+%<*msdwg>
+%<<LITERATE
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{rdamsdwg}
+    [\Version\space Logo and details of the RDA Metadata Standards Directory Working Group]
+
+%
+% The Metadata Standards Directory Working Group has the same properties
+% as the Metadata Standards Catalog Working Group except the name and URL.
+%
+\RequirePackage{rdamscwg}
+\def\rdaGroupName{Metadata Standards Directory}
+\def\rdaGroupUrl{https://rd-alliance.org/groups/metadata-standards-directory-working-group.html}
 %LITERATE
 %</msdwg>
 %<*internal>
@@ -972,6 +989,9 @@ Copyright (C) 2014 Alex Ball <a.ball@ukoln.ac.uk>
 }
 \generate{
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
+}
+\generate{
+  \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
 }
 %</install>
 %<install>\endbatchfile
@@ -1397,13 +1417,19 @@ In article mode, \cmd{finale} inserts a postscript consisting of a horizontal li
 \CopyFDconditionFromTo{PScomment}{comment}
 \MakeInputJobDoc[cls]{0}{\SectionLevelOneParseInput}
 
-\subsection{rdamsdwg.sty}
+\subsection{Group packages}
 
-This package is provided to demonstrate how to associate a presentation with a particular RDA group.
+These packages are provided to demonstrate how to associate a presentation with a particular RDA group. I am happy to provide more if there is a demand.
+
+\subsubsection{rdamscwg.sty}
+
+\renewcommand*{\mdJobName}{rdamscwg}
+\MakeInputJobDoc[sty]{0}{\SectionLevelOneParseInput}
+
+\subsubsection{rdamsdwg.sty}
 
 \renewcommand*{\mdJobName}{rdamsdwg}
 \MakeInputJobDoc[sty]{0}{\SectionLevelOneParseInput}
-
 \end{document}
 %</driver>
 % \fi
