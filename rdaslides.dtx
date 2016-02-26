@@ -545,7 +545,7 @@ Ball][me].
 % 
 % The mathematics here makes sure the indicator would start at 0° on the
 % first slide and end up at 360° on the last, with linear variation
-% between. The case of the first slide is handled differently to prevent
+% between. The case of a single slide is handled differently to prevent
 % division by zero.
 %
 %LITERATE
@@ -557,7 +557,7 @@ Ball][me].
             \ifnum1=\pgfmathresult
               \def\PerCentComplete{360}%
             \else
-              \pgfmathqparse{(360pt * (\insertframenumber pt - 1pt)) / (\inserttotalframenumber pt - 1pt)}%
+              \pgfmathqparse{360pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
               \let\PerCentComplete\pgfmathresult
             \fi
             \draw[fg,fill=bg] (0,0mm)
