@@ -105,12 +105,12 @@ Ball][me].
 % The user answers by means of options, of course.
 %
 \DeclareOption{article}{\Articletrue}
-\DeclareOption{set}{\Articletrue\Settrue}
-\DeclareOption{handout}{\Articlefalse\Handouttrue\PassOptionsToClass{handout}{beamer}}
+\DeclareOption{set}{\Settrue}
+\DeclareOption{handout}{\Handouttrue\PassOptionsToClass{handout}{beamer}}
 %
 % We also support the `trans` mode of standard 'beamer'.
 %
-\DeclareOption{trans}{\Articlefalse\Setfalse\Handoutfalse\PassOptionsToClass{trans}{beamer}}
+\DeclareOption{trans}{\PassOptionsToClass{trans}{beamer}}
 \ProcessOptions\relax
 
 %
