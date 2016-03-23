@@ -227,7 +227,7 @@ Ball][me].
 \setbeamercolor{author}{bg=,fg=white}
 \setbeamercolor{institute}{bg=,fg=white}
 \setbeamercolor{date}{bg=,fg=white}
-\setbeamercolor{progress}{bg=cool,fg=rdagreen}
+\setbeamercolor{progress}{bg=warm,fg=rdabrown!75}
 %
 % In article mode, to give the speaker an impression of what appears on the
 % slides and what doesn't, we switch to sans serif for slide contents.
@@ -518,8 +518,10 @@ Ball][me].
 % it on the title slide, for the 'beamer' title graphic.
 %
     \makebox[0pt][l]{%
+      \iftitlepage
+        \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
 %LITERATE
-%<class>      \iftitlepage\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\fi
+%<class>      \fi
 %<<LITERATE
     }%
     \hfill
@@ -532,7 +534,7 @@ Ball][me].
 %LITERATE
 %<class>      \iftitlepage\usebeamercolor[fg]{date}\else\usebeamercolor[fg]{footline}\fi
 %<<LITERATE
-      \ifdefvoid{\inserthashtag}{}{\inserthashtag}\par
+      \ifdefvoid{\inserthashtag}{}{\inserthashtag}\strut\par
     }%
     \hfill
 %
@@ -550,33 +552,32 @@ Ball][me].
 %
 % In the standard background image the right hand box is occupied by the RDA
 % logo, but since it is shorter than the strapline on the left, we can balance
-% it with another element: a clock-style progress indicator.
+% it with another element: a charge-style progress indicator.
 % 
-% The mathematics here makes sure the indicator would start at 0° on the
-% first slide and end up at 360° on the last, with linear variation
+% The mathematics here makes sure the indicator start at 0\% on the
+% first slide and ends up at 100\% on the last, with linear variation
 % between. The case of a single slide is handled differently to prevent
 % division by zero.
 %
 %LITERATE
 %<class>      \else
-        \raisebox{-1mm}[0pt][0pt]{%
+%<<LITERATE
+        \raisebox{2.7mm}[0pt][0pt]{%
           \usebeamercolor{progress}%
-          \begin{tikzpicture}
+          \begin{tikzpicture}[line join=round,baseline=1mm]
             \pgfmathparse{equal(\inserttotalframenumber,1)}%
             \ifnum1=\pgfmathresult
-              \def\PerCentComplete{360}%
+              \def\PerCentComplete{12}%
             \else
-              \pgfmathqparse{360pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
+              \pgfmathqparse{12pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
               \let\PerCentComplete\pgfmathresult
             \fi
-            \draw[fg,fill=bg] (0,0mm)
-              -- (90:2.1mm)
-              arc[start angle=90, delta angle=-\PerCentComplete, radius=2.1mm]
-              -- cycle;
-            \draw[fg] (0,0) circle[radius=2.1mm];
+            \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
+            \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
           \end{tikzpicture}%
-        }
-        \hspace*{32mm}%
+          \hspace*{26mm}%
+        }%
+%LITERATE
 %<class>      \fi
 %<<LITERATE
     }%
