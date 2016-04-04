@@ -84,29 +84,37 @@ Ball][me].
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
 %
+% == Internal conveniences ==
+%
+% We will need the 'etoolbox' package's patching utilities, and 'calc' will be
+% helpful for calculating lengths.
+%
+\RequirePackage{etoolbox, calc}
+
+%
 % == Options and mode switching ==
 %
 % This class has four use cases, which decompose into two sets of two. The
 % first decision is |\ifArticle|: are we producing an article (‘true’), or a
 % slide deck (‘false’ – default)?
 %
-\newif\ifArticle\Articlefalse
+\newtoggle{Article}
 %
 % If in article mode, we ask |\ifSet|: do we also want to initiate a run
 % to produce the slide deck (‘true’) or not (‘false’ – default)?
 %
-\newif\ifSet\Setfalse
+\newtoggle{Set}
 %
 % If in slides mode, we ask |\ifHandout|: do we want them laid out for printing
 % (‘true’) or for screen (‘false’ – default)?
 %
-\newif\ifHandout\Handoutfalse
+\newtoggle{Handout}
 %
 % The user answers by means of options, of course.
 %
-\DeclareOption{article}{\Articletrue}
-\DeclareOption{set}{\Settrue}
-\DeclareOption{handout}{\Handouttrue\PassOptionsToClass{handout}{beamer}}
+\DeclareOption{article}{\toggletrue{Article}}
+\DeclareOption{set}{\toggletrue{Set}}
+\DeclareOption{handout}{\toggletrue{Handout}\PassOptionsToClass{handout}{beamer}}
 %
 % We also support the `trans` mode of standard 'beamer'.
 %
@@ -121,23 +129,33 @@ Ball][me].
 % mode. Once that is finished, we proceed with the original job in article mode.
 % Note that this requires shell escape to be enabled and 'latexmk' installed.
 %
-\ifSet
-  \RequirePackage{xstring,shellesc}%
+\iftoggle{Set}{%
+  \RequirePackage{xstring,shellesc,iftex}%
   \IfEndWith*{\jobname}{-slides}{%
-    \Articlefalse
+    \togglefalse{Article}
   }{%
-    \ShellEscape{latexmk -silent -lualatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
-    \Articletrue
+    \ifbool{PDFTeX}{%
+      \ShellEscape{latexmk -silent -pdf -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
+    }{%
+      \ifbool{LuaTeX}{%
+        \ShellEscape{latexmk -silent -lualatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
+      }{%
+        \ifbool{XeTeX}{%
+          \ShellEscape{latexmk -silent -xelatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
+        }{%
+          \ShellEscape{latexmk -silent -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
+        }%
+      }%
+    }%
+    \toggletrue{Article}
   }%
-%LITERATE
-%<class>\fi
-%<<LITERATE
+}{}
 %
 % Article mode uses the 'article' class. We use 12pt text to keep it readable on
 % the podium. Left and right margins of 3cm and top and bottom margins of 2.5cm
 % give a typeblock with an approximate golden aspect ratio.
 %
-\ifArticle
+\iftoggle{Article}{%
   \LoadClass[a4paper,12pt]{article}
   \RequirePackage[hmargin=3cm,vmargin=2.5cm]{geometry}
 %
@@ -156,30 +174,18 @@ Ball][me].
 %
 % Slide mode uses 'beamer', of course.
 %
-%LITERATE
-%<class>\else
-%<<LITERATE
+}{%
   \LoadClass[ignorenonframetext,xcolor=table,noamssymb]{beamer}[2007/03/11]
   \usefonttheme{professionalfonts}
   \RequirePackage{tikz}
 %
 % In handout mode, we lay out two slides to an A4 page. 
 %
-  \ifHandout
+  \iftoggle{Handout}{%
     \RequirePackage{pgfpages}
     \pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
-%LITERATE
-%<class>  \fi
-%<class>\fi
-%<<LITERATE
-
-%
-% == Internal conveniences ==
-%
-% We will need the 'etoolbox' package's patching utilities, and 'calc' will be
-% helpful for calculating lengths.
-%
-\RequirePackage{etoolbox, calc}
+  }{}%
+}
 
 %
 % == Typography ==
@@ -1149,6 +1155,11 @@ Copyright (C) 2015 Alex Ball <a.j.ball@bath.ac.uk>
 , define@key
 , setkeys
 , preto
+, ifbool
+, iftoggle
+, newtoggle
+, toggletrue
+, togglefalse
 , includegraphics
 , printdate
 , extrarowheight
@@ -1386,15 +1397,6 @@ In article mode, \cmd{finale} inserts a postscript consisting of a horizontal li
 \section{Implementation}
 
 \gappto{\cmds}{%
-, ifArticle
-, Articletrue
-, Articlefalse
-, ifSet
-, Settrue
-, Setfalse
-, ifHandout
-, Handouttrue
-, Handoutfalse
 , insertoccasion
 , inserthashtag
 , insertauthorurl
