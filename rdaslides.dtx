@@ -397,6 +397,11 @@ Ball][me].
 %
 % == Slide templates ==
 %
+% We introduce a switch, |\iftitlepage|, that can be used to provide a
+% different layout depending on whether this is a normal or a title slide.
+%
+\newbool{titlepage}
+%
 % The standard RDA slide template uses some distinctive background images. We
 % apply them by default, but allow users to choose a different one if needs be.
 % Note that the image is distorted to fit the slide dimensions, so whatever one
@@ -410,32 +415,24 @@ Ball][me].
 % regular 'beamer' template `background' to decide whether to include the
 % |\bgpicture|.
 %
-%LITERATE
 \newcommand{\bgpicture}{rda-bg-normal}
-\newif\ifbgpicture\bgpicturetrue
+\newbool{bgpicture}\booltrue{bgpicture}
 \define@key{beamerframe}{background}[rda-bg-normal]{%
-  \gdef\bgpicture{#1}\bgpicturetrue
+  \gdef\bgpicture{#1}\booltrue{bgpicture}%
 }
 \define@key{beamerframe}{nobackground}[true]{%
-    \bgpicturefalse
+  \boolfalse{bgpicture}%
 }
 \setbeamertemplate{background}{%
-  \ifbgpicture
+  \ifbool{bgpicture}{%
     \includegraphics[width=\paperwidth,height=\paperheight]{\bgpicture}%
-%<class>  \fi
-%<<LITERATE
+  }{}%
 }
 %
 % This setting would, if we let it, spill over to subsequent slides. To stop
 % this, we reset it as part of the set-up of `frame' environments.
 %
-\preto\beamer@reseteecodes{\setkeys{beamerframe}{background}}
-
-%
-% We introduce a switch, |\iftitlepage|, that can be used to provide a
-% different layout depending on whether this is a normal or a title slide.
-%
-\newif\iftitlepage\titlepagefalse
+\preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\boolfalse{titlepage}}
 %
 % This is our new version of the `frametitle' template.
 %
@@ -446,8 +443,7 @@ Ball][me].
 % why would anyone add one?). We use the template instead, however, to provide
 % RDA group branding if required.
 %
-  \iftitlepage
-    {%
+  \ifbool{titlepage}{{%
 %
 % We need to widen the text block and strip out vertical white space to fit
 % everything in.
@@ -473,16 +469,13 @@ Ball][me].
         }%
       }%
     \end{minipage}\par
-    }
 %
 % The frame title block in the default background image curves down in the
 % middle, so we need to tell 'beamer' to make its `frametitle' template a little
 % deeper to cover it. The following code mimics the default, but adds a `dp'
 % option to the `beamercolorbox' environment.
 %
-%LITERATE
-%<class>  \else
-%<<LITERATE
+  }}{%
     \@tempdima=\textwidth%
     \advance\@tempdima by\beamer@leftmargin%
     \advance\@tempdima by\beamer@rightmargin%
@@ -500,9 +493,7 @@ Ball][me].
       \vskip-1ex%
       \if@tempswa\else\vskip-.3cm\fi%
     \end{beamercolorbox}%
-%LITERATE
-%<class>  \fi
-%<<LITERATE
+  }%
 }
 %
 % We use our new version of `frametitle' as default.
@@ -524,11 +515,9 @@ Ball][me].
 % it on the title slide, for the 'beamer' title graphic.
 %
     \makebox[0pt][l]{%
-      \iftitlepage
+      \ifbool{titlepage}{%
         \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
-%LITERATE
-%<class>      \fi
-%<<LITERATE
+      }{}%
     }%
     \hfill
 %
@@ -537,9 +526,7 @@ Ball][me].
 %
     \parbox{0.5\paperwidth}{\centering
       \usebeamerfont{footline}%
-%LITERATE
-%<class>      \iftitlepage\usebeamercolor[fg]{date}\else\usebeamercolor[fg]{footline}\fi
-%<<LITERATE
+      \ifbool{titlepage}{\usebeamercolor[fg]{date}}{\usebeamercolor[fg]{footline}}%
       \ifdefvoid{\inserthashtag}{}{\inserthashtag}\strut\par
     }%
     \hfill
@@ -547,14 +534,14 @@ Ball][me].
 % On the title slide, we use the right hand box for the licence image.
 %
     \makebox[0pt][r]{%
-      \iftitlepage
+      \ifbool{titlepage}{%
         \parbox{18mm}{\raisebox{2mm}{%
           \ifdefvoid{\licenseLogo}{}{%
             \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
           }%
         }}%
         \hspace*{3mm}%
-        \global\titlepagefalse
+        \global\boolfalse{titlepage}%
 %
 % In the standard background image the right hand box is occupied by the RDA
 % logo, but since it is shorter than the strapline on the left, we can balance
@@ -565,9 +552,7 @@ Ball][me].
 % between. The case of a single slide is handled differently to prevent
 % division by zero.
 %
-%LITERATE
-%<class>      \else
-%<<LITERATE
+      }{%
         \raisebox{2.7mm}[0pt][0pt]{%
           \usebeamercolor{progress}%
           \begin{tikzpicture}[line join=round,baseline=1mm]
@@ -583,9 +568,7 @@ Ball][me].
           \end{tikzpicture}%
           \hspace*{26mm}%
         }%
-%LITERATE
-%<class>      \fi
-%<<LITERATE
+      }%
     }%
     \par
     \vfil
@@ -609,7 +592,7 @@ Ball][me].
 % The 'beamer' title page template lays out the elements of the title page.
 %
 \setbeamertemplate{title page}{%
-  \global\titlepagetrue
+  \global\booltrue{titlepage}%
 %
 % We set the special background image.
 %
@@ -667,7 +650,7 @@ Ball][me].
 % Finale slides act like title slides, but have a slightly different background.
 %
 \mode<presentation>{%
-  \global\titlepagetrue
+  \global\booltrue{titlepage}%
   \setkeys{beamerframe}{background=rda-bg-title2}%
 %
 % The following line ensures the title block is drawn.
@@ -1155,7 +1138,12 @@ Copyright (C) 2015 Alex Ball <a.j.ball@bath.ac.uk>
 , define@key
 , setkeys
 , preto
+, ifundef
+, ifdefvoid
+, newbool
 , ifbool
+, booltrue
+, boolfalse
 , iftoggle
 , newtoggle
 , toggletrue
@@ -1402,13 +1390,7 @@ In article mode, \cmd{finale} inserts a postscript consisting of a horizontal li
 , insertauthorurl
 , fixeddescription
 , endfixeddescription
-, ifbgpicture
-, bgpicturetrue
-, bgpicturefalse
 , bgpicture
-, iftitlepage
-, titlepagetrue
-, titlepagefalse
 , PerCentComplete
 }
 \renewcommand*{\do}[1]{\lstset{moretexcs={#1}}}
