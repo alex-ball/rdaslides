@@ -119,14 +119,14 @@ Ball][me].
 % we initiate a job with ‘-slides’ appended to the |\jobname| and pause. In the
 % parallel session, we notice the new |\jobname| suffix and switch to slides
 % mode. Once that is finished, we proceed with the original job in article mode.
-% Note that this requires |\write18| enabled and 'latexmk' installed.
+% Note that this requires shell escape to be enabled and 'latexmk' installed.
 %
 \ifSet
-  \RequirePackage{xstring}%
+  \RequirePackage{xstring,shellesc}%
   \IfEndWith*{\jobname}{-slides}{%
     \Articlefalse
   }{%
-    \immediate\write18{latexmk -pdf -silent -pdflatex="lualatex --shell-escape -synctex=1 \@percentchar O \@percentchar S" -jobname=\jobname-slides \jobname}
+    \ShellEscape{latexmk -silent -lualatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
     \Articletrue
   }%
 %LITERATE
@@ -1271,7 +1271,8 @@ Produce a document in article mode, plus a set of slides (suffixed with
 \end{describe}
 \end{frame}
 
-Note that the \texttt{set} option makes a \lstinline{\write18} call to \textsf{latexmk}, so if \lstinline{\write18} is not enabled, or \textsf{latexmk} is not installed, it will act much like the \opt{article} option.
+Note that the \texttt{set} option makes a shell call to \textsf{latexmk}, so if shell escape is not enabled, or \textsf{latexmk} is not installed, it will act much like the \opt{article} option.
+CAUTION: If you intend to use the \opt{set} option, do NOT end your source filename with ‘\texttt{-slides}’.
 
 \subsection{Preamble metadata}
 
