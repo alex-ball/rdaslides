@@ -838,6 +838,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \setbeamerfont{frametitle}{size=\LARGE}
 \setbeamerfont{framesubtitle}{size=\large}
+\setbeamerfont{headline}{size=\LARGE}
 \setbeamerfont{footline}{size=\scriptsize}
 \setbeamerfont{alerted text}{series=\bfseries}
 %    \end{macrocode}
@@ -883,6 +884,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
 \setbeamercolor{frametitle}{bg=,fg=rdagreen}
+\setbeamercolor{headline}{parent=frametitle}
 \setbeamercolor{footline}{bg=,fg=rdabrown}
 \setbeamercolor{progress}{bg=rdalightyellow,fg=rdamidbrown}
 
@@ -1025,19 +1027,12 @@ numbers here are totally fictitious when it comes to the actual files.
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\togglefalse{titlepage}}
 %    \end{macrocode}
 %
-% This is our new version of the \texttt{frametitle} template.
+% This headline template is only shown on title slides. It is used to show
+% details of the RDA group, if provided.
 %
 %    \begin{macrocode}
-\defbeamertemplate*{frametitle}{RDA theme}{%
-  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
-%    \end{macrocode}
-%
-% The title page background image does not lend itself to a frame title (though
-% why would anyone add one?). We use the template instead, however, to provide
-% RDA group branding if required.
-%
-%    \begin{macrocode}
-  \iftoggle{titlepage}{{%
+\defbeamertemplate*{headline}{RDA headline}{%
+  \iftoggle{titlepage}{
 %    \end{macrocode}
 %
 % We need to widen the text block and strip out vertical white space to fit
@@ -1056,17 +1051,32 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
     \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}
-      \usebeamercolor{frametitle}
       \ifdefvoid{\rdaGroupLogo}{}{\parbox[c]{16mm}{\rdaGroupLogo}}%
       \hfill
       \ifdefvoid{\rdaGroupName}{}{%
         \parbox[c]{42mm}{%
           \raggedleft\rdaGroupName
-          \ifdefvoid{\rdaGroupType}{}{\large\par{\small\textsc{\rdaGroupType}}}%
+          \ifdefvoid{\rdaGroupType}{}{\par\smallskip{\small\textsc{\rdaGroupType}}}%
           \par
         }%
       }%
     \end{minipage}\par
+  }{}%
+}
+%    \end{macrocode}
+%
+% This is our new version of the \texttt{frametitle} template.
+%
+%    \begin{macrocode}
+\defbeamertemplate*{frametitle}{RDA theme}{%
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+%    \end{macrocode}
+%
+% The title page background image does not lend itself to a frame title,
+% so just in case the user provides one, we deliberately ignore it.
+%
+%    \begin{macrocode}
+  \iftoggle{titlepage}{}{%
 %    \end{macrocode}
 %
 % The frame title block in the default background image curves down in the
@@ -1075,7 +1085,6 @@ numbers here are totally fictitious when it comes to the actual files.
 % option to the \env{beamercolorbox} environment.
 %
 %    \begin{macrocode}
-  }}{%
     \@tempdima=\textwidth%
     \advance\@tempdima by\beamer@leftmargin%
     \advance\@tempdima by\beamer@rightmargin%
@@ -1095,12 +1104,6 @@ numbers here are totally fictitious when it comes to the actual files.
     \end{beamercolorbox}%
   }%
 }
-%    \end{macrocode}
-%
-% We use our new version of \texttt{frametitle} as default.
-%
-%    \begin{macrocode}
-\setbeamertemplate{frametitle}[rdatitle]
 
 %    \end{macrocode}
 %
@@ -1228,10 +1231,11 @@ numbers here are totally fictitious when it comes to the actual files.
   \setkeys{beamerframe}{background=rda-bg-title1}%
 %    \end{macrocode}
 %
-% The following line ensures the title block is drawn.
+% We insert a spacer at the top that pushes content below the curved green line
+% on the title page graphic.
 %
 %    \begin{macrocode}
-  \frametitle{Reserved for group information}%
+  \vbox to 24mm{}%
 %    \end{macrocode}
 %
 % We provide the presentation metadata in two parts. The title, author and
@@ -1295,10 +1299,11 @@ numbers here are totally fictitious when it comes to the actual files.
   \setkeys{beamerframe}{background=rda-bg-title2}%
 %    \end{macrocode}
 %
-% The following line ensures the title block is drawn.
+% We insert a spacer at the top that pushes content below the curved green line
+% on the (alternative) title page graphic.
 %
 %    \begin{macrocode}
-  \frametitle{Reserved for group information}%
+  \vbox to 24mm{}%
 %    \end{macrocode}
 %
 % The background image again leaves us with the middle third of the slide into
@@ -1482,8 +1487,8 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
-% As variants of these, the palette also contains the same colours at 50% and
-% 25% saturation.
+% As variants of these, the palette also contains the same colours at 50\% and
+% 25\% saturation.
 %
 %    \begin{macrocode}
 \xdefinecolor{rdamidbrown}{RGB}{171,128,115}%    Pantone 478 at 50%
