@@ -864,20 +864,32 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme>
 % \fi
 %
-% We apply these to make a \pkg{beamer} colour scheme.
+% Here are the basic colours:
 %
 %    \begin{macrocode}
 \setbeamercolor{normal text}{bg=white,fg=black}
-\setbeamercolor{structure}{bg=,fg=rdabrown}
-\setbeamercolor{alerted text}{bg=,fg=rdagreen}
+\setbeamercolor{alerted text}{fg=rdagreen}
+\setbeamercolor{example text}{fg=rdagrey}
+\setbeamercolor{structure}{fg=rdabrown}
+%    \end{macrocode}
+%
+% Here are the colours for the inner theme elements:
+%
+%    \begin{macrocode}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=white}
+\setbeamercolor{author}{fg=white}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=white}
+%    \end{macrocode}
+%
+% Here are the colours for the outer theme elements:
+%
+%    \begin{macrocode}
 \setbeamercolor{frametitle}{bg=,fg=rdagreen}
 \setbeamercolor{footline}{bg=,fg=rdabrown}
-\setbeamercolor{title}{bg=,fg=white}
-\setbeamercolor{subtitle}{bg=,fg=white}
-\setbeamercolor{author}{bg=,fg=white}
-\setbeamercolor{institute}{bg=,fg=white}
-\setbeamercolor{date}{bg=,fg=white}
-\setbeamercolor{progress}{bg=warm,fg=rdabrown!75}
+\setbeamercolor{progress}{bg=rdalightyellow,fg=rdamidbrown}
+
 %    \end{macrocode}
 %
 % \iffalse
