@@ -10,15 +10,16 @@ WORKMF = "/home/ab318/Data/TeX/workmf"
 all:	$(NAME).pdf $(NAME)-slides.pdf clean
 	@exit 0
 $(NAME).cls: $(NAME).dtx
-	lualatex -synctex=1 -interaction=batchmode $(NAME).dtx >/dev/null
+	lualatex -synctex=1 -shell-escape -interaction=batchmode $(NAME).dtx >/dev/null
 $(NAME).pdf: $(NAME).cls
-	latexmk -lualatex -synctex=1 -interaction=batchmode -silent $(NAME).dtx >/dev/null
+	latexmk -silent -lualatex -synctex=1 -shell-escape -interaction=batchmode $(NAME).dtx >/dev/null
 $(NAME)-slides.pdf: $(NAME).cls
-	latexmk -lualatex -synctex=1 -interaction=batchmode -silent -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
+	latexmk -silent -lualatex -synctex=1 -shell-escape -interaction=batchmode -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
 clean:
-	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
-	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,toc,vrb}
+	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
+	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
 	rm -f rdamsdwg.doc
+	rm -rf _minted-*
 distclean: clean
 	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty rdamscwg.sty
 inst: all
