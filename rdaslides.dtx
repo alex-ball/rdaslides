@@ -646,7 +646,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %</driver>
 % \fi
 % \iffalse
-%<*class>
+%<*class|theme>
 % \fi
 %
 % \subsection{Internal conveniences}
@@ -658,6 +658,11 @@ numbers here are totally fictitious when it comes to the actual files.
 \RequirePackage{etoolbox, calc}
 
 %    \end{macrocode}
+%
+% \iffalse
+%</class|theme>
+%<*class>
+% \fi
 %
 % \subsection{Class: Options and mode switching}
 %
@@ -825,6 +830,11 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% \iffalse
+%</class>
+%<*theme>
+% \fi
+%
 % \subsection{Theme: Presentation font theme}
 %
 % Some sensible font sizes and weights for use on slides.
@@ -838,11 +848,21 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Theme: Presentation colour theme}
 %
+% \iffalse
+%</theme>
+%<*class|theme>
+% \fi
+%
 % We load the RDA colour palette.
 %
 %    \begin{macrocode}
 \RequirePackage{rdacolors}
 %    \end{macrocode}
+%
+% \iffalse
+%</class|theme>
+%<*theme>
+% \fi
 %
 % We apply these to make a \pkg{beamer} colour scheme.
 %
@@ -859,6 +879,11 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{date}{bg=,fg=white}
 \setbeamercolor{progress}{bg=warm,fg=rdabrown!75}
 %    \end{macrocode}
+%
+% \iffalse
+%</theme>
+%<*class>
+% \fi
 %
 % \subsection{Class: Metadata handling}
 %
@@ -941,6 +966,11 @@ numbers here are totally fictitious when it comes to the actual files.
 }
 
 %    \end{macrocode}
+%
+% \iffalse
+%</class>
+%<*theme>
+% \fi
 %
 % \subsection{Theme: Presentation outer theme}
 %
@@ -1322,6 +1352,11 @@ numbers here are totally fictitious when it comes to the actual files.
 }
 }
 %    \end{macrocode}
+%
+% \iffalse
+%</theme>
+%<*class>
+% \fi
 %
 % \subsubsection{In the class, in article mode}
 %
