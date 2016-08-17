@@ -19,11 +19,11 @@
     [\Version\space Class for Research Data Alliance presentations]
 %</class>
 %<*theme>
-\ProvidesPackage{beamerthemeBath}
+\ProvidesPackage{beamerthemeRDA}
     [\Version\space Beamer theme for Research Data Alliance presentations]
 %</theme>
 %<*palette>
-\ProvidesPackage{bathcolors}
+\ProvidesPackage{rdacolors}
     [\Version\space Colour palette for Research Data Alliance documents]
 %</palette>
 %<*mscwg>
@@ -184,7 +184,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 %<*driver>
 \ProvidesFile{rdaslides.dtx}
     [\Version\space Class for Research Data Alliance presentations]
-\documentclass[set]{rdaslides}
+\documentclass[article]{rdaslides}
 \let\RdaslidesMaketitle=\maketitle
 
 % Basic typography
@@ -433,7 +433,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 
 \let\maketitle=\RdaslidesMaketitle
 
-\usepackage{rdamsdwg}
+\usepackage{rdamscwg}
 
 % \def\licenseLogo{\includegraphics[width=\hsize]{cc_by}}
 % \def\licenseStatement{Except where otherwise stated,%
