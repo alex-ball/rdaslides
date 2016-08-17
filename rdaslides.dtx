@@ -282,6 +282,7 @@ Copyright (C) 2015 Alex Ball <a.j.ball@bath.ac.uk>
 \newcommand*{\env}[1]{\textcolor{Environment}{\ttfamily #1}}
 \newcommand*{\key}[1]{\textcolor{Option}{\ttfamily #1}}
 \newcommand*{\val}[1]{\textcolor{Value}{\ttfamily #1}}
+\newcommand{\sample}[2][1em]{\bgroup\setlength{\fboxsep}{0pt}\fbox{\color{#2}\rule{#1}{#1}}\egroup}
 
 % For typesetting the implementation
 \mode<article>{
@@ -741,15 +742,12 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamerfont{alerted text}{series=\bfseries}
 %    \end{macrocode}
 %
-% This is the RDA colour palette.
+% \subsection{Theme: Presentation colour theme}
+%
+% We load the RDA colour palette.
 %
 %    \begin{macrocode}
-\xdefinecolor{rdabrown}{RGB}{107,46,32}%   Pantone 478
-\xdefinecolor{rdagreen}{RGB}{99,168,68}%   Pantone 369
-\xdefinecolor{rdayellow}{RGB}{235,220,20}% Pantone 3965
-\xdefinecolor{rdagrey}{RGB}{144,149,157}%  Pantone Cool Gray 7
-\xdefinecolor{warm}{RGB}{255,245,194}%     Pantone 3965 at 25%
-\xdefinecolor{cool}{RGB}{219,220,223}%     Pantone Cool Gray 7 at 25%
+\RequirePackage{rdacolors}
 %    \end{macrocode}
 %
 % We apply these to make a \pkg{beamer} colour scheme.
@@ -1341,6 +1339,57 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
+%<*palette>
+% \fi
+%
+% \subsection{Research Data Alliance colour palette}
+%
+% These settings are separated out into \texttt{rdacolors.sty}.
+%
+% The RDA colour palette consists of four main colours:
+% Pantone 478 \sample[0.7em]{rdabrown},
+% Pantone 369 \sample[0.7em]{rdagreen},
+% Pantone 3965 \sample[0.7em]{rdayellow}, and
+% Pantone Cool Gray 7 \sample[0.7em]{rdagrey}.
+%
+%    \begin{macrocode}
+\RequirePackage{xcolor}
+
+\xdefinecolor{rdabrown}{RGB}{107,46,32}%         Pantone 478
+\xdefinecolor{rdagreen}{RGB}{99,168,68}%         Pantone 369
+\xdefinecolor{rdayellow}{RGB}{235,220,20}%       Pantone 3965
+\xdefinecolor{rdagrey}{RGB}{144,149,157}%        Pantone Cool Gray 7
+
+%    \end{macrocode}
+%
+% As variants of these, the palette also contains the same colours at 50% and
+% 25% saturation.
+%
+%    \begin{macrocode}
+\xdefinecolor{rdamidbrown}{RGB}{171,128,115}%    Pantone 478 at 50%
+\xdefinecolor{rdamidgreen}{RGB}{191,221,149}%    Pantone 369 at 50%
+\xdefinecolor{rdamidyellow}{RGB}{253,236,133}%   Pantone 3965 at 50%
+\xdefinecolor{rdamidgrey}{RGB}{192,195,199}%     Pantone Cool Gray 7 at 50%
+
+\xdefinecolor{rdalightbrown}{RGB}{208,183,173}%  Pantone 478 at 25%
+\xdefinecolor{rdalightgreen}{RGB}{224,237,201}%  Pantone 369 at 25%
+\xdefinecolor{rdalightyellow}{RGB}{255,245,194}% Pantone 3965 at 25%
+\xdefinecolor{rdalightgrey}{RGB}{219,220,223}%   Pantone Cool Gray 7 at 25%
+
+%    \end{macrocode}
+%
+% We also provide some handy aliases
+%
+%    \begin{macrocode}
+\colorlet{rdagray}{rdagrey}
+\colorlet{rdamidgray}{rdamidgrey}
+\colorlet{rdalightgray}{rdalightgrey}
+\colorlet{warm}{rdalightyellow}
+\colorlet{cool}{rdalightgrey}
+%    \end{macrocode}
+%
+% \iffalse
+%</palette>
 %<*mscwg>
 % \fi
 %
