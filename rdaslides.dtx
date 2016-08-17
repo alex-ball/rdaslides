@@ -660,121 +660,56 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Options and mode switching}
 %
-% This class has four use cases, which decompose into two sets of two. The
-% first decision is \cs{ifArticle}: are we producing an article (‘true’), or a
-% slide deck (‘false’ – default)?
+% \begin{optionkey}{set}
+% Mode switching is delegated to \pkg{beamerswitch}, but we need to support the
+% legacy \key{set} option.
 %
 %    \begin{macrocode}
-\newtoggle{Article}
+\DeclareOption{set}{\PassOptionsToClass{article,alsobeamer}{beamerswitch}}
 %    \end{macrocode}
+% \end{optionkey}
 %
-% If in article mode, we ask \cs{ifSet}: do we also want to initiate a run
-% to produce the slide deck (‘true’) or not (‘false’ – default)?
-%
-%    \begin{macrocode}
-\newtoggle{Set}
-%    \end{macrocode}
-%
-% If in slides mode, we ask \cs{ifHandout}: do we want them laid out for printing
-% (‘true’) or for screen (‘false’ – default)?
+% All other options are passed to \pkg{beamerswitch}.
 %
 %    \begin{macrocode}
-\newtoggle{Handout}
-%    \end{macrocode}
-%
-% The user answers by means of options, of course.
-%
-%    \begin{macrocode}
-\DeclareOption{article}{\toggletrue{Article}}
-\DeclareOption{set}{\toggletrue{Set}}
-\DeclareOption{handout}{\toggletrue{Handout}\PassOptionsToClass{handout}{beamer}}
-%    \end{macrocode}
-%
-% We also support the `trans` mode of standard \pkg{beamer}.
-%
-%    \begin{macrocode}
-\DeclareOption{trans}{\PassOptionsToClass{trans}{beamer}}
+\DeclareOption*{%
+  \PassOptionsToClass{\CurrentOption}{beamerswitch}%
+}
 \ProcessOptions\relax
 
 %    \end{macrocode}
 %
-% So, if in article mode \emph{and} producing slides as well, we compile twice.
-% The first time, the \cs{jobname} does not end in ‘-slides’ (user take note), so
-% we initiate a job with ‘-slides’ appended to the \cs{jobname} and pause. In the
-% parallel session, we notice the new \cs{jobname} suffix and switch to slides
-% mode. Once that is finished, we proceed with the original job in article mode.
-% Note that this requires shell escape to be enabled and \pkg{latexmk} installed.
+% \subsection{Class: Setting options in loaded classes and packages}
+%
+% Now we load everything we need.
+%
+% It looks odd to have the \cs{inst} markers from \pkg{beamer} in the maths font, so
+% we use the \key{textinst} option for \pkg{beamerswitch}.
 %
 %    \begin{macrocode}
-\iftoggle{Set}{%
-  \RequirePackage{xstring,shellesc,iftex}%
-  \IfEndWith*{\jobname}{-slides}{%
-    \togglefalse{Article}
-  }{%
-    \ifbool{PDFTeX}{%
-      \ShellEscape{latexmk -silent -pdf -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
-    }{%
-      \ifbool{LuaTeX}{%
-        \ShellEscape{latexmk -silent -lualatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
-      }{%
-        \ifbool{XeTeX}{%
-          \ShellEscape{latexmk -silent -xelatex -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
-        }{%
-          \ShellEscape{latexmk -silent -synctex=1 -interaction=batchmode -jobname=\jobname-slides \jobname}
-        }%
-      }%
-    }%
-    \toggletrue{Article}
-  }%
-}{}
+\PassOptionsToClass{textinst}{beamerswitch}
 %    \end{macrocode}
 %
-% Article mode uses the \pkg{article} class. We use 12pt text to keep it readable on
-% the podium. Left and right margins of 3cm and top and bottom margins of 2.5cm
-% give a typeblock with an approximate golden aspect ratio.
+% In article mode, we use 12pt text to keep it readable on the podium.
 %
 %    \begin{macrocode}
-\iftoggle{Article}{%
-  \LoadClass[a4paper,12pt]{article}
-  \RequirePackage[hmargin=3cm,vmargin=2.5cm]{geometry}
+\PassOptionsToClass{a4paper,12pt}{article}
 %    \end{macrocode}
 %
-% The \pkg{beamerarticle} package provides compatibility with \pkg{beamer} code. It
-% loads \pkg{xcolor}, so any additional options we want have to be declared
-% beforehand.
+% I anticipate using fonts with the necessary symbols for \pkg{beamer}, but which
+% may clash with \pkg{amssymb}.
 %
 %    \begin{macrocode}
-  \PassOptionsToPackage{table}{xcolor}
-  \RequirePackage[noamssymb]{beamerarticle}
+\PassOptionsToClass{noamssymb}{beamer}
+\PassOptionsToPackage{noamssymb}{beamerarticle}
 %    \end{macrocode}
 %
-% I find slide titles work better as section headings or captions, so we turn
-% off the default handling from \pkg{beamerarticle}.
+% We provide the possibility of using colourful tables.
 %
 %    \begin{macrocode}
-  \renewcommand{\frametitle}[1]{}
-  \renewcommand{\framesubtitle}[1]{}
-%    \end{macrocode}
-%
-% Slide mode uses \pkg{beamer}, of course.
-%
-%    \begin{macrocode}
-}{%
-  \LoadClass[ignorenonframetext,xcolor=table,noamssymb]{beamer}[2007/03/11]
-  \usefonttheme{professionalfonts}
-  \RequirePackage{tikz}
-%    \end{macrocode}
-%
-% In handout mode, we lay out two slides to an A4 page. 
-%
-%    \begin{macrocode}
-  \iftoggle{Handout}{%
-    \RequirePackage{pgfpages}
-    \pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
-  }{}%
-}
+\PassOptionsToPackage{table}{xcolor}
+\LoadClass{beamerswitch}
 
-%    \end{macrocode}
 %
 % \subsection{Typography}
 %
@@ -924,67 +859,29 @@ numbers here are totally fictitious when it comes to the actual files.
 \edef\@date{\the\year-\ifnum\month<10 0\fi\the\month-\ifnum\day<10 0\fi\the\day}
 %    \end{macrocode}
 %
-% The \pkg{beamer} class takes care of adding presentation metadata to the PDF
-% properties, but the \pkg{article} class doesn't. We achieve parity with some
-% additional \cs{hypersetup}.
+% We add these new elements to the \cs{maketitle} routine in article mode.
 %
 %    \begin{macrocode}
+\ifundef{\beamer@originstitute}{%
+  \renewcommand{\institute}[2][]{\def\insertinstitute{#2}}%
+}{%
+  \renewcommand{\institute}[2][]{\def\insertinstitute{#2}\beamer@originstitute{#2}}%
+}%
 \mode<article>{
-  \AtBeginDocument{
-    \begingroup
-      \hypersetup{pdftitle={\@title
-        \ifdefvoid{\insertsubtitle}{}{\ - \insertsubtitle}%
-      }}%
-    \def\and{\unskip, }%
-    \let\thanks=\@gobble
-    \let\inst=\@gobble
-    \hypersetup{pdfauthor={\@author}}%
-    \endgroup
-  }
-%    \end{macrocode}
-%
-% We adjust \cs{maketitle} to shave off a little vertical space from the top,
-% add in a line for the \cs{institute}, include details of the occasion and
-% print the date pleasingly.
-%
-%    \begin{macrocode}
-  \ifundef{\beamer@originstitute}{%
-    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}}%
+  \patchcmd{\@maketitle}{%
+    \@author
   }{%
-    \renewcommand{\institute}[2][]{\def\insertinstitute{#2}\beamer@originstitute{#2}}%
-  }%
-  \def\@maketitle{%
-    \newpage
-    \null
-    \begin{center}%
-    \let\footnote\thanks
-      {\LARGE \@title \par}%
-      \vskip 1.5em%
-      {%
-        \large\lineskip .5em%
-        \begin{tabular}[t]{c}%
-          \ifdefvoid{\insertauthorurl}{\@author}{\href{\insertauthorurl}{\@author}}%
-        \end{tabular}\par
-      }%
-      \vskip 1em%
-      \ifdefvoid{\insertinstitute}{}{%
-        {%
-          \small\lineskip .5em%
-          \begin{tabular}[t]{c}%
-            \insertinstitute
-          \end{tabular}%
-        }%
-        \par\vskip 1em%
-      }
-      {%
-        \large
-        \ifdefvoid{\insertoccasion}{}{\insertoccasion, }%
-        \printdate{\@date}%
-      }%
-    \end{center}%
-    \par\vskip 1.5em%
-  }
+    \ifundef{\insertauthorurl}{\@author}{\href{\insertauthorurl}{\@author}}%
+  }{}{}
+  \patchcmd{\@maketitle}{%
+    \large \@date
+  }{%
+    \large
+    \ifdefvoid{\insertoccasion}{}{\insertoccasion, }%
+    \printdate{\@date}%
+  }{}{}
 }
+
 %    \end{macrocode}
 %
 % Since space is tight on the title slide, we change the default presentation
@@ -994,29 +891,11 @@ numbers here are totally fictitious when it comes to the actual files.
 \mode<presentation>{\def\beamer@andinst{\quad}}
 %    \end{macrocode}
 %
-% It looks odd to have the \cs{inst} markers from \pkg{beamer} in the maths font, so
-% we replace those definitions with something more in keeping.
-%
-%    \begin{macrocode}
-\def\beamer@insttitle#1{\textsuperscript{#1}}
-\def\beamer@instinst#1{\textsuperscript{#1}\ignorespaces}
-
-%    \end{macrocode}
-%
 % \subsection{Late package dependencies}
 %
 % Some packages need to be loaded late to prevent problems.
 %
 %    \begin{macrocode}
-\RequirePackage{hyperref}
-\hypersetup
-{breaklinks
-,bookmarks
-,bookmarksopen
-,pdfview=FitH
-,pdfstartview=FitH
-,pdfborder={0 0 0}
-}
 \RequirePackage[noabbrev,capitalize,nameinlink]{cleveref}
 
 %    \end{macrocode}
