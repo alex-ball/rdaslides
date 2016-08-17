@@ -659,7 +659,7 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
-% \subsection{Options and mode switching}
+% \subsection{Class: Options and mode switching}
 %
 % \begin{optionkey}{set}
 % Mode switching is delegated to \pkg{beamerswitch}, but we need to support the
@@ -712,7 +712,38 @@ numbers here are totally fictitious when it comes to the actual files.
 \LoadClass{beamerswitch}
 
 %
-% \subsection{Typography}
+% \subsection{Class: Layout, orthography and typography}
+%
+% In handout mode, we lay out two slides to an A4 page.
+%
+%    \begin{macrocode}
+\handoutlayout{paper=a4paper,nup=2,pnos}
+%    \end{macrocode}
+%
+% I find slide titles somewhat intrusive in article mode (unless repurposed as
+% float captions, say), so we turn them off. I also make use of the more
+% \pkg{beamer}-esque \cs{maketitle} routine provided by \pkg{beamerswitch}.
+%
+%    \begin{macrocode}
+\articlelayout{maketitle,frametitles=none}
+%    \end{macrocode}
+%
+% Left and right margins of 3cm and top and bottom margins of 2.5cm
+% give a typeblock with an approximate golden aspect ratio.
+%
+%    \begin{macrocode}
+\mode<article>{
+  \RequirePackage[hmargin=3cm,vmargin=2.5cm]{geometry}
+}
+%    \end{macrocode}
+%
+% I anticipate using fonts with professional features.
+%
+%    \begin{macrocode}
+\mode<presentation>{
+  \usefonttheme{professionalfonts}
+}
+%    \end{macrocode}
 %
 % I use British orthography. If there is a demand for it, I might convert the
 % following lines to respect class options instead of a hard-coded language, but
@@ -732,6 +763,69 @@ numbers here are totally fictitious when it comes to the actual files.
   \RequirePackage{microtype}%
 }
 %    \end{macrocode}
+%
+% In article mode, to give the speaker an impression of what appears on the
+% slides and what doesn't, we switch to sans serif for slide contents.
+%
+%    \begin{macrocode}
+\addtobeamertemplate{frame begin}{}{\sffamily}
+\addtobeamertemplate{frame end}{\rmfamily}{}
+%    \end{macrocode}
+%
+% When reading from a podium, some extra whitespace helps me keep track of where
+% I am. So we switch to using Web-style paragraphs.
+%
+%    \begin{macrocode}
+\mode<article>{%
+  \setlength{\parindent}{0pt}%
+  \setlength{\parskip}{1em plus 0.2em minus 0.2em}%
+%    \end{macrocode}
+%
+% But this makes lists a bit too open, so we tighten them up again by reducing
+% the \cs{topsep} to zero. We do this by injecting the appropriate code into the
+% second argument of \cs{list} where this appears in the definition of the three
+% main list environments.
+%
+%    \begin{macrocode}
+  \patchcmd{\itemize}{\def}{\topsep\z@\def}%
+    {\wlog{Patching itemize succeeded}}%
+    {\wlog{Patching itemize failed}}
+  \patchcmd{\@enum@}{\def}{\topsep\z@\def}%
+    {\wlog{Patching enumerate succeeded}}%
+    {\wlog{Patching enumerate failed}}
+  \patchcmd{\description}{\labelwidth\z@}{\labelwidth\z@\topsep\z@}%
+    {\wlog{Patching description succeeded}}%
+    {\wlog{Patching description failed}}
+%    \end{macrocode}
+%
+% We make captions easier to spot. We try to make the placement of the final
+% period more intelligent using \cs{@addpunct} from \pkg{amsthm}.
+%
+%    \begin{macrocode}
+  \usepackage[format=hang,justification=raggedright,labelfont=bf]{caption}
+  \usepackage{amsthm}
+  \DeclareCaptionTextFormat{condperiod}{#1\@addpunct{.}}
+  \captionsetup{textformat=condperiod}
+%    \end{macrocode}
+%
+% We also make footnotes look a little neater.
+%
+%    \begin{macrocode}
+  \usepackage[hang,multiple,bottom]{footmisc}
+  \setlength{\footnotemargin}{1em}
+}
+%    \end{macrocode}
+%
+% The \pkg{cleveref} package is not essential, but it is nice to have.
+%
+%    \begin{macrocode}
+\IfFileExists{cleveref.sty}{%
+  \RequirePackage[noabbrev,capitalize,nameinlink]{cleveref}
+}
+
+%    \end{macrocode}
+%
+% \subsection{Theme: Presentation font theme}
 %
 % Some sensible font sizes and weights for use on slides.
 %
@@ -766,57 +860,13 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{progress}{bg=warm,fg=rdabrown!75}
 %    \end{macrocode}
 %
-% In article mode, to give the speaker an impression of what appears on the
-% slides and what doesn't, we switch to sans serif for slide contents.
+% \subsection{Class: Metadata handling}
 %
-%    \begin{macrocode}
-\addtobeamertemplate{frame begin}{}{\sffamily}
-\addtobeamertemplate{frame end}{\rmfamily}{}
-%    \end{macrocode}
-%
-% When reading from a podium, some extra whitespace helps me keep track of where
-% I am. So we switch to using Web-style paragraphs.
-%
-%    \begin{macrocode}
-\mode<article>{%
-  \setlength{\parindent}{0pt}%
-  \setlength{\parskip}{1em plus 0.2em minus 0.2em}%
-%    \end{macrocode}
-%
-% But this makes lists a bit too open, so we tighten them up again by reducing
-% the \cs{topsep} to zero. We do this by injecting the appropriate code into the
-% second argument of \cs{list} where this appears in the definition of the three
-% main list environments.
-%
-%    \begin{macrocode}
-  \patchcmd{\itemize}{\def}{\topsep\z@\def}{}{}
-  \patchcmd{\enumerate}{\usecounter\@enumctr}{\usecounter\@enumctr\topsep\z@}{}{}
-  \patchcmd{\description}{\labelwidth\z@}{\labelwidth\z@\topsep\z@}{}{}
-%    \end{macrocode}
-%
-% We make captions easier to spot. We try to make the placement of the final
-% period more intelligent using \cs{@addpunct} from \pkg{amsthm}.
-%
-%    \begin{macrocode}
-  \usepackage[format=hang,justification=raggedright,labelfont=bf]{caption}
-  \usepackage{amsthm}
-  \DeclareCaptionTextFormat{condperiod}{#1\@addpunct{.}}
-  \captionsetup{textformat=condperiod}
-%    \end{macrocode}
-%
-% We also make footnotes look a little neater.
-%
-%    \begin{macrocode}
-  \usepackage[hang,multiple,bottom]{footmisc}
-  \setlength{\footnotemargin}{1em}
-}
-%    \end{macrocode}
-%
-% \subsection{Metadata handling}
-%
+% \begin{macro}{occasion}
+% \begin{macro}{insertoccasion}
 % We define some new elements of metadata.
 % The \cs{occasion} command is used to record the event at which the presentation
-% is given. The content is available again via \cs{insertoccasion}.
+% is given. The content is available if provided via \cs{insertoccasion}.
 %
 %    \begin{macrocode}
 \newcommand*{\occasion}[1]{%
@@ -827,19 +877,27 @@ numbers here are totally fictitious when it comes to the actual files.
   }%
 }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
+% \begin{macro}{hashtag}
+% \begin{macro}{inserthashtag}
 % The \cs{hashtag} command is used to suggest a hashtag people can use to share
-% this presentation on social media. The content is available again via
+% this presentation on social media. The content is available if provided via
 % \cs{inserthashtag}
 %
 %    \begin{macrocode}
 \newcommand*{\hashtag}[1]{%
-  \def\inserthashtag{#1}%
+  \newcommand*{\inserthashtag}{\href{https://twitter.com/hashtag/#1}{\##1}}%
 }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
+% \begin{macro}{authorurl}
+% \begin{macro}{insertauthorurl}
 % The \cs{authorurl} command is used to give a URL where more information about
-% the speaker is available. The content is available again via
+% the speaker is available. The content is available if provided via
 % \cs{insertauthorurl}
 %
 %    \begin{macrocode}
@@ -847,6 +905,8 @@ numbers here are totally fictitious when it comes to the actual files.
   \def\insertauthorurl{#1}%
 }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
 % In case the author forgets to include some key metadata, we provide some
 % safety values to allow the document to compile.
@@ -882,23 +942,7 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
-% Since space is tight on the title slide, we change the default presentation
-% of multiple institutions so they can share a line.
-%
-%    \begin{macrocode}
-\mode<presentation>{\def\beamer@andinst{\quad}}
-%    \end{macrocode}
-%
-% \subsection{Late package dependencies}
-%
-% Some packages need to be loaded late to prevent problems.
-%
-%    \begin{macrocode}
-\RequirePackage[noabbrev,capitalize,nameinlink]{cleveref}
-
-%    \end{macrocode}
-%
-% \subsection{Slide templates}
+% \subsection{Theme: Presentation outer theme}
 %
 % We introduce a switch, \cs{iftitlepage}, that can be used to provide a
 % different layout depending on whether this is a normal or a title slide.
@@ -1124,6 +1168,15 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% \subsection{Theme: Presentation inner theme}\label{sec:inner}
+%
+% Since space is tight on the title slide, we change the default presentation
+% of multiple institutions so they can share a line.
+%
+%    \begin{macrocode}
+\mode<presentation>{\def\beamer@andinst{\quad}}
+%    \end{macrocode}
+%
 % The \pkg{beamer} title page template lays out the elements of the title page.
 %
 %    \begin{macrocode}
@@ -1185,19 +1238,21 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% \subsection{Finishing off}
+%
 % We provide a \cs{finale} command for use on the last slide, to parallel
-% \cs{maketitle}. It behaves differently depending on the mode; the article
-% version uses \pkg{tabularx}.
+% \cs{maketitle}. It behaves differently depending on the mode.
 %
-%    \begin{macrocode}
-\RequirePackage{tabularx}
-\newcommand{\finale}[1][\empty]{
-%    \end{macrocode}
+% \subsubsection{In the presentation inner theme}
 %
-% Finale slides act like title slides, but have a slightly different background.
+% In presentation mode, \cs{finale} is intended to be used in a frame. It prints
+% a thank you and some key information that the audience can note down during
+% the questions. It looks like the opening slide but uses an alternative
+% background.
 %
 %    \begin{macrocode}
 \mode<presentation>{%
+\newcommand{\finale}[1][\empty]{%
   \global\booltrue{titlepage}%
   \setkeys{beamerframe}{background=rda-bg-title2}%
 %    \end{macrocode}
@@ -1265,12 +1320,25 @@ numbers here are totally fictitious when it comes to the actual files.
   \end{minipage}
   \vspace*{15mm}
 }
+}
 %    \end{macrocode}
 %
-% In article mode, we begin with a horizontal rule.
+% \subsubsection{In the class, in article mode}
+%
+% \begin{macro}{finale}
+% In article mode, we will present relevant information laid out in tabular
+% fashion with \pkg{tabularx}. (We could do it with minipages but this is
+% fractionally easier.)
 %
 %    \begin{macrocode}
 \mode<article>{
+%    \end{macrocode}
+%
+% We begin with a horizontal rule.
+%
+%    \begin{macrocode}
+\RequirePackage{tabularx}
+\newcommand{\finale}[1][\empty]{%
   \vbox{}
   \begin{small}
     \rule[1em]{\textwidth}{0.8pt}\par
@@ -1335,6 +1403,15 @@ numbers here are totally fictitious when it comes to the actual files.
   \end{small}
 }
 }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Class: Loading the beamer theme}
+%
+% For styling the presentation, we use the accompanying \pkg{beamer} theme.
+%
+%    \begin{macrocode}
+\usetheme{RDA}
 %    \end{macrocode}
 %
 % \iffalse
