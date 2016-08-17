@@ -982,53 +982,53 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Theme: Presentation outer theme}
 %
-% We introduce a switch, \cs{iftitlepage}, that can be used to provide a
+% We introduce a toggle, |titlepage|, that can be used to provide a
 % different layout depending on whether this is a normal or a title slide.
 %
 %    \begin{macrocode}
-\newbool{titlepage}
+\newtoggle{titlepage}
+%    \end{macrocode}
+%
+% We provide another toggle, |bgpicture|, which is used to decide whether
+% to use a blank background (‘false’) or an image (‘true’).
+%
+%    \begin{macrocode}
+\newtoggle{bgpicture}\toggletrue{bgpicture}
 %    \end{macrocode}
 %
 % The standard RDA slide template uses some distinctive background images. We
 % apply them by default, but allow users to choose a different one if needs be.
-% Note that the image is distorted to fit the slide dimensions, so whatever one
-% is chosen needs to have an approximate aspect ratio of 4:3.
-% 
+%
 % The method used is to save the filename of the image to \cs{bgpicture}, and let
 % the user change it with a frame option, \key{background}. The image can be turned
 % off entirely by issuing with the frame option \key{nobackground}.
-% 
-% For this we define a Boolean switch, \cs{ifbgpicture}, which is used in the
-% regular \pkg{beamer} template \key{background} to decide whether to include the
-% \cs{bgpicture}.
 %
 %    \begin{macrocode}
 \newcommand{\bgpicture}{rda-bg-normal}
-\newbool{bgpicture}\booltrue{bgpicture}
 \define@key{beamerframe}{background}[rda-bg-normal]{%
-  \gdef\bgpicture{#1}\booltrue{bgpicture}%
+  \gdef\bgpicture{#1}\toggletrue{bgpicture}%
 }
 \define@key{beamerframe}{nobackground}[true]{%
-  \boolfalse{bgpicture}%
+  \togglefalse{bgpicture}%
 }
 \setbeamertemplate{background}{%
-  \ifbool{bgpicture}{%
+  \iftoggle{bgpicture}{%
     \includegraphics[width=\paperwidth,height=\paperheight]{\bgpicture}%
   }{}%
 }
 %    \end{macrocode}
 %
-% This setting would, if we let it, spill over to subsequent slides. To stop
-% this, we reset it as part of the set-up of \env{frame} environments.
+% To prevent the settings for these switches persisting between slides, we reset
+% them as part of the set-up of `frame' environments.
 %
 %    \begin{macrocode}
-\preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\boolfalse{titlepage}}
+\preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\togglefalse{titlepage}}
 %    \end{macrocode}
 %
 % This is our new version of the \texttt{frametitle} template.
 %
 %    \begin{macrocode}
-\defbeamertemplate*{frametitle}{rdatitle}{%
+\defbeamertemplate*{frametitle}{RDA theme}{%
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
 %    \end{macrocode}
 %
@@ -1037,7 +1037,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % RDA group branding if required.
 %
 %    \begin{macrocode}
-  \ifbool{titlepage}{{%
+  \iftoggle{titlepage}{{%
 %    \end{macrocode}
 %
 % We need to widen the text block and strip out vertical white space to fit
@@ -1121,7 +1121,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
     \makebox[0pt][l]{%
-      \ifbool{titlepage}{%
+      \iftoggle{titlepage}{%
         \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
       }{}%
     }%
@@ -1134,7 +1134,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
     \parbox{0.5\paperwidth}{\centering
       \usebeamerfont{footline}%
-      \ifbool{titlepage}{\usebeamercolor[fg]{date}}{\usebeamercolor[fg]{footline}}%
+      \iftoggle{titlepage}{\usebeamercolor[fg]{date}}{\usebeamercolor[fg]{footline}}%
       \ifdefvoid{\inserthashtag}{}{\inserthashtag}\strut\par
     }%
     \hfill
@@ -1144,14 +1144,14 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
     \makebox[0pt][r]{%
-      \ifbool{titlepage}{%
+      \iftoggle{titlepage}{%
         \parbox{18mm}{\raisebox{2mm}{%
           \ifdefvoid{\licenseLogo}{}{%
             \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
           }%
         }}%
         \hspace*{3mm}%
-        \global\boolfalse{titlepage}%
+        \global\togglefalse{titlepage}%
 %    \end{macrocode}
 %
 % In the standard background image the right hand box is occupied by the RDA
@@ -1219,7 +1219,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
 \setbeamertemplate{title page}{%
-  \global\booltrue{titlepage}%
+  \global\toggletrue{titlepage}%
 %    \end{macrocode}
 %
 % We set the special background image.
@@ -1291,7 +1291,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \mode<presentation>{%
 \newcommand{\finale}[1][\empty]{%
-  \global\booltrue{titlepage}%
+  \global\toggletrue{titlepage}%
   \setkeys{beamerframe}{background=rda-bg-title2}%
 %    \end{macrocode}
 %
