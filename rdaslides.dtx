@@ -5,19 +5,27 @@
 \providebool{ThisIsTheMainRun}
 % \iffalse
 %</internal>
-%<*internal|class|mscwg|msdwg>
+%<*internal|class|theme|palette|mscwg|msdwg>
 \def\Version{2015/06/10 v2.0}
-%</internal|class|mscwg|msdwg>
+%</internal|class|theme|palette|mscwg|msdwg>
 %<*internal>
 \iffalse
 %</internal>
-%<*class|mscwg|msdwg>
+%<*class|theme|palette|mscwg|msdwg>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</class|mscwg|msdwg>
+%</class|theme|palette|mscwg|msdwg>
 %<*class>
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
 %</class>
+%<*theme>
+\ProvidesPackage{beamerthemeBath}
+    [\Version\space Beamer theme for Research Data Alliance presentations]
+%</theme>
+%<*palette>
+\ProvidesPackage{bathcolors}
+    [\Version\space Colour palette for Research Data Alliance documents]
+%</palette>
 %<*mscwg>
 \ProvidesPackage{rdamscwg}
     [\Version\space Logo and details of the RDA Metadata Standards Catalog Working Group]
@@ -148,6 +156,8 @@ Copyright (C) 2015 Alex Ball <a.j.ball@bath.ac.uk>
 \usedir{tex/latex/rdaslides}
 \generate{
   \file{rdaslides.cls}{\from{\jobname.dtx}{class}}
+  \file{rdacolors.sty}{\from{\jobname.dtx}{palette}}
+  \file{beamerthemeRDA.sty}{\from{\jobname.dtx}{theme}}
 }
 \generate{
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
