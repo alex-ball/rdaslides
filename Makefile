@@ -18,7 +18,7 @@ $(NAME)-slides.pdf: $(NAME).cls
 clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
 	rm -f $(NAME)-slides.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
-	rm -f rdamsdwg.doc
+	rm -f rdams{c,d}wg.doc
 	rm -rf _minted-*
 distclean: clean
 	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdamsdwg.sty rdamscwg.sty
