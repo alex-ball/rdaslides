@@ -1351,7 +1351,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
 \providetoggle{isodate}
-\@ifpackageloaded{isodate}{\toggletrue{isodate}}{\togglefalse{isodate}}
+\AtBeginDocument{%
+  \@ifpackageloaded{isodate}{\toggletrue{isodate}}{\togglefalse{isodate}}%
+}
 \setbeamertemplate{title page}{%
   \global\toggletrue{titlepage}%
 %    \end{macrocode}
