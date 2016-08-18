@@ -1107,6 +1107,50 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% We provide a variety of progress indicators.
+%
+% The default is a charge-style indicator.
+% The mathematics here makes sure the indicator start at 0\% on the
+% first slide and ends up at 100\% on the last, with linear variation
+% between. The case of a single slide is handled differently to prevent
+% division by zero.
+%
+%    \begin{macrocode}
+\defbeamertemplate*{progress}{charge}{%
+  \raisebox{2.7mm}[0pt][0pt]{%
+    %\usebeamercolor{progress}%
+    \begin{tikzpicture}[line join=round,baseline=1mm]
+      \pgfmathparse{equal(\inserttotalframenumber,1)}%
+      \ifnum1=\pgfmathresult
+        \def\PerCentComplete{12}%
+      \else
+        \pgfmathqparse{12pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
+        \let\PerCentComplete\pgfmathresult
+      \fi
+      \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
+      \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
+    \end{tikzpicture}%
+  }%
+}
+%    \end{macrocode}
+%
+% As an alternative, progress can be shown as a fraction of frame number over
+% total number of frames.
+%
+%    \begin{macrocode}
+\defbeamertemplate{progress}{fraction}{%
+  \insertframenumber\slash\inserttotalframenumber
+}
+%    \end{macrocode}
+%
+% Another possibility is just displaying the frame number.
+%
+%    \begin{macrocode}
+\defbeamertemplate{progress}{number}{%
+  \insertframenumber%
+}
+%    \end{macrocode}
+%
 % The \pkg{beamer} footline template lays out elements along the bottom of the screen.
 % We set the height of the footline to 8mm so it fits over the RDA logo in the
 % standard background image.
@@ -1159,30 +1203,12 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % In the standard background image the right hand box is occupied by the RDA
 % logo, but since it is shorter than the strapline on the left, we can balance
-% it with another element: a charge-style progress indicator.
-% 
-% The mathematics here makes sure the indicator start at 0\% on the
-% first slide and ends up at 100\% on the last, with linear variation
-% between. The case of a single slide is handled differently to prevent
-% division by zero.
+% it with a progress indicator.
 %
 %    \begin{macrocode}
       }{%
-        \raisebox{2.7mm}[0pt][0pt]{%
-          \usebeamercolor{progress}%
-          \begin{tikzpicture}[line join=round,baseline=1mm]
-            \pgfmathparse{equal(\inserttotalframenumber,1)}%
-            \ifnum1=\pgfmathresult
-              \def\PerCentComplete{12}%
-            \else
-              \pgfmathqparse{12pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
-              \let\PerCentComplete\pgfmathresult
-            \fi
-            \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
-            \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
-          \end{tikzpicture}%
-          \hspace*{26mm}%
-        }%
+        \usebeamertemplate*{progress}%
+        \hspace*{26mm}%
       }%
     }%
     \par
