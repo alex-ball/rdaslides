@@ -1247,6 +1247,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % The \pkg{beamer} title page template lays out the elements of the title page.
 %
 %    \begin{macrocode}
+\providetoggle{isodate}
+\@ifpackageloaded{isodate}{\toggletrue{isodate}}{\togglefalse{isodate}}
 \setbeamertemplate{title page}{%
   \global\toggletrue{titlepage}%
 %    \end{macrocode}
@@ -1298,7 +1300,7 @@ numbers here are totally fictitious when it comes to the actual files.
     \begin{beamercolorbox}[sep=0pt,center]{date}
       \usebeamerfont{date}%
       \ifdefvoid{\insertoccasion}{}{\insertoccasion\\}%
-      \printdate{\insertdate}
+      \iftoggle{isodate}{\printdate{\insertdate}}{\insertdate}
     \end{beamercolorbox}
   \end{minipage}
   \vspace*{2mm}
