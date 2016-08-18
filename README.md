@@ -83,8 +83,8 @@ version.
 The rights to the image files distributed with this bundle are held by
 the [Research Data Alliance][rda].
 
-This work is "maintained" (as per LPPL maintenance status) by [Alex
-Ball][me].
+This work is "maintained" (as per LPPL maintenance status) by
+[Alex Ball][me].
 
 [beamerswitch]: https://github.com/alex-ball/beamerswitch
 [Releases]: https://github.com/alex-ball/rdaslides/releases
