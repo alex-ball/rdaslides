@@ -11,27 +11,6 @@ which can be used independently within beamer.
 Installation
 ------------
 
-### Automated way ###
-
-A makefile is provided which you can use with the Make utility:
-
-  * Running `make` generates the derived files
-
-      - README.md
-      - rdaslides.pdf
-      - rdaslides-slides.pdf
-      - rdaslides.cls
-      - rdacolors.sty
-      - beamerthemeRDA.sty
-      - rdamscwg.sty
-      - rdamsdwg.sty
-      - rdaslides.ins
-
-  * Running `make inst` installs the files (and images) in the user's
-    TeX tree.
-  * Running `make install` installs the files (and images) in the
-    local TeX tree.
-
 ### Pre-requisites ###
 
 The documentation uses fonts from the XCharter and sourcesanspro
@@ -39,31 +18,72 @@ packages, as well as sourcecodepro if XeLaTeX or LuaLaTeX is used,
 or zi4 (inconsolata) otherwise. To compile the documentation
 successfully, you will need the minted package installed and working.
 
+### Automated way ###
+
+A makefile is provided which you can use with the Make utility:
+
+  * Running `make rdaslides.cls` generates the derived files:
+
+      - README.md
+      - rdaslides.cls
+      - rdacolors.sty
+      - beamerthemeRDA.sty
+      - rdamscwg.sty
+      - rdamsdwg.sty
+      - rdaslides.ins
+
+  * Running `make` generates the above plus
+
+      - rdaslides.pdf
+      - rdaslides-slides.pdf
+
+  * Running `make inst` installs the files (and images) in the user's
+    TeX tree.  (To undo, run `make uninst`.)
+  * Running `make install` installs the files (and images) in the
+    local TeX tree. (To undo, run `make uninstall`.)
+
+The makefile is set up to use latexmk and lualatex by default.
+If this causes difficulty you could change it to use pdflatex directly
+instead.
+
 ### Manual way ###
 
 To install the class from scratch, follow these instructions. If you have
 downloaded the zip file from the [Releases] page on GitHub, you can skip the
-first two steps.
+first three steps.
 
- 1. Compile rdaslides.dtx just as you would a normal LaTeX file. You will
-    need to enable shell escape for minted to work properly. As well
-    as the usual PDF (or DVI) and auxiliary files, several others are
-    generated.
+ 1. Run `etex rdaslides.dtx` to generate the class and package files. (You can
+    safely skip this step if you are confident about step 2.)
 
- 2. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
+ 2. Compile rdaslides.dtx using your favourite version of LaTeX with shell
+    escape enabled (as required by minted for typesetting the listings). You
+    will also need to run it through `makeindex`. This will generate the main
+    documentation (DVI or PDF).
+
+ 3. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
     as a command line option to generate the sample slides. Again, you will
-    need to enable shell escape for minted to work properly.
+    need to enable shell escape so that minted can mark up the code listings.
 
- 3. Move the files to your TeX tree as follows:
+ 4. Move the files to your TeX tree as follows:
 
-      - `source/latex/rdaslides`: rdaslides.dtx, rdaslides.ins
-      - `tex/latex/rdaslides`: rdaslides.cls, rdacolors.sty,
-         beamerthemeRDA.sty, rdamscwg.sty, rdamsdwg.sty,
-         rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg
-      - `doc/latex/rdaslides`: rdaslides.pdf, rdaslides-slides.pdf,
-         README.md
+      - `source/latex/rdaslides`:
+        rdaslides.dtx,
+        rdaslides.ins
+      - `tex/latex/rdaslides`:
+        rdaslides.cls,
+        rdacolors.sty,
+        beamerthemeRDA.sty,
+        rdamscwg.sty,
+        rdamsdwg.sty,
+        rda-bg-normal.jpeg,
+        rda-bg-title1.jpeg,
+        rda-bg-title2.jpeg
+      - `doc/latex/rdaslides`:
+        rdaslides.pdf,
+        rdaslides-slides.pdf,
+        README.md
 
- 4. You may then have to update your installation's file name database
+ 5. You may then have to update your installation's file name database
     before TeX and friends can see the files.
 
 Licence
