@@ -8,15 +8,15 @@
 \fi
 % \iffalse
 %</internal>
-%<*internal|class|theme|palette|mscwg|msdwg>
+%<*internal|class|theme|theme2|palette|mscwg|msdwg>
 \def\Version{2016/08/18 v3.0}
-%</internal|class|theme|palette|mscwg|msdwg>
+%</internal|class|theme|theme2|palette|mscwg|msdwg>
 %<*internal>
 \iffalse
 %</internal>
-%<*class|theme|palette|mscwg|msdwg>
+%<*class|theme|theme2|palette|mscwg|msdwg>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</class|theme|palette|mscwg|msdwg>
+%</class|theme|theme2|palette|mscwg|msdwg>
 %<*class>
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
@@ -25,6 +25,10 @@
 \ProvidesPackage{beamerthemeRDA}
     [\Version\space Beamer theme for Research Data Alliance presentations]
 %</theme>
+%<*theme2>
+\ProvidesPackage{beamerthemeRDA2016}
+[\Version\space Beamer theme for Research Data Alliance presentations]
+%</theme2>
 %<*palette>
 \ProvidesPackage{rdacolors}
     [\Version\space Colour palette for Research Data Alliance documents]
@@ -45,8 +49,8 @@ The rdaslides LaTeX class is intended to produce slides for Research
 Data Alliance (RDA) presentations, or an accompanying transcript, or both.
 It is based on the [beamerswitch] class.
 
-Internally, rdaslides uses a presentation theme called 'RDA',
-which can be used independently within beamer.
+Internally, rdaslides uses one of two presentation themes, called 'RDA'
+and 'RDA2016' respectively, which can be used independently within beamer.
 
 Installation
 ------------
@@ -68,6 +72,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides.cls
       - rdacolors.sty
       - beamerthemeRDA.sty
+      - beamerthemeRDA2016.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
@@ -113,6 +118,7 @@ first three steps.
         rdaslides.cls,
         rdacolors.sty,
         beamerthemeRDA.sty,
+        beamerthemeRDA2016.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
         rda-bg-normal.jpeg,
@@ -131,7 +137,7 @@ Licence
 
 Copyright 2016 Alex Ball.
 
-This work consists of three image files (rda-bg-normal.jpeg,
+This work consists of four image files (rda-logo.pdf, rda-bg-normal.jpeg,
 rda-bg-title1.jpeg, and rda-bg-title2.jpeg), the documented LaTeX file
 rdaslides.dtx, and a Makefile.
 
@@ -206,6 +212,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{rdaslides.cls}{\from{\jobname.dtx}{class}}
   \file{rdacolors.sty}{\from{\jobname.dtx}{palette}}
   \file{beamerthemeRDA.sty}{\from{\jobname.dtx}{theme}}
+  \file{beamerthemeRDA2016.sty}{\from{\jobname.dtx}{theme2}}
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
   \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
 }
@@ -232,7 +239,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 %<*driver>
 \ProvidesFile{rdaslides.dtx}
     [\Version\space Class for Research Data Alliance presentations]
-\documentclass[article]{rdaslides}
+\documentclass[article,2016]{rdaslides}
 \let\RdaslidesMaketitle=\maketitle
 
 % Basic typography
@@ -556,6 +563,13 @@ you can simply load the theme directly into \pkg{beamer}:
 \documentclass{beamer}
 \usetheme{RDA}
 \end{dispListing}
+
+\dots or\dots
+
+\begin{dispListing}
+  \documentclass{beamer}
+  \usetheme{RDA2016}
+\end{dispListing}
 \end{frame}
 
 \subsection{Preamble metadata}
@@ -683,8 +697,9 @@ The class provides two new options for frames.
 Use this option on its own to restore the usual slide background.
 Use it with an image filename to use that image as the background instead.
 \end{docKey}
-\begin{docKey}{nobackground}{}{no value, initially unset}
-This gives the slide a plain white background.
+\begin{docKey}{nobackground}{}{no value}
+This gives the slide a plain white background. Initially, this option is
+\emph{unset} in the original RDA theme and \emph{set} in the RDA2016 theme.
 \end{docKey}
 \end{frame}
 
@@ -720,7 +735,7 @@ To show nothing at all:
 You can insert a closing slide in your presentation to parallel your opening slide.
 
 \begin{docCommand}{finale}{\oarg{important note}}
-The optional argument lets you add an important note, such as a key link or date, to the end of the slide. There is not much room, so be sparing.
+The optional argument lets you add an important note, such as a key link or date, to the end of the slide. There is not much room in the original RDA theme, so be sparing fi that's the one you use.
 
 Wrap it in a bare frame, as you would for \cs{maketitle}:
 \begin{tcolorbox}
@@ -779,6 +794,15 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % \subsection{Class: Options and mode switching}
+%
+% \begin{optionkey}{2016}
+% We provide an option for choosing the RDA theme to use.
+%
+%    \begin{macrocode}
+\def\rdaslides@theme{RDA}
+\DeclareOption{2016}{\def\rdaslides@theme{RDA2016}}
+%    \end{macrocode}
+% \end{optionkey}
 %
 % \begin{optionkey}{set}
 % Mode switching is delegated to \pkg{beamerswitch}, but we need to support the
@@ -947,7 +971,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme>
+%<*theme|theme2>
 % \fi
 %
 % \subsection{Theme: Presentation font theme}
@@ -965,8 +989,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % \subsection{Theme: Presentation colour theme}
 %
 % \iffalse
-%</theme>
-%<*class|theme>
+%</theme|theme2>
+%<*class|theme|theme2>
 % \fi
 %
 % We load the RDA colour palette.
@@ -976,8 +1000,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</class|theme>
-%<*theme>
+%</class|theme|theme2>
+%<*theme|theme2>
 % \fi
 %
 % Here are the basic colours:
@@ -989,7 +1013,12 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{structure}{fg=rdabrown}
 %    \end{macrocode}
 %
-% Here are the colours for the inner theme elements:
+% \iffalse
+%</theme|theme2>
+%<*theme>
+% \fi
+%
+% Here are the colours for the inner theme elements in the RDA theme:
 %
 %    \begin{macrocode}
 \setbeamercolor{title}{fg=white}
@@ -1011,6 +1040,36 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme>
+%<*theme2>
+% \fi
+%
+% Here are the colours for the inner theme elements in the RDA2016 theme:
+%
+%    \begin{macrocode}
+\setbeamercolor{title}{parent=normaltext}
+\setbeamercolor{subtitle}{parent=normaltext}
+\setbeamercolor{author}{parent=normaltext}
+\setbeamercolor{institute}{parent=normaltext}
+\setbeamercolor{date}{parent=normaltext}
+%    \end{macrocode}
+%
+%
+% Here are the colours for the outer theme elements:
+%
+%    \begin{macrocode}
+\setbeamercolor{frametitle}{bg=,fg=rdagreen}
+\setbeamercolor{headline}{parent=frametitle}
+\setbeamercolor{footline}{bg=rdagreen,fg=white}
+\setbeamercolor{progress}{bg=rdalightgreen,fg=rdamidgreen}
+
+%    \end{macrocode}
+% \iffalse
+%</theme2>
+%<*theme|theme2>
+% \fi
+%
+% \iffalse
+%</theme|theme2>
 %<*class>
 % \fi
 %
@@ -1098,7 +1157,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme>
+%<*theme|theme2>
 % \fi
 %
 % \subsection{Theme: Presentation outer theme}
@@ -1114,11 +1173,36 @@ numbers here are totally fictitious when it comes to the actual files.
 % to use a blank background (‘false’) or an image (‘true’).
 %
 %    \begin{macrocode}
-\newtoggle{bgpicture}\toggletrue{bgpicture}
+\newtoggle{bgpicture}
 %    \end{macrocode}
 %
-% The standard RDA slide template uses some distinctive background images. We
+% \iffalse
+%</theme|theme2>
+%<*theme2>
+% \fi
+%
+% The RDA2016 theme has a blank background.
+%
+%    \begin{macrocode}
+\togglefalse{bgpicture}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2>
+%<*theme>
+% \fi
+%
+% The original RDA slide template uses some distinctive background images. We
 % apply them by default, but allow users to choose a different one if needs be.
+%
+%    \begin{macrocode}
+\toggletrue{bgpicture}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme>
+%<*theme|theme2>
+% \fi
 %
 % \begin{macro}{bgpicture}
 % \begin{optionkey}{background}
@@ -1145,12 +1229,33 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{optionkey}
 % \end{macro}
 %
+% \iffalse
+%</theme|theme2>
+%<*theme>
+% \fi
+%
 % To prevent the settings for these switches persisting between slides, we reset
-% them as part of the set-up of `frame' environments.
+% them as part of the set-up of `frame' environments. For the original RDA theme, this means:
 %
 %    \begin{macrocode}
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\togglefalse{titlepage}}
 %    \end{macrocode}
+%
+% \iffalse
+%</theme>
+%<*theme2>
+% \fi
+%
+% For the RDA2016 theme, this means:
+%
+%    \begin{macrocode}
+\preto\beamer@reseteecodes{\setkeys{beamerframe}{nobackground}\togglefalse{titlepage}}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2>
+%<*theme|theme2>
+% \fi
 %
 % This headline template is only shown on title slides. It is used to show
 % details of the RDA group, if provided.
@@ -1175,22 +1280,30 @@ numbers here are totally fictitious when it comes to the actual files.
 % \cs{rdaGroupType}.
 %
 %    \begin{macrocode}
-    \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}
-      \ifdefvoid{\rdaGroupLogo}{}{\parbox[c]{16mm}{\rdaGroupLogo}}%
+%<theme>    \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}%
+%<theme2>    \begin{minipage}[b][34mm][c]{\paperwidth - 6mm}
+      \ifdefvoid{\rdaGroupLogo}{\hbox{}}{\makebox[0pt][l]{\parbox[c]{16mm}{\rdaGroupLogo}}}%
       \hfill
-      \ifdefvoid{\rdaGroupName}{}{%
-        \parbox[c]{42mm}{%
+%<theme2>      \parbox[c]{51.5mm}{\includegraphics[width=\linewidth]{rda-logo}}%
+%<theme2>      \hfill
+      \ifdefvoid{\rdaGroupName}{\hbox{}}{%
+        \makebox[0pt][r]{\parbox[c]{42mm}{%
           \raggedleft\rdaGroupName
           \ifdefvoid{\rdaGroupType}{}{\par\smallskip{\small\textsc{\rdaGroupType}}}%
           \par
-        }%
+        }}%
       }%
     \end{minipage}\par
   }{}%
 }
 %    \end{macrocode}
 %
-% This is our new version of the \texttt{frametitle} template.
+% \iffalse
+%</theme|theme2>
+%<*theme>
+% \fi
+%
+% This is our new version of the \texttt{frametitle} template for the original RDA theme.
 %
 %    \begin{macrocode}
 \defbeamertemplate*{frametitle}{RDA theme}{%
@@ -1232,6 +1345,52 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% \iffalse
+%</theme>
+%<*theme2>
+% \fi
+%
+% This is our new version of the \texttt{frametitle} template for the RDA2016 theme.
+%
+%    \begin{macrocode}
+\defbeamertemplate*{frametitle}{RDA theme}{%
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \hspace*{-\beamer@leftmargin}%
+%    \end{macrocode}
+%
+% The title page background image does not lend itself to a frame title,
+% so just in case the user provides one, we deliberately ignore it.
+%
+%    \begin{macrocode}
+  \iftoggle{titlepage}{}{%
+%    \end{macrocode}
+%
+% On the other slides, the title block begins with the RDA logo flush to the slide edge.
+%
+%    \begin{macrocode}
+    \begin{beamercolorbox}[sep=0pt,wd=\textwidth]{frametitle}
+      \usebeamerfont{frametitle}%
+      \raisebox{-0.2\height}[7.3mm][0pt]{\includegraphics[width=14.5mm]{rda-logo}}\enspace
+      \insertframetitle\par%
+      {%
+        \ifdefvoid{\insertframesubtitle}{}{%
+          \usebeamerfont{framesubtitle}%
+          \usebeamercolor[fg]{framesubtitle}%
+          \insertframesubtitle\strut\par
+        }%
+      }%
+      %\if@tempswa\else\vskip-.3cm\fi%
+    \end{beamercolorbox}%
+  }%
+}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2>
+%<*theme|theme2>
+% \fi
+%
 % We provide a variety of progress indicators.
 %
 % The default is a charge-style indicator.
@@ -1243,9 +1402,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \RequirePackage{tikz}
 \defbeamertemplate*{progress}{charge}{%
-  \raisebox{2.7mm}[0pt][0pt]{%
+%<theme>  \raisebox{1.7mm}[0pt][0pt]{%
     %\usebeamercolor{progress}%
-    \begin{tikzpicture}[line join=round,baseline=1mm]
+    \begin{tikzpicture}[line join=round]
       \pgfmathparse{equal(\inserttotalframenumber,1)}%
       \ifnum1=\pgfmathresult
         \def\PerCentComplete{12}%
@@ -1256,7 +1415,7 @@ numbers here are totally fictitious when it comes to the actual files.
       \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
       \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
     \end{tikzpicture}%
-  }%
+%<theme>  }%
 }
 %    \end{macrocode}
 %
@@ -1278,8 +1437,14 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % The \pkg{beamer} footline template lays out elements along the bottom of the screen.
-% We set the height of the footline to 8mm so it fits over the RDA logo in the
-% standard background image.
+%
+% \iffalse
+%</theme|theme2>
+%<*theme>
+% \fi
+%
+% In the original RDA theme, we set the height of the footline to 8mm so it fits over
+% the RDA logo in the standard background image.
 %
 %    \begin{macrocode}
 \setbeamertemplate{footline}{%
@@ -1344,6 +1509,62 @@ numbers here are totally fictitious when it comes to the actual files.
 
 %    \end{macrocode}
 %
+% \iffalse
+%</theme>
+%<*theme2>
+% \fi
+%
+% In the RDA2016 theme, the footline is a green strip, even on the title slide.
+%
+%    \begin{macrocode}
+\setbeamertemplate{footline}{%
+  \makebox[0pt][l]{%
+    \textcolor{rdamidgreen}{\rule[3.5mm]{\paperwidth}{0.7mm}}%
+  }%
+  \begin{beamercolorbox}[ht=3.5mm,dp=1.5mm]{footline}
+    \hspace*{\beamer@leftmargin}%
+    \usebeamerfont{footline}%
+%    \end{macrocode}
+%
+% We use a typical layout: a left-aligned box at the left, a centre-aligned box
+% in the middle and a right-aligned box at the right.
+%
+% In the left-hand box, we put the date.
+%
+%    \begin{macrocode}
+    \makebox[0pt][l]{%
+      \iftoggle{isodate}{\printdate{\insertdate}}{\insertdate}      
+    }%
+    \hfill
+%    \end{macrocode}
+%
+% We use the centre box (on all slides) for the hashtag, if given.
+% Otherwise we display the RDA domain name.
+%
+%    \begin{macrocode}
+    \makebox[0pt][c]{
+      \ifdefvoid{\inserthashtag}{rd-alliance.org}{\inserthashtag}\strut\par
+    }%
+    \hfill
+%    \end{macrocode}
+%
+% We use the right hand box for the progress indicator.
+%
+%    \begin{macrocode}
+    \makebox[0pt][r]{%
+      \usebeamertemplate*{progress}%
+    }%
+    \hspace*{\beamer@rightmargin}\par
+  \end{beamercolorbox}
+}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2>
+%<*theme|theme2>
+% \fi
+%
 % By default we remove the tell-tale and seldom used \pkg{beamer} navigation symbols.
 %
 %    \begin{macrocode}
@@ -1391,7 +1612,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % on the title page graphic.
 %
 %    \begin{macrocode}
-  \vbox to 24mm{}%
+%<theme>  \vbox to 24mm{}%
+%<theme2>  \vbox to 40mm{}%
 %    \end{macrocode}
 %
 % We provide the presentation metadata in two parts. The title, author and
@@ -1460,7 +1682,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % on the (alternative) title page graphic.
 %
 %    \begin{macrocode}
-    \vbox to 24mm{}%
+%<theme>  \vbox to 24mm{}%
+%<theme2>  \vbox to 40mm{}%
 %    \end{macrocode}
 %
 % The background image again leaves us with the middle third of the slide into
@@ -1525,7 +1748,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme>
+%</theme|theme2>
 %<*class>
 % \fi
 %
@@ -1628,7 +1851,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % For styling the presentation, we use the accompanying \pkg{beamer} theme.
 %
 %    \begin{macrocode}
-\usetheme{RDA}
+\usetheme{\rdaslides@theme}
 %    \end{macrocode}
 %
 % \iffalse

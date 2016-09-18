@@ -5,8 +5,8 @@ The rdaslides LaTeX class is intended to produce slides for Research
 Data Alliance (RDA) presentations, or an accompanying transcript, or both.
 It is based on the [beamerswitch] class.
 
-Internally, rdaslides uses a presentation theme called 'RDA',
-which can be used independently within beamer.
+Internally, rdaslides uses one of two presentation themes, called 'RDA'
+and 'RDA2016' respectively, which can be used independently within beamer.
 
 Installation
 ------------
@@ -28,6 +28,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides.cls
       - rdacolors.sty
       - beamerthemeRDA.sty
+      - beamerthemeRDA2016.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
@@ -73,6 +74,7 @@ first three steps.
         rdaslides.cls,
         rdacolors.sty,
         beamerthemeRDA.sty,
+        beamerthemeRDA2016.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
         rda-bg-normal.jpeg,
@@ -91,7 +93,7 @@ Licence
 
 Copyright 2016 Alex Ball.
 
-This work consists of three image files (rda-bg-normal.jpeg,
+This work consists of four image files (rda-logo.pdf, rda-bg-normal.jpeg,
 rda-bg-title1.jpeg, and rda-bg-title2.jpeg), the documented LaTeX file
 rdaslides.dtx, and a Makefile.
 
