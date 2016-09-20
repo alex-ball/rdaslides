@@ -1868,16 +1868,10 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
       \ifdefvoid{\rdaGroupLogo}{%
-        \ifpdf
-          \IfFileExists{RDA_Logotype_CMYK.pdf}{%
-            \includegraphics[width=\hsize]{RDA_Logotype_CMYK}%
-          }{}%
-        \else
-          \IfFileExists{RDA_Logotype_CMYK.eps}{%
-            \includegraphics[width=\hsize]{RDA_Logotype_CMYK}%
-          }{}%
-        \fi
-      }{\parbox[c]{\hsize}{\rdaGroupLogo}} &
+        \includegraphics[width=\hsize]{rda-logo}%
+      }{%
+        \parbox[c]{\hsize}{\rdaGroupLogo}%
+      } &
 %    \end{macrocode}
 %
 % If group information has not been defined, we explain what the RDA is.
