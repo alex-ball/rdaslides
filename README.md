@@ -32,11 +32,15 @@ A makefile is provided which you can use with the Make utility:
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
+      - rdaslides-sample-RDA.tex
+      - rdaslides-sample-RDA2016.tex
 
   * Running `make` generates the above plus
 
       - rdaslides.pdf
       - rdaslides-slides.pdf
+      - rdaslides-sample-RDA.pdf
+      - rdaslides-sample-RDA2016.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
@@ -51,21 +55,23 @@ instead.
 
 To install the class from scratch, follow these instructions. If you have
 downloaded the zip file from the [Releases] page on GitHub, you can skip the
-first three steps.
+first four steps.
 
- 1. Run `etex rdaslides.dtx` to generate the class and package files. (You can
-    safely skip this step if you are confident about step 2.)
+ 1. Run `etex rdaslides.dtx` to generate the class and package files.
 
- 2. Compile rdaslides.dtx using your favourite version of LaTeX with shell
+ 2. Compile rdaslides-sample-RDA.tex and rdaslides-sample-RDA2016.tex to get
+    the example figures used in the documentation.
+
+ 3. Compile rdaslides.dtx using your favourite version of LaTeX with shell
     escape enabled (as required by minted for typesetting the listings). You
     will also need to run it through `makeindex`. This will generate the main
     documentation (DVI or PDF).
 
- 3. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
+ 4. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
     as a command line option to generate the sample slides. Again, you will
     need to enable shell escape so that minted can mark up the code listings.
 
- 4. Move the files to your TeX tree as follows:
+ 5. Move the files to your TeX tree as follows:
 
       - `source/latex/rdaslides`:
         rdaslides.dtx,
@@ -82,10 +88,14 @@ first three steps.
         rda-bg-title2.jpeg
       - `doc/latex/rdaslides`:
         rdaslides.pdf,
+        rdaslides-sample-RDA.tex,
+        rdaslides-sample-RDA.pdf,
+        rdaslides-sample-RDA2016.tex,
+        rdaslides-sample-RDA2016.pdf,
         rdaslides-slides.pdf,
         README.md
 
- 5. You may then have to update your installation's file name database
+ 6. You may then have to update your installation's file name database
     before TeX and friends can see the files.
 
 Licence

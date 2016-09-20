@@ -41,6 +41,38 @@
 \ProvidesPackage{rdamsdwg}
     [\Version\space Logo and details of the RDA Metadata Standards Directory Working Group]
 %</msdwg>
+%<*sample1>
+\documentclass{rdaslides}
+%</sample1>
+%<*sample2>
+\documentclass[2016]{rdaslides}
+%</sample2>
+%<*sample1|sample2>
+\usepackage{charity}
+\title{Sample Presentation}
+\author{Anne Author}
+\date{2016-07-01}
+\begin{document}
+  \begin{frame}{Sample slide}
+    Here is a list of things to think about
+    \begin{itemize}
+      \item What problem are you trying to solve?
+      \item How do you propose solve it?
+      \item Can you do it in 18 months?
+      \item Who will adopt your solution?
+      \begin{itemize}
+        \item Industry
+        \item Academia
+        \begin{itemize}
+          \item Domain scientists
+          \item Infrastructure providers
+        \end{itemize}
+      \end{itemize}
+      \item How will you sustain it?
+    \end{itemize}
+  \end{frame}
+\end{document}
+%</sample1|sample2>
 %<*readme>
 The rdaslides class: Research Data Alliance presentations
 =========================================================
@@ -76,11 +108,15 @@ A makefile is provided which you can use with the Make utility:
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
+      - rdaslides-sample-RDA.tex
+      - rdaslides-sample-RDA2016.tex
 
   * Running `make` generates the above plus
 
       - rdaslides.pdf
       - rdaslides-slides.pdf
+      - rdaslides-sample-RDA.pdf
+      - rdaslides-sample-RDA2016.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
@@ -95,21 +131,23 @@ instead.
 
 To install the class from scratch, follow these instructions. If you have
 downloaded the zip file from the [Releases] page on GitHub, you can skip the
-first three steps.
+first four steps.
 
- 1. Run `etex rdaslides.dtx` to generate the class and package files. (You can
-    safely skip this step if you are confident about step 2.)
+ 1. Run `etex rdaslides.dtx` to generate the class and package files.
 
- 2. Compile rdaslides.dtx using your favourite version of LaTeX with shell
+ 2. Compile rdaslides-sample-RDA.tex and rdaslides-sample-RDA2016.tex to get
+    the example figures used in the documentation.
+
+ 3. Compile rdaslides.dtx using your favourite version of LaTeX with shell
     escape enabled (as required by minted for typesetting the listings). You
     will also need to run it through `makeindex`. This will generate the main
     documentation (DVI or PDF).
 
- 3. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
+ 4. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
     as a command line option to generate the sample slides. Again, you will
     need to enable shell escape so that minted can mark up the code listings.
 
- 4. Move the files to your TeX tree as follows:
+ 5. Move the files to your TeX tree as follows:
 
       - `source/latex/rdaslides`:
         rdaslides.dtx,
@@ -126,10 +164,14 @@ first three steps.
         rda-bg-title2.jpeg
       - `doc/latex/rdaslides`:
         rdaslides.pdf,
+        rdaslides-sample-RDA.tex,
+        rdaslides-sample-RDA.pdf,
+        rdaslides-sample-RDA2016.tex,
+        rdaslides-sample-RDA2016.pdf,
         rdaslides-slides.pdf,
         README.md
 
- 5. You may then have to update your installation's file name database
+ 6. You may then have to update your installation's file name database
     before TeX and friends can see the files.
 
 Licence
@@ -215,6 +257,11 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{beamerthemeRDA2016.sty}{\from{\jobname.dtx}{theme2}}
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
   \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
+}
+\usedir{doc/latex/rdaslides}
+\generate{
+  \file{rdaslides-sample-RDA.tex}{\from{\jobname.dtx}{sample1}}
+  \file{rdaslides-sample-RDA2016.tex}{\from{\jobname.dtx}{sample2}}
 }
 %</install>
 %<install>\endbatchfile
@@ -553,6 +600,25 @@ The options above are only a subset; please see the \pkg{beamerswitch}
 documentation for the full set. Note that the \key{set} option is now simply
 shorthand for \key{article} and \key{alsobeamer}.
 
+\begin{frame}[fragile]{Using the class}
+\setlength{\fboxsep}{0pt}
+\begin{multicols}{2}[There are also options for choosing between the two available themes.]
+\begin{docKey}{2013}{}{no value, initially set}
+  Use the \bthm{RDA} theme.
+\end{docKey}
+\begin{center}
+\fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA}}
+\end{center}
+\columnbreak
+\begin{docKey}{2016}{}{no value, initially unset}
+  Use the \bthm{RDA2016} theme.
+\end{docKey}
+\begin{center}
+\fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA2016}}
+\end{center}
+\end{multicols}
+\end{frame}
+
 \subsection{Loading the theme}
 
 \begin{frame}[fragile]{Using the beamer theme}
@@ -795,13 +861,17 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Class: Options and mode switching}
 %
+% \begin{optionkey}{2013}
 % \begin{optionkey}{2016}
-% We provide an option for choosing the RDA theme to use.
+% We provide the \key{2013} option for choosing the (default) \bthm{RDA} theme
+% and the \key{2016} option for choosing the \bthm{RDA2016} theme instead.
 %
 %    \begin{macrocode}
 \def\rdaslides@theme{RDA}
+\DeclareOption{2013}{\def\rdaslides@theme{RDA}}
 \DeclareOption{2016}{\def\rdaslides@theme{RDA2016}}
 %    \end{macrocode}
+% \end{optionkey}
 % \end{optionkey}
 %
 % \begin{optionkey}{set}
