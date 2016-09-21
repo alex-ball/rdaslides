@@ -1052,19 +1052,41 @@ numbers here are totally fictitious when it comes to the actual files.
 % Some sensible font sizes and weights for use on slides.
 %
 %    \begin{macrocode}
+\setbeamerfont{alerted text}{series=\bfseries}
 \setbeamerfont{frametitle}{size=\LARGE}
 \setbeamerfont{framesubtitle}{size=\large}
 \setbeamerfont{headline}{size=\LARGE}
-\setbeamerfont{footline}{size=\scriptsize}
-\setbeamerfont{alerted text}{series=\bfseries}
 %    \end{macrocode}
-%
-% \subsection{Theme: Presentation colour theme}
 %
 % \iffalse
 %</theme|theme2>
+%<*theme>
+% \fi
+%
+% Where the themes differ is that the \bthm{RDA} theme has \cs{scriptsize}
+% footline text:
+%
+%    \begin{macrocode}
+\setbeamerfont{footline}{size=\scriptsize}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme>
+%<*theme2>
+% \fi
+%
+% The \bthm{RDA2016} theme, meanwhile, has \cs{tiny} footline text:
+%
+%    \begin{macrocode}
+\setbeamerfont{footline}{size=\tiny}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2>
 %<*class|theme|theme2>
 % \fi
+%
+% \subsection{Theme: Presentation colour theme}
 %
 % \subsubsection{Common code}
 %
@@ -1661,9 +1683,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \setbeamertemplate{footline}{%
   \makebox[0pt][l]{%
-    \textcolor{rdamidgreen}{\rule[3.5mm]{\paperwidth}{0.7mm}}%
+    \textcolor{rdamidgreen}{\rule[3.25mm]{\paperwidth}{0.7mm}}%
   }%
-  \begin{beamercolorbox}[ht=3.5mm,dp=1.5mm]{footline}
+  \begin{beamercolorbox}[ht=3.25mm,dp=1.75mm]{footline}
     \hspace*{\beamer@leftmargin}%
     \usebeamerfont{footline}%
 %    \end{macrocode}
