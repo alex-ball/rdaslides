@@ -1756,16 +1756,9 @@ numbers here are totally fictitious when it comes to the actual files.
 % en dashes at the second, and circles at the third.
 %
 %    \begin{macrocode}
-\defbeamertemplate*{itemize item}{chevron}{%
-  \tikz[baseline]{
-    \draw[line cap=round,line width=0.25ex](0ex,-0.1ex) -- (0.6ex,0.6ex) -- (0ex,1.3ex);
-  }%
-}
-\defbeamertemplate*{itemize subitem}{dash}{%
-  \tikz[baseline]{
-    \draw[line cap=round,line width=0.25ex](0ex,0.6ex) -- (0.8ex,0.6ex);
-  }%
-}
+\AtEndPreamble{\RequirePackage{fontawesome}}
+\defbeamertemplate*{itemize item}{chevron}{\faAngleRight}
+\defbeamertemplate*{itemize subitem}{dash}{\textbf{\textendash}}
 \setbeamertemplate{itemize subsubitem}[circle]
 %    \end{macrocode}
 %
