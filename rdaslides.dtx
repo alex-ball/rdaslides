@@ -1506,7 +1506,6 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \defbeamertemplate*{frametitle}{RDA theme}{%
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
-  \hspace*{-\beamer@leftmargin}%
 %    \end{macrocode}
 %
 % As before, we deliberately ignore any title given on a title page.
@@ -1518,9 +1517,11 @@ numbers here are totally fictitious when it comes to the actual files.
 % On the other slides, the title block begins with the RDA logo flush to the slide edge.
 %
 %    \begin{macrocode}
-    \begin{beamercolorbox}[sep=0pt,wd=\textwidth]{frametitle}
+    \begin{beamercolorbox}[sep=0pt,wd=\paperwidth]{frametitle}
       \usebeamerfont{frametitle}%
-      \raisebox{-0.2\height}[7.3mm][0pt]{\includegraphics[width=14.5mm]{rda-logo}}\enspace
+      \hangindent=17.5mm
+      \hangafter=1
+      \raisebox{-0.2\height}[7.3mm][0pt]{\includegraphics[width=14.5mm]{rda-logo}}\hspace{3mm}%
       \insertframetitle\par%
       {%
         \ifdefvoid{\insertframesubtitle}{}{%
