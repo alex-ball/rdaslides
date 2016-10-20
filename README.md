@@ -37,6 +37,7 @@ A makefile is provided which you can use with the Make utility:
 
   * Running `make` generates the above plus
 
+      - rda-logo.eps
       - rdaslides.pdf
       - rdaslides-slides.pdf
       - rdaslides-sample-RDA.pdf
@@ -55,27 +56,41 @@ instead.
 
 To install the class from scratch, follow these instructions. If you have
 downloaded the zip file from the [Releases] page on GitHub, you can skip the
-first four steps.
+first five steps.
 
  1. Run `etex rdaslides.dtx` to generate the class and package files.
 
  2. Compile rdaslides-sample-RDA.tex and rdaslides-sample-RDA2016.tex to get
     the example figures used in the documentation.
 
- 3. Compile rdaslides.dtx using your favourite version of LaTeX with shell
+ 3. If you intend to use the theme in DVI mode, you will need to convert the
+    logo to EPS format; here is one way to do it:
+
+    ~~~{.bash}
+    pdftops -f 1 -l 1 -eps rda-logo.pdf rda-logo.eps
+    ~~~
+
+    If you intend to compile the documentation in DVI mode, you will also need
+    to transform the output of step 2 to EPS using, say, `dvips` or `pdftops`,
+    depending on how you did it.
+
+ 4. Compile rdaslides.dtx using your favourite version of LaTeX with shell
     escape enabled (as required by minted for typesetting the listings). You
     will also need to run it through `makeindex`. This will generate the main
     documentation (DVI or PDF).
 
- 4. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
+ 5. Compile rdaslides.dtx a second time with `-jobname=rdaslides-slides`
     as a command line option to generate the sample slides. Again, you will
     need to enable shell escape so that minted can mark up the code listings.
 
- 5. Move the files to your TeX tree as follows:
+ 6. Move the files to your TeX tree as follows:
 
       - `source/latex/rdaslides`:
         rdaslides.dtx,
         rdaslides.ins
+      - `tex/generic/logos-rda` :
+        rda-logo.eps,
+        rda-logo.pdf
       - `tex/latex/rdaslides`:
         rdaslides.cls,
         rdacolors.sty,
@@ -95,7 +110,7 @@ first four steps.
         rdaslides-slides.pdf,
         README.md
 
- 6. You may then have to update your installation's file name database
+ 7. You may then have to update your installation's file name database
     before TeX and friends can see the files.
 
 Licence
