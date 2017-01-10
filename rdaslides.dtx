@@ -1254,11 +1254,6 @@ numbers here are totally fictitious when it comes to the actual files.
 % We add these new elements to the \cs{maketitle} routine in article mode.
 %
 %    \begin{macrocode}
-\ifundef{\beamer@originstitute}{%
-  \renewcommand{\institute}[2][]{\def\insertinstitute{#2}}%
-}{%
-  \renewcommand{\institute}[2][]{\def\insertinstitute{#2}\beamer@originstitute{#2}}%
-}%
 \mode<article>{
   \patchcmd{\@maketitle}{%
     \@author
