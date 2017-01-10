@@ -618,28 +618,35 @@ The options above are only a subset; please see the \pkg{beamerswitch}
 documentation for the full set. Note that the \key{set} option is now simply
 shorthand for \key{article} and \key{alsobeamer}.
 
+% A slide has a line width of 108mm
 \begin{frame}[fragile]{Using the class}
-\setlength{\fboxsep}{0pt}
+\setlength{\fboxsep}{0pt}%
+\only<presentation>{\setlength{\columnsep}{8mm}}%
+\only<article>{\setlength{\columnsep}{16mm}}%
 \begin{multicols}{2}[There are also options for choosing between the two available themes.]
 \begin{docKey}{2013}{}{no value, initially set}
   Use the \bthm{RDA} theme.
 \end{docKey}
-\begin{center}
+\par\only<presentation>{\medskip}%
+\par\bgroup\centering
 \fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA}}
-\end{center}
+\par\egroup
 \columnbreak
 \begin{docKey}{2016}{}{no value, initially unset}
   Use the \bthm{RDA2016} theme.
 \end{docKey}
-\begin{center}
+\par\only<presentation>{\medskip}%
+\par\bgroup\centering
 \fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA2016}}
-\end{center}
+\par\egroup
 \end{multicols}
 \end{frame}
 
 \subsection{Loading the theme}
 
 \begin{frame}[fragile]{Using the beamer theme}
+\only<presentation>{\setlength{\columnsep}{8mm}}%
+\only<article>{\setlength{\columnsep}{16mm}}%
 If you don't want the article mode settings introduced by the full class,
 you can simply load the theme directly into \pkg{beamer}:
 
@@ -650,8 +657,8 @@ you can simply load the theme directly into \pkg{beamer}:
 \end{dispListing}
 \columnbreak
 \begin{dispListing}
-  \documentclass{beamer}
-  \usetheme{RDA2016}
+\documentclass{beamer}
+\usetheme{RDA2016}
 \end{dispListing}
 \end{multicols}
 \end{frame}
