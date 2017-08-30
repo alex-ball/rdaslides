@@ -8,15 +8,15 @@
 \fi
 % \iffalse
 %</internal>
-%<*internal|class|theme|theme2|palette|mscwg|msdwg>
+%<*internal|class|theme|theme2|palette|mscwg|msdwg|mig>
 \def\Version{2016/10/20 v3.1}
-%</internal|class|theme|theme2|palette|mscwg|msdwg>
+%</internal|class|theme|theme2|palette|mscwg|msdwg|mig>
 %<*internal>
 \iffalse
 %</internal>
-%<*class|theme|theme2|palette|mscwg|msdwg>
+%<*class|theme|theme2|palette|mscwg|msdwg|mig>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</class|theme|theme2|palette|mscwg|msdwg>
+%</class|theme|theme2|palette|mscwg|msdwg|mig>
 %<*class>
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
@@ -41,6 +41,10 @@
 \ProvidesPackage{rdamsdwg}
     [\Version\space Logo and details of the RDA Metadata Standards Directory Working Group]
 %</msdwg>
+%<*mig>
+\ProvidesPackage{rdamig}
+[\Version\space Logo and details of the RDA Metadata Interest Group]
+%</mig>
 %<*sample1>
 \documentclass{rdaslides}
 %</sample1>
@@ -105,6 +109,7 @@ A makefile is provided which you can use with the Make utility:
       - rdacolors.sty
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
+      - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
@@ -172,6 +177,7 @@ first five steps.
         rdacolors.sty,
         beamerthemeRDA.sty,
         beamerthemeRDA2016.sty,
+        rdamig.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
         rda-bg-normal.jpeg,
@@ -270,6 +276,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{rdacolors.sty}{\from{\jobname.dtx}{palette}}
   \file{beamerthemeRDA.sty}{\from{\jobname.dtx}{theme}}
   \file{beamerthemeRDA2016.sty}{\from{\jobname.dtx}{theme2}}
+  \file{rdamig.sty}{\from{\jobname.dtx}{mig}}
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
   \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
 }
@@ -2474,5 +2481,192 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</msdwg>
+%<*mig>
+% \fi
+%
+% \subsection{Sample RDA group package: MIG}
+%
+% \subsubsection{Group logo}
+%
+% Again, we draw the logo with \pkg{tikz} rather than use a bitmap.
+% This means we need to ensure it is loaded, along with \pkg{keyval} for option
+% handling, \pkg{ifthen} for implementing the option handling logic, and \pkg{calc} for
+% calculating lengths. Note that the Metadata Standards Catalog Working Group
+% recycles the logo of the Metadata Standards Directory Working Group, hence
+% the macros below use \texttt{msd} instead of \texttt{msc}.
+%
+%    \begin{macrocode}
+\RequirePackage{ifthen,calc,keyval}
+\RequirePackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning}
+
+%    \end{macrocode}
+%
+% We load the RDA colour palette, if not already available.
+%
+%    \begin{macrocode}
+\usepackage{rdacolors}
+
+%    \end{macrocode}
+%
+% \begin{macro}{migl@unit}
+% \begin{macro}{migl@unit@calc}
+% We provide options for scaling the logo without changing the aspect ratio.
+% Two lengths are needed to scale the logo:
+% \begin{itemize}
+% \item \cs{migl@unit} is the actual scale factor;
+% \item \cs{migl@unit@calc} is the scale factor calculated from the options.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\newlength{\migl@unit}
+\newlength{\migl@unit@calc}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{optionkey}{height}
+% The \key{height} option sets the maximum height for the logo.
+% With \cs{migl@unit} set to 1pt, the logo ends up 50pt high. So we
+% calculate what \cs{migl@unit} would need to be to achieve the target height.
+% We store this in \cs{migl@unit@calc} unless \cs{migl@unit@calc} is a shorter
+% (but non-zero) length.
+%
+%    \begin{macrocode}
+  \define@key{migl}{height}{%
+    \setlength{\@tempdima}{#1}%
+    \setlength{\@tempdimb}{\@tempdima / \real{59.690}}%
+    \ifthenelse{%
+      \lengthtest{\migl@unit@calc = 0pt}\OR
+      \lengthtest{\@tempdimb < \migl@unit@calc}%
+    }{%
+      \setlength{\migl@unit@calc}{\@tempdimb}%
+    }{}%
+  }
+%    \end{macrocode}
+% \end{optionkey}
+%
+% \begin{optionkey}{width}
+% The \key{width} option sets the maximum width for the logo.
+% With \cs{migl@unit} set to 1pt, the logo ends up 60pt wide. So we
+% calculate what \cs{migl@unit} would need to be to achieve the target width.
+% We store this in \cs{migl@unit@calc} unless \cs{migl@unit@calc} is a shorter
+% (but non-zero) length.
+%
+%    \begin{macrocode}
+  \define@key{migl}{width}{%
+    \setlength{\@tempdima}{#1}%
+    \setlength{\@tempdimb}{\@tempdima / \real{62.091}}%
+    \ifthenelse{%
+      \lengthtest{\migl@unit@calc = 0pt}\OR
+      \lengthtest{\@tempdimb < \migl@unit@calc}%
+    }{%
+      \setlength{\migl@unit@calc}{\@tempdimb}%
+    }{}%
+  }
+%    \end{macrocode}
+% \end{optionkey}
+%
+% \begin{optionkey}{scale}
+% We also provide the option \key{scale} for unconditionally setting the scale to a
+% given numeric factor, where 1 means \cs{migl@unit} equals 1pt.
+%
+%    \begin{macrocode}
+  \define@key{migl}{scale}{%
+    \setlength{\@tempdima}{1pt}%
+    \setlength{\migl@unit@calc}{#1\@tempdima}%
+  }
+%    \end{macrocode}
+% \end{optionkey}
+%
+% \begin{macro}{migl@line@color}
+% \begin{optionkey}{outline}
+% In case the logo is put on a coloured background, we provide the option
+% \key{outline} for outlining it in a given colour (white by default).
+%
+%    \begin{macrocode}
+  \newcommand{\migl@line@color}{none}
+  \define@key{migl}{outline}[white]{\renewcommand{\migl@line@color}{#1}}
+
+%    \end{macrocode}
+% \end{optionkey}
+% \end{macro}
+%
+% \begin{macro}{MIGLogo}
+% The logo itself is drawn with the \cs{MIGLogo} command. The \pkg{keyval} options
+% are read from the optional argument. There is no mandatory argument.
+%
+%    \begin{macrocode}
+\newcommand{\MIGLogo}[1][]{%
+  \bgroup
+%    \end{macrocode}
+%
+% First we reset \cs{migl@unit@calc} to 0pt, then read in the user keys.
+%
+%    \begin{macrocode}
+  \setkeys{migl}{scale=0,#1}%
+%    \end{macrocode}
+%
+% If \cs{migl@unit@calc} has been set, we scale the logo accordingly. Otherwise
+% we use the default scale of \cs{migl@unit} = 1pt.
+%
+%    \begin{macrocode}
+  \ifthenelse{\lengthtest{\migl@unit@calc > 0pt}}{%
+    \setlength{\migl@unit}{\migl@unit@calc}%
+  }{%
+    \setlength{\migl@unit}{1pt}%
+  }%
+%    \end{macrocode}
+%
+% Now we come to draw the logo. The \key{text} node is used to centre the logo
+% vertically with respect to the surrounding text. The graphic itself is
+% achieved as a set of Paisley swirls.
+%
+%    \begin{macrocode}
+  \begin{tikzpicture}
+  [ inner sep = 0pt
+  , outer sep = 0pt
+  , baseline = (text.base)
+  , line width = 0.4pt
+  ]
+    \begin{scope}[yscale=0.833]
+    \useasboundingbox (0,0) circle[radius=30\migl@unit];
+    \foreach \angle/\color in {335/rdagray, 155/rdagreen, 65/rdabrown, 245/rdayellow} {
+      \path[fill={\color}, draw={\migl@line@color}]
+      ($(\angle:20.5\migl@unit) + (\angle + 190:9.5\migl@unit)$)
+      arc[radius=9.5\migl@unit, start angle={\angle + 190}, end angle=\angle]
+      arc[radius=30\migl@unit, start angle=\angle, end angle={\angle - 120}]
+      to[out={\angle - 20}, in={\angle - 80}] cycle;
+    }
+    \end{scope}
+    \node (text) at (0,0) {\phantom{RDA}};
+  \end{tikzpicture}%
+  \egroup
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Group information}
+%
+% \begin{macro}{rdaGroupLogo}
+% \begin{macro}{rdaGroupName}
+% \begin{macro}{rdaGroupType}
+% \begin{macro}{rdaGroupUrl}
+% Finally, we define hooks that are recognized by \texttt{rdaslides.cls}.
+%
+%    \begin{macrocode}
+\def\rdaGroupLogo{\MIGLogo[width=\hsize]}
+\def\rdaGroupName{Metadata}
+\def\rdaGroupType{Interest Group}
+\def\rdaGroupUrl{https://www.rd-alliance.org/groups/metadata-ig.html}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \iffalse
+%</mig>
 % \fi
 %\Finale

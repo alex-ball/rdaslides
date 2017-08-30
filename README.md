@@ -29,6 +29,7 @@ A makefile is provided which you can use with the Make utility:
       - rdacolors.sty
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
+      - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
@@ -96,6 +97,7 @@ first five steps.
         rdacolors.sty,
         beamerthemeRDA.sty,
         beamerthemeRDA2016.sty,
+        rdamig.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
         rda-bg-normal.jpeg,
