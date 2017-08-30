@@ -1409,9 +1409,8 @@ numbers here are totally fictitious when it comes to the actual files.
       \hfill
       \ifdefvoid{\rdaGroupName}{\hbox{}}{%
         \raisebox{-3mm - \height}{\makebox[0pt][r]{\parbox{42mm}{%
-          \raggedleft\rdaGroupName
-          \ifdefvoid{\rdaGroupType}{}{\par\smallskip{\small\textsc{\rdaGroupType}}}%
-          \par
+          \raggedleft{\linespread{0.75}\selectfont\rdaGroupName\par}
+          \ifdefvoid{\rdaGroupType}{}{\smallskip{\small\textsc{\rdaGroupType}\par}}%
         }}}%
       }%
     \end{minipage}\par
@@ -1446,9 +1445,8 @@ numbers here are totally fictitious when it comes to the actual files.
       \hfill
       \ifdefvoid{\rdaGroupName}{\hbox{}}{%
         \makebox[0pt][r]{\parbox[c]{42mm}{%
-          \raggedleft\rdaGroupName
-          \ifdefvoid{\rdaGroupType}{}{\par\smallskip{\small\textsc{\rdaGroupType}}}%
-          \par
+          \raggedleft{\linespread{0.75}\selectfont\rdaGroupName\par}
+          \ifdefvoid{\rdaGroupType}{}{\smallskip{\small\textsc{\rdaGroupType}\par}}%
         }}%
       }%
     \end{minipage}\par
