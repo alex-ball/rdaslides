@@ -827,6 +827,12 @@ To show nothing at all:
 \end{dispListing}
 \end{frame}
 
+To restore the default charge-style indicator:
+\begin{dispListing}
+\setbeamertemplate{progress}[charge]
+\end{dispListing}
+
+
 \subsection{Finishing off}
 
 \begin{frame}[fragile]{Finishing off}
@@ -1196,7 +1202,7 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{frametitle}{bg=,fg=rdagreen}
 \setbeamercolor{headline}{parent=frametitle}
 \setbeamercolor{footline}{bg=rdagreen,fg=white}
-\setbeamercolor{progress}{bg=rdalightgreen,fg=rdamidgreen}
+\setbeamercolor{progress}{bg=white,fg=rdamidgreen}
 %    \end{macrocode}
 % \iffalse
 %</theme2>
@@ -1561,7 +1567,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \RequirePackage{tikz}
 \newcommand{\ProgressBar}{%
-  \begin{tikzpicture}[line join=round]
+  \begin{tikzpicture}[thin,line join=round]
   \pgfmathparse{equal(\inserttotalframenumber,1)}%
   \ifnum1=\pgfmathresult
   \def\PerCentComplete{12}%
