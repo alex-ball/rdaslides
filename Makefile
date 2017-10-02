@@ -16,7 +16,7 @@ $(NAME)-sample-RDA2016.pdf: $(NAME)-sample-RDA2016.tex $(NAME).cls
 	latexmk -silent -lualatex -shell-escape -interaction=batchmode $(NAME)-sample-RDA2016.tex >/dev/null
 $(NAME).pdf: $(NAME).cls $(NAME)-sample-RDA.pdf $(NAME)-sample-RDA2016.pdf
 	latexmk -silent -lualatex -shell-escape -interaction=batchmode $(NAME).dtx >/dev/null
-$(NAME)-slides.pdf: $(NAME).cls
+$(NAME)-slides.pdf: $(NAME).cls $(NAME)-sample-RDA.pdf $(NAME)-sample-RDA2016.pdf
 	latexmk -silent -lualatex -shell-escape -interaction=batchmode -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
 rda-logo.eps: rda-logo.pdf
 	pdftops -f 1 -l 1 -eps rda-logo.pdf rda-logo.eps

@@ -561,7 +561,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 
 \let\maketitle=\RdaslidesMaketitle
 
-\usepackage{rdamscwg}
+%\usepackage{rdamscwg}
 
 %\def\licenseLogo{\includegraphics[width=\hsize]{cc_by}}
 %\def\licenseStatement{Except where otherwise stated,%
@@ -1418,12 +1418,12 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
     \begin{minipage}{\paperwidth - 6mm}
-      \ifdefvoid{\rdaGroupLogo}{\hbox{}}{%
+      \ifdefvoid{\rdaGroupLogo}{\raisebox{-\height}{\hbox{}}}{%
         \raisebox{-3mm - \height}{\makebox[0pt][l]{\parbox{16mm}{\rdaGroupLogo}}}%
       }\hfill
       \raisebox{-\height}{\includegraphics[height=33.8mm]{rda-logo}}%
       \hfill
-      \ifdefvoid{\rdaGroupName}{\hbox{}}{%
+      \ifdefvoid{\rdaGroupName}{\raisebox{-\height}{\hbox{}}}{%
         \raisebox{-3mm - \height}{\makebox[0pt][r]{\parbox{42mm}{%
           \raggedleft{\linespread{0.75}\selectfont\rdaGroupName\par}
           \ifdefvoid{\rdaGroupType}{}{\smallskip{\small\textsc{\rdaGroupType}\par}}%
