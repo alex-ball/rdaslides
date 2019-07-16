@@ -1562,17 +1562,20 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \RequirePackage{tikz}
 \newcommand{\ProgressBar}{%
-  \begin{tikzpicture}[thin,line join=round]
-  \pgfmathparse{equal(\inserttotalframenumber,1)}%
-  \ifnum1=\pgfmathresult
-  \def\PerCentComplete{12}%
-  \else
-  \pgfmathqparse{12pt * ((\insertframenumber pt - 1pt) / (\inserttotalframenumber pt - 1pt))}%
-  \let\PerCentComplete\pgfmathresult
+  \ifbeamer@inappendix\relax\else
+    \begin{tikzpicture}[thin,line join=round]
+    \pgfmathparse{equal(\insertmainframenumber,1)}%
+    \ifnum1=\pgfmathresult
+    \def\PerCentComplete{12}%
+    \else
+    \pgfmathqparse{12pt * ((\insertframenumber pt - 1pt) /
+      (\insertmainframenumber pt - 1pt))}%
+    \let\PerCentComplete\pgfmathresult
+    \fi
+    \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
+    \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
+    \end{tikzpicture}%
   \fi
-  \draw[fg,fill=bg] (0mm,0mm) rectangle (12mm,1.35mm);
-  \filldraw[fg] (0mm,0mm) rectangle (\PerCentComplete mm,1.35mm);
-  \end{tikzpicture}%
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1611,7 +1614,11 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
 \defbeamertemplate{progress}{fraction}{%
-  \insertframenumber\slash\inserttotalframenumber
+  \ifbeamer@inappendix
+    \insertframenumber
+  \else
+    \insertframenumber\slash\insertmainframenumber
+  \fi
 }
 %    \end{macrocode}
 %
