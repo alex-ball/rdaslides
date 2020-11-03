@@ -6,6 +6,9 @@ TDIR  = $(TEMP)/$(NAME)
 VERS  = $(shell ltxfileinfo -v $(NAME).dtx)
 LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
+
+.PHONY: clean dist-clean inst install uninst uninstall zip
+
 all:	$(NAME).pdf $(NAME)-slides.pdf rda-logo.eps clean
 	@exit 0
 $(NAME).cls $(NAME)-sample-RDA.tex $(NAME)-sample-RDA2016.tex $(NAME)-sample-RDA2020.tex: $(NAME).dtx
@@ -33,27 +36,27 @@ inst: all
 	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
 	mkdir -p $(UTREE)/tex/generic/logos-rda
 	cp $(NAME).dtx $(NAME).ins $(UTREE)/source/latex/$(NAME)
-	cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg $(UTREE)/tex/latex/$(NAME)
+	cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png $(UTREE)/tex/latex/$(NAME)
 	cp $(NAME).pdf $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} $(NAME)-slides.pdf README.md $(UTREE)/doc/latex/$(NAME)
-	cp rda-logo.{eps,pdf} $(UTREE)/tex/generic/logos-rda
+	cp rda-logo.{eps,pdf} rda-logo-notext.png $(UTREE)/tex/generic/logos-rda
 uninst:
 	rm -r $(UTREE)/{tex,source,doc}/latex/$(NAME)
-	rm $(UTREE)/tex/generic/logos-rda/rda-logo.{eps,pdf}
+	rm $(UTREE)/tex/generic/logos-rda/rda-logo.{eps,pdf} rda-logo-notext.png
 	rmdir --ignore-fail-on-non-empty $(UTREE)/tex/generic/logos-rda
 	mktexlsr
 install: all
 	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
 	sudo mkdir -p $(LOCAL)/tex/generic/logos-rda
 	sudo cp $(NAME).dtx $(NAME).ins $(LOCAL)/source/latex/$(NAME)
-	sudo cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg $(LOCAL)/tex/latex/$(NAME)
+	sudo cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png $(LOCAL)/tex/latex/$(NAME)
 	sudo cp $(NAME).pdf $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} $(NAME)-slides.pdf README.md $(LOCAL)/doc/latex/$(NAME)
-	sudo cp rda-logo.{eps,pdf} $(LOCAL)/tex/generic/logos-rda
+	sudo cp rda-logo.{eps,pdf} rda-logo-notext.png $(LOCAL)/tex/generic/logos-rda
 uninstall:
 	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/$(NAME)
-	sudo rm $(LOCAL)/tex/generic/logos-rda/rda-logo.{eps,pdf}
+	sudo rm $(LOCAL)/tex/generic/logos-rda/rda-logo.{eps,pdf} rda-logo-notext.png
 	sudo rmdir --ignore-fail-on-non-empty $(LOCAL)/tex/generic/logos-rda
 	mktexlsr
 zip: all
 	mkdir $(TDIR)
-	cp $(NAME).{pdf,dtx} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} README.md Makefile rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-logo.{eps,pdf} $(TDIR)
+	cp $(NAME).{pdf,dtx} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} README.md Makefile rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png rda-logo.{eps,pdf} rda-logo-notext.png $(TDIR)
 	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
