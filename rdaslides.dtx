@@ -8,27 +8,31 @@
 \fi
 % \iffalse
 %</internal>
-%<*internal|class|theme|theme2|palette|mscwg|msdwg|mig>
-\def\Version{2016/10/20 v3.1}
-%</internal|class|theme|theme2|palette|mscwg|msdwg|mig>
+%<*internal|class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
+\def\Version{2020/11/03 v4}
+%</internal|class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
 %<*internal>
 \iffalse
 %</internal>
-%<*class|theme|theme2|palette|mscwg|msdwg|mig>
+%<*class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</class|theme|theme2|palette|mscwg|msdwg|mig>
+%</class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
 %<*class>
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
 %</class>
 %<*theme>
 \ProvidesPackage{beamerthemeRDA}
-    [\Version\space Beamer theme for Research Data Alliance presentations]
+    [\Version\space Beamer theme for Research Data Alliance presentations (2013 version)]
 %</theme>
 %<*theme2>
 \ProvidesPackage{beamerthemeRDA2016}
-[\Version\space Beamer theme for Research Data Alliance presentations]
+    [\Version\space Beamer theme for Research Data Alliance presentations (2016 version)]
 %</theme2>
+%<*theme3>
+\ProvidesPackage{beamerthemeRDA2020}
+    [\Version\space Beamer theme for Research Data Alliance presentations (2020 version)]
+%</theme3>
 %<*palette>
 \ProvidesPackage{rdacolors}
     [\Version\space Colour palette for Research Data Alliance documents]
@@ -51,7 +55,10 @@
 %<*sample2>
 \documentclass[2016]{rdaslides}
 %</sample2>
-%<*sample1|sample2>
+%<*sample3>
+\documentclass[2020]{rdaslides}
+%</sample3>
+%<*sample1|sample2|sample3>
 \usepackage{charity}
 \title{Sample Presentation}
 \author{Anne Author}
@@ -76,7 +83,7 @@
     \end{itemize}
   \end{frame}
 \end{document}
-%</sample1|sample2>
+%</sample1|sample2|sample3>
 %<*readme>
 The rdaslides class: Research Data Alliance presentations
 =========================================================
@@ -85,8 +92,9 @@ The rdaslides LaTeX class is intended to produce slides for Research
 Data Alliance (RDA) presentations, or an accompanying transcript, or both.
 It is based on the [beamerswitch] class.
 
-Internally, rdaslides uses one of two presentation themes, called 'RDA'
-and 'RDA2016' respectively, which can be used independently within beamer.
+Internally, rdaslides uses one of three presentation themes, called ‘RDA’,
+‘RDA2016’ and ‘RDA2020’ respectively, which can be used independently
+within beamer.
 
 Installation
 ------------
@@ -109,12 +117,14 @@ A makefile is provided which you can use with the Make utility:
       - rdacolors.sty
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
+      - beamerthemeRDA2020.sty
       - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
       - rdaslides-sample-RDA.tex
       - rdaslides-sample-RDA2016.tex
+      - rdaslides-sample-RDA2020.tex
 
   * Running `make` generates the above plus
 
@@ -123,6 +133,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-slides.pdf
       - rdaslides-sample-RDA.pdf
       - rdaslides-sample-RDA2016.pdf
+      - rdaslides-sample-RDA2020.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
@@ -276,6 +287,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{rdacolors.sty}{\from{\jobname.dtx}{palette}}
   \file{beamerthemeRDA.sty}{\from{\jobname.dtx}{theme}}
   \file{beamerthemeRDA2016.sty}{\from{\jobname.dtx}{theme2}}
+  \file{beamerthemeRDA2020.sty}{\from{\jobname.dtx}{theme3}}
   \file{rdamig.sty}{\from{\jobname.dtx}{mig}}
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
   \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
@@ -284,6 +296,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 \generate{
   \file{rdaslides-sample-RDA.tex}{\from{\jobname.dtx}{sample1}}
   \file{rdaslides-sample-RDA2016.tex}{\from{\jobname.dtx}{sample2}}
+  \file{rdaslides-sample-RDA2020.tex}{\from{\jobname.dtx}{sample3}}
 }
 %</install>
 %<install>\endbatchfile
@@ -308,7 +321,8 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 %<*driver>
 \ProvidesFile{rdaslides.dtx}
     [\Version\space Class for Research Data Alliance presentations]
-\documentclass[article,2016]{rdaslides}
+\PassOptionsToClass{aspectratio=169}{beamer}
+\documentclass[article,2020]{rdaslides}
 \let\RdaslidesMaketitle=\maketitle
 
 % Basic typography
@@ -579,7 +593,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 \StrSubstitute{\filedate}{/}{-}[\IsoFileDate]
 \date{\IsoFileDate}
 \occasion{An RDA Plenary}
-\hashtag{dummy}
+%\hashtag{dummy}
 
 \begin{document}
 \begin{frame}
@@ -594,9 +608,9 @@ This is the documentation for and a demonstration of \filename, ‘\fileinfo’,
 
 \subsection{Loading the class}
 
-\begin{frame}[fragile]{Using the class}
 The class is loaded in the usual way.
 
+\begin{frame}[fragile]{Using the class}
 \begin{tcolorbox}[docexample,fontupper=\small]
 \cs{documentclass}\oarg{options}\brackets{rdaslides}
 \end{tcolorbox}
@@ -625,26 +639,38 @@ The options above are only a subset; please see the \pkg{beamerswitch}
 documentation for the full set. Note that the \key{set} option is now simply
 shorthand for \key{article} and \key{alsobeamer}.
 
-% A slide has a line width of 108mm
+% A 4:3 slide has a line width of 108mm.
+% A 16:9 slide has a line width of 140mm.
+% The article page has a line width of 150mm.
 \begin{frame}[fragile]{Using the class}
 \setlength{\fboxsep}{0pt}%
-\only<presentation>{\setlength{\columnsep}{8mm}}%
-\only<article>{\setlength{\columnsep}{16mm}}%
-\begin{multicols}{2}[There are also options for choosing between the two available themes.]
-\begin{docKey}{2013}{}{no value, initially set}
+\only<presentation>{\setlength{\columnsep}{7mm}}%
+\only<article>{\setlength{\columnsep}{12mm}}%
+\begin{multicols}{3}[There are also options for choosing between the three available themes.]
+\begin{docKey}{2013}{}{initially set}
   Use the \bthm{RDA} theme.
 \end{docKey}
 \par\only<presentation>{\medskip}%
 \par\bgroup\centering
-\fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA}}
+\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA}}
 \par\egroup
 \columnbreak
-\begin{docKey}{2016}{}{no value, initially unset}
+\begin{docKey}{2016}{}{initially unset}
+\raggedright
   Use the \bthm{RDA2016} theme.
 \end{docKey}
 \par\only<presentation>{\medskip}%
 \par\bgroup\centering
-\fbox{\includegraphics[width=5cm]{rdaslides-sample-RDA2016}}
+\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA2016}}
+\par\egroup
+\columnbreak
+\begin{docKey}{2020}{}{initially unset}
+\raggedright
+  Use the \bthm{RDA2020} theme.
+\end{docKey}
+\par\only<presentation>{\medskip}%
+\par\bgroup\centering
+\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA2020}}
 \par\egroup
 \end{multicols}
 \end{frame}
@@ -652,12 +678,12 @@ shorthand for \key{article} and \key{alsobeamer}.
 \subsection{Loading the theme}
 
 \begin{frame}[fragile]{Using the beamer theme}
-\only<presentation>{\setlength{\columnsep}{8mm}}%
-\only<article>{\setlength{\columnsep}{16mm}}%
+\only<presentation>{\setlength{\columnsep}{7mm}}%
+\only<article>{\setlength{\columnsep}{5mm}}%
 If you don't want the article mode settings introduced by the full class,
 you can simply load the theme directly into \pkg{beamer}:
 
-\begin{multicols}{2}
+\begin{multicols}{3}
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA}
@@ -666,6 +692,11 @@ you can simply load the theme directly into \pkg{beamer}:
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA2016}
+\end{dispListing}
+\columnbreak
+\begin{dispListing}
+\documentclass{beamer}
+\usetheme{RDA2020}
 \end{dispListing}
 \end{multicols}
 \end{frame}
@@ -685,6 +716,12 @@ Use this to provide the name of the event where the presentation will be given.
 \end{docCommand}
 \begin{docCommand}{authorurl}{\marg{URL}}
 Use this to provide a URL where more details about the author may be consulted (not so useful for multi-author presentations).
+\end{docCommand}
+\end{frame}
+
+\begin{frame}{Social media}
+\begin{docCommand}{handles}{\marg{comma-separated list}}
+Use this to provide Twitter handles after the official RDA one. Omit the initial @ sign, as the class will add it for you. Defaults to the handles for RDA Europe and RDA US. Remember to escape any underscores.
 \end{docCommand}
 \begin{docCommand}{hashtag}{\marg{hashtag}}
 Use this to specify exactly one hashtag for sharing on social media. Omit the hash (\#), as the class will add it for you.
@@ -706,13 +743,13 @@ so to use \cs{rdaGroupName}, for example, you would need to do something like th
 \def\rdaGroupName{Metadata}
 \end{dispListing}
 
-\begin{frame}[fragile]{Hooks (RDA Group)}
 You can associate your presentation with a particular group by defining the following hooks.
 
+\begin{frame}[fragile]{Define-It-Yourself Hooks (RDA Group)}
 \begin{docCommand}{rdaGroupLogo}{}
-This should insert the logo of an RDA group. For best results, scale it to fit the width of the bounding box like so:
+This should insert the logo of an RDA group. For best results, scale it to fit the width of the bounding box and drop it slightly, like so:
 \begin{dispListing}
-\def\licenseLogo{\insertgraphics[width=\hsize]{filename}}
+\def\rdaGroupLogo{\adjustimage{width=\hsize,raise=-0.2\height}{filename}}
 \end{dispListing}
 \end{docCommand}
 \begin{docCommand}{rdaGroupName}{}
@@ -737,10 +774,10 @@ Use it in the usual way:
 Contributions of similar packages representing other groups are welcome,
 but there is no intention to provide a comprehensive set.
 
-\begin{frame}[fragile]{Hooks (Licence)}
 If releasing the presentation under licence, you can declare this by defining
 the following hooks.
 
+\begin{frame}[fragile]{Define-It-Yourself Hooks (Licence)}
 \begin{docCommand}{licenseLogo}{}
 This should insert the logo of the licence under which the presentation is released, if applicable. For best results, scale it to fit the width of the bounding box like so:
 \begin{dispListing}
@@ -891,7 +928,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % helpful for calculating lengths.
 %
 %    \begin{macrocode}
-\RequirePackage{etoolbox, calc}
+\RequirePackage{etoolbox, calc, adjustbox}
 
 %    \end{macrocode}
 %
@@ -904,14 +941,16 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \begin{optionkey}{2013}
 % \begin{optionkey}{2016}
-% We provide the \key{2013} option for choosing the (default) \bthm{RDA} theme
-% and the \key{2016} option for choosing the \bthm{RDA2016} theme instead.
+% \begin{optionkey}{2020}
+% We provide keys for choosing between the available themes.
 %
 %    \begin{macrocode}
 \def\rdaslides@theme{RDA}
 \DeclareOption{2013}{\def\rdaslides@theme{RDA}}
 \DeclareOption{2016}{\def\rdaslides@theme{RDA2016}}
+\DeclareOption{2020}{\def\rdaslides@theme{RDA2020}}
 %    \end{macrocode}
+% \end{optionkey}
 % \end{optionkey}
 % \end{optionkey}
 %
@@ -964,6 +1003,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \PassOptionsToPackage{table}{xcolor}
 \LoadClass{beamerswitch}
+\RequirePackage{tikz}
 
 %    \end{macrocode}
 %
@@ -1074,7 +1114,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme|theme2>
+%<*theme|theme2|theme3>
 % \fi
 %
 % \subsection{Theme: Presentation font theme}
@@ -1089,7 +1129,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -1113,7 +1153,19 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*class|theme|theme2>
+%<*theme3>
+% \fi
+%
+% The \bthm{RDA2020} has larger title text:
+%
+%    \begin{macrocode}
+\setbeamerfont{footline}{size=\scriptsize}
+\setbeamerfont{title}{size=\LARGE}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
+%<*class|theme|theme2|theme3>
 % \fi
 %
 % \subsection{Theme: Presentation colour theme}
@@ -1127,8 +1179,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</class|theme|theme2>
-%<*theme|theme2>
+%</class|theme|theme2|theme3>
+%<*theme|theme2|theme3>
 % \fi
 %
 % Here are the basic colours:
@@ -1141,7 +1193,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -1201,11 +1253,40 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 % \iffalse
 %</theme2>
-%<*theme|theme2>
+%<*theme3>
+% \fi
+%
+% \subsubsection{\bthm{RDA2020} theme}
+%
+% Here are the colours for the inner theme elements:
+%
+%    \begin{macrocode}
+\setbeamercolor{title}{parent=frametitle}
+\setbeamercolor{subtitle}{parent=frametitle}
+\setbeamercolor{author}{parent=normaltext}
+\setbeamercolor{institute}{parent=normaltext}
+\setbeamercolor{date}{parent=normaltext}
+\setbeamercolor{item}{fg=rdabrown}
+\setbeamercolor{subitem}{fg=rdagreen}
+\setbeamercolor{subsubitem}{fg=rdabrown}
+%    \end{macrocode}
+%
+%
+% Here are the colours for the outer theme elements:
+%
+%    \begin{macrocode}
+\setbeamercolor{frametitle}{bg=,fg=rdagreen}
+\setbeamercolor{headline}{parent=frametitle}
+\setbeamercolor{footline}{bg=,fg=white}
+\setbeamercolor{progress}{bg=white,fg=rdalightbrown}
+%    \end{macrocode}
+% \iffalse
+%</theme3>
+%<*theme|theme2|theme3>
 % \fi
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*class>
 % \fi
 %
@@ -1239,6 +1320,9 @@ numbers here are totally fictitious when it comes to the actual files.
 \newcommand*{\hashtag}[1]{%
   \newcommand*{\inserthashtag}{\href{https://twitter.com/hashtag/#1}{\##1}}%
 }
+\newcommand{\RDAFormatHandle}[1]{ | \href{https://twitter.com/#1}{@#1}}
+\newcommand{\handles}[1]{\def\handlecsv{{#1}}}
+\handles{rda\_europe, RDA\_US}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -1288,7 +1372,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme|theme2>
+%<*theme|theme2|theme3>
 % \fi
 %
 % \subsection{Theme: Presentation outer theme}
@@ -1308,7 +1392,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme2>
 % \fi
 %
@@ -1320,18 +1404,40 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme>
+%<*theme|theme3>
 % \fi
 %
-% The \bthm{RDA} theme, however, uses some distinctive slide backgrounds.
+% The \bthm{RDA} and \bthm{RDA2020} themes, however, use some distinctive slide backgrounds.
 %
 %    \begin{macrocode}
 \toggletrue{bgpicture}
 %    \end{macrocode}
 %
 % \iffalse
+%</theme|theme3>
+%<*theme2|theme3>
+% \fi
+%
+% The \bthm{RDA2020} theme uses this background, but faded.
+%
+%    \begin{macrocode}
+\newcommand{\defaultbgpicture}{rda-bg-wmark}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme2|theme3>
+%<*theme>
+% \fi
+%
+% The \bthm{RDA} theme uses this full saturation background.
+%
+%    \begin{macrocode}
+\newcommand{\defaultbgpicture}{rda-bg-normal}
+%    \end{macrocode}
+%
+% \iffalse
 %</theme>
-%<*theme|theme2>
+%<*theme|theme2|theme3>
 % \fi
 %
 % \begin{macro}{bgpicture}
@@ -1344,17 +1450,12 @@ numbers here are totally fictitious when it comes to the actual files.
 % off entirely by issuing with the frame option \key{nobackground}.
 %
 %    \begin{macrocode}
-\newcommand{\bgpicture}{rda-bg-normal}
-\define@key{beamerframe}{background}[rda-bg-normal]{%
-  \gdef\bgpicture{#1}\toggletrue{bgpicture}%
+\let\bgpicture\defaultbgpicture
+\define@key{beamerframe}{background}[\defaultbgpicture]{%
+  \xdef\bgpicture{#1}\toggletrue{bgpicture}%
 }
 \define@key{beamerframe}{nobackground}[true]{%
   \togglefalse{bgpicture}%
-}
-\setbeamertemplate{background}{%
-  \iftoggle{bgpicture}{%
-    \includegraphics[width=\paperwidth,height=\paperheight]{\bgpicture}%
-  }{}%
 }
 %    \end{macrocode}
 % \end{optionkey}
@@ -1362,20 +1463,84 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
+%</theme|theme2|theme3>
+%<*theme|theme2>
+% \fi
+%
+% 
+%
+%    \begin{macrocode}
+\setbeamertemplate{background}{%
+  \iftoggle{bgpicture}{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{\bgpicture}%
+  }{}%
+}
+%    \end{macrocode}
+%
+% \iffalse
 %</theme|theme2>
-%<*theme>
+%<*theme3>
+% \fi
+%
+% In the \bthm{2020} theme, we try to be a bit cleverer and scale the
+% background image so that it just fills the background, without changing
+% the image aspect ratio. We start by filling the background exactly in
+% one direction, then if the other direction is not full, enlarging it
+% so it is.
+%
+%    \begin{macrocode}
+\setbeamertemplate{background canvas}{%
+  \iftoggle{bgpicture}{%
+    \adjustimage{%
+      height=\paperheight,
+      min width=\paperwidth,
+      center=\paperwidth}{\bgpicture}%    
+    \begin{adjustbox}{llap}
+      \begin{tikzpicture}
+        \ifdefstrequal{\bgpicture}{\defaultbgpicture}{%
+          \fill[white,ultra nearly opaque]
+            (0mm,6.567mm) rectangle (\paperwidth,\paperheight);
+        }{%
+          \useasboundingbox
+            (0,0) rectangle (\paperwidth,\paperheight);
+            \wlog{DEBUG: `\bgpicture' is not `\defaultbgpicture'}
+        }%
+        \fill[rdabrown,ultra nearly opaque]
+          (0,0) rectangle (\paperwidth,6.567mm);
+      \end{tikzpicture}%
+    \end{adjustbox}%
+  }{%
+    \begin{tikzpicture}
+      \useasboundingbox
+        (0,0) rectangle (\paperwidth,\paperheight);
+      \fill[rdabrown] (0,0) rectangle (\paperwidth,6.567mm);
+    \end{tikzpicture}%
+  }%
+}
+\setbeamertemplate{background}{%
+  \begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north west,xshift=1.7mm,yshift=-4.11mm,inner sep=0mm]
+    at (current page.north west)
+    {\adjustimage{width=25.5mm}{rda-logo-notext}};
+  \end{tikzpicture}%
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
+%<*theme|theme3>
 % \fi
 %
 % To prevent the settings for these switches persisting between slides, we reset
 % them as part of the set-up of `frame' environments. We have to do this twice,
-% once for the \bthm{RDA} theme\dots
+% once for the \bthm{RDA} and \bthm{RDA2020} themes\dots
 %
 %    \begin{macrocode}
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\togglefalse{titlepage}}
 %    \end{macrocode}
 %
 % \iffalse
-%</theme>
+%</theme|theme3>
 %<*theme2>
 % \fi
 %
@@ -1428,6 +1593,50 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
+%<*theme3>
+% \fi
+%
+% We do something similar with the \bthm{2020} theme, but lay it out
+% more like a frametitle
+%
+%    \begin{macrocode}
+\defbeamertemplate*{headline}{RDA headline}{%
+  \iftoggle{titlepage}{
+%    \end{macrocode}
+%
+% We insert some hooks so that
+% users can customize the title space with details of an RDA group by defining
+% \cs{rdaGroupLogo}, \cs{rdaGroupName} and \cs{rdaGroupType}.
+%
+%    \begin{macrocode}
+    \vspace*{10.185mm}\par
+    \hbox{}\hfill
+    \ifdefvoid{\rdaGroupName}{}{%
+      \begin{adjustbox}%
+      { varwidth=\dimexpr\paperwidth-47.7mm-1em\relax,
+        valign=M,
+        set vsize={0pt}{0pt}%
+      }%
+        \linespread{0.75}\usebeamerfont{frametitle}%
+        \usebeamercolor{frametitle}\color{fg}%
+        \rdaGroupName\par
+        \ifdefvoid{\rdaGroupType}{}{%
+          \usebeamerfont{framesubtitle}%
+          \rdaGroupType\par
+        }%
+      \end{adjustbox}%
+    }\quad
+    \ifdefvoid{\rdaGroupLogo}{}{%
+      \adjustbox{width=16mm,valign=M,set vsize={0pt}{0pt}}{\rdaGroupLogo}%
+    }%
+    \hspace*{1.7mm}%
+    \par
+  }{}%
+}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
 %<*theme>
 % \fi
 %
@@ -1509,7 +1718,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme2>
 % \fi
 %
-% Here is the corresonding version for the \bthm{RDA2016} theme.
+% Here is the corresponding version for the \bthm{RDA2016} theme.
 %
 %    \begin{macrocode}
 \defbeamertemplate*{frametitle}{RDA theme}{%
@@ -1538,7 +1747,6 @@ numbers here are totally fictitious when it comes to the actual files.
           \insertframesubtitle\strut\par
         }%
       }%
-      %\if@tempswa\else\vskip-.3cm\fi%
     \end{beamercolorbox}%
   }%
 }
@@ -1547,7 +1755,45 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme|theme2>
+%<*theme3>
+% \fi
+%
+% Here is the corresponding version for the \bthm{RDA2020} theme.
+%
+%    \begin{macrocode}
+\defbeamertemplate*{frametitle}{RDA theme}{%
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+%    \end{macrocode}
+%
+% On the other slides, the title block begins with the RDA logo flush to the slide edge.
+%
+%    \begin{macrocode}
+  \iftoggle{titlepage}{}{%
+    \begin{beamercolorbox}[sep=0pt,wd=\paperwidth]{frametitle}
+      \usebeamerfont{frametitle}%
+      \hangindent=30mm
+      \hangafter=1
+      \rule{0pt}{9.7mm}%
+      \hspace{30mm}%
+      \begin{adjustbox}{varwidth=\dimexpr\paperwidth-30mm-1em\relax,valign=M}
+      \strut\insertframetitle\par%
+      {%
+        \ifdefvoid{\insertframesubtitle}{}{%
+          \usebeamerfont{framesubtitle}%
+          \usebeamercolor[fg]{framesubtitle}%
+          \insertframesubtitle\strut\par
+        }%
+      }%
+      \end{adjustbox}
+    \end{beamercolorbox}%
+  }%
+}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
+%<*theme|theme2|theme3>
 % \fi
 %
 % We provide a variety of progress indicators.
@@ -1560,7 +1806,6 @@ numbers here are totally fictitious when it comes to the actual files.
 % division by zero.
 %
 %    \begin{macrocode}
-\RequirePackage{tikz}
 \newcommand{\ProgressBar}{%
   \ifbeamer@inappendix\relax\else
     \begin{tikzpicture}[thin,line join=round]
@@ -1581,8 +1826,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme|theme2>
-%<*theme2>
+%</theme|theme2|theme3>
+%<*theme2|theme3>
 % \fi
 %
 % In the \bthm{RDA2016} theme, we can use this directly as it will sit on the
@@ -1593,7 +1838,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme2>
+%</theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -1606,18 +1851,26 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme>
-%<*theme|theme2>
+%<*theme|theme2|theme3>
 % \fi
 %
 % As an alternative, progress can be shown as a fraction of frame number over
-% total number of frames.
+% total number of frames. We make sure it takes up the same space on all slides
+% as it does on the last main slide.
 %
 %    \begin{macrocode}
+\newlength{\progresswidth}
+\ifdef{\g@addto@macro}{\g@addto@macro\beamer@lastminutepatches{%
+  \settowidth{\progresswidth}{%
+  \usebeamerfont{footline}\insertmainframenumber}}}{}%
 \defbeamertemplate{progress}{fraction}{%
+  \usebeamercolor{footline}\color{fg}%
   \ifbeamer@inappendix
-    \insertframenumber
+    \adjustbox{right=\progresswidth}{\insertframenumber}%
+    \phantom{\slash}\hspace*{\progresswidth}%
   \else
-    \insertframenumber\slash\insertmainframenumber
+    \adjustbox{right=\progresswidth}{\insertframenumber}\slash
+    \adjustbox{left=\progresswidth}{\insertmainframenumber}%
   \fi
 }
 %    \end{macrocode}
@@ -1626,14 +1879,15 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
 \defbeamertemplate{progress}{number}{%
-  \insertframenumber%
+  \usebeamercolor{footline}\color{fg}%
+  \adjustbox{right=\progresswidth}{\insertframenumber}%
 }
 %    \end{macrocode}
 %
 % The \pkg{beamer} footline template lays out elements along the bottom of the screen.
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -1717,8 +1971,8 @@ numbers here are totally fictitious when it comes to the actual files.
     \textcolor{rdamidgreen}{\rule[3.25mm]{\paperwidth}{0.7mm}}%
   }%
   \begin{beamercolorbox}[ht=3.25mm,dp=1.75mm]{footline}
-    \hspace*{\beamer@leftmargin}%
     \usebeamerfont{footline}%
+    \hspace*{\beamer@leftmargin}%
 %    \end{macrocode}
 %
 % In the left-hand box, we put the date.
@@ -1753,7 +2007,6 @@ numbers here are totally fictitious when it comes to the actual files.
     \hspace*{\beamer@rightmargin}\par
   \end{beamercolorbox}
 }
-
 %    \end{macrocode}
 %
 % Note that, as compared to the \bthm{RDA} theme, this template does not display
@@ -1761,12 +2014,79 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme|theme2>
+%<*theme3>
+% \fi
+%
+% In the \bthm{RDA2020} theme, the footline is the same on all slides, and
+% consists of a brown strip various metadata spaced out.
+%
+%    \begin{macrocode}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[ht=4.35mm,dp=2.22mm]{footline}
+    \usebeamerfont{footline}%
+    \hspace*{\beamer@leftmargin}%
+%    \end{macrocode}
+%
+% First, we put the date.
+%
+%    \begin{macrocode}
+    \ifdef{\printdate}{\printdate{\insertdate}}{\insertdate}%
+    \hspace*{\stretch{3}}%
+%    \end{macrocode}
+%
+% We display the hashtag, if given. Otherwise we display the RDA domain
+% name.
+%
+%    \begin{macrocode}
+    \ifdefvoid{\inserthashtag}{%
+      \adjustimage{%
+        totalheight=\baselineskip,
+        raise=-.2\baselineskip
+      }{rda-link-white}\space
+      \href{https://rd-alliance.org/}{rd-alliance.org}%
+    }{%
+      \inserthashtag
+    }\hspace*{\stretch{3}}%
+%    \end{macrocode}
+%
+% We display the official Twitter handles.
+%
+%    \begin{macrocode}
+    \adjustimage{%
+      totalheight=\baselineskip,
+      raise=-.2\baselineskip
+    }{rda-twitter-white}\space
+    \href{https://twitter.com/resdatall}{@resdatall}%
+    \expandafter\forcsvlist\expandafter\RDAFormatHandle\handlecsv
+    \hspace*{\stretch{2}}%
+%    \end{macrocode}
+%
+% We use the right hand box for the progress indicator.
+%
+%    \begin{macrocode}
+    \usebeamertemplate*{progress}%
+    \hspace*{\dimexpr\beamer@rightmargin - 0.333em\relax}%
+    \ifdefvoid{\licenseLogo}{}{%
+      \adjustbox{width=11.7mm,raise=-0.25\height}{\licenseLogo}%
+    }%
+    \hspace*{0.333em}\par
+  \end{beamercolorbox}
+}
+
+%    \end{macrocode}
+%
+% Note that, as compared to the \bthm{RDA} theme, this template does not display
+% the title graphic or licence logo, so we will have to fix that later.
+%
+% \iffalse
+%</theme3>
+%<*theme|theme2|theme3>
 % \fi
 %
 % By default we remove the tell-tale and seldom used \pkg{beamer} navigation symbols.
 %
 %    \begin{macrocode}
+
 \setbeamertemplate{navigation symbols}{}
 
 %    \end{macrocode}
@@ -1791,7 +2111,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -1817,6 +2137,21 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
+%<*theme3>
+% \fi
+% In the \bthm{RDA2016} theme, itemized lists use little RDA logos at
+% the top level, chevrons at the second, and en dashes at the third.
+%
+%    \begin{macrocode}
+\AtEndPreamble{\RequirePackage{fontawesome}}
+\defbeamertemplate*{itemize item}{rda}{%
+  \adjustimage{height=1em,raise=-.2em}{rda-bullet}}
+\defbeamertemplate*{itemize subitem}{chevron}{\faAngleRight}
+\defbeamertemplate*{itemize subsubitem}{dash}{\textbf{\textendash}}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
 %<*theme>
 % \fi
 %
@@ -1948,7 +2283,63 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme|theme2>
+%<*theme3>
+% \fi
+%
+% The \bthm{RDA2020} theme has the same small logo as all other
+% slides, so we reflect this in the layout.
+%
+%    \begin{macrocode}
+\setbeamertemplate{title page}{%
+  \global\toggletrue{titlepage}%
+  \vspace*{12mm}%
+%    \end{macrocode}
+%
+% We then provide the metadata elements, with stretchy skips top and bottom to
+% centre them on the page.
+%
+%    \begin{macrocode}
+  \vfill
+  \begin{beamercolorbox}[sep=0pt,center]{title}
+    \usebeamerfont{title}\inserttitle\par%
+    \ifdefvoid{\insertsubtitle}{}{%
+      \vskip0.25em%
+      {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    }%
+  \end{beamercolorbox}%
+  \bigskip
+  \begin{beamercolorbox}[sep=0pt,center]{author}
+    \usebeamerfont{author}\insertauthor
+  \end{beamercolorbox}
+  \smallskip
+  \begin{beamercolorbox}[sep=0pt,center]{institute}
+    \usebeamerfont{institute}\insertinstitute
+  \end{beamercolorbox}
+  \bigskip\medskip
+  \begin{beamercolorbox}[sep=0pt,center]{date}
+    \usebeamerfont{date}%
+    \ifdefvoid{\insertoccasion}{}{\insertoccasion\\}%
+    \ifdef{\printdate}{\printdate{\insertdate}}{\insertdate}%
+  \end{beamercolorbox}
+  \vfill
+%    \end{macrocode}
+%
+% Finally, we provide an extra zero-height line for the title graphic.
+% Unlike the other templates, the licence logo is in the footline
+% rather than here.
+%
+%    \begin{macrocode}
+  \raisebox{0pt}[0pt][0pt]{\makebox[\linewidth]{%
+    \usebeamercolor[fg]{titlegraphic}%
+    \inserttitlegraphic
+  }}%
+}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
+%<*theme|theme2|theme3>
 % \fi
 %
 % \subsection{Finishing off}
@@ -1978,7 +2369,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme|theme2>
+%</theme|theme2|theme3>
 %<*theme>
 % \fi
 %
@@ -2116,6 +2507,71 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
+%<*theme3>
+% \fi
+%
+% Here is the corresponding template for the \bthm{RDA2016} theme. As with the
+% title page template, we switch to title page mode and insert a spacer to
+% protect the logo at the top of the page.
+%
+%    \begin{macrocode}
+\setbeamertemplate{finale page}{%
+  \global\toggletrue{titlepage}%
+  \vspace*{12mm}%
+%    \end{macrocode}
+%
+% We continue with a thank you.
+%
+%    \begin{macrocode}
+  \vspace*{\stretch{1}}%
+  \begin{beamercolorbox}[sep=0pt,center]{title}
+    \usebeamerfont{title}Thank you for your attention\par%
+  \end{beamercolorbox}%
+%    \end{macrocode}
+%
+% If the author URL has been provided, we display that.
+%
+%    \begin{macrocode}
+  \ifdefvoid{\insertauthorurl}{}{%
+    \bigskip
+    \begin{beamercolorbox}[sep=0pt,center]{author}
+      \usebeamerfont{author}\insertauthor: \url{\insertauthorurl}\par%
+    \end{beamercolorbox}%
+  }%
+%    \end{macrocode}
+%
+% If the RDA group URL has been provided, we display that.
+%
+%    \begin{macrocode}
+  \ifdefvoid{\rdaGroupUrl}{}{%
+    \bigskip
+    \begin{beamercolorbox}[sep=0pt,center]{author}
+      \usebeamerfont{author}%
+      \ifdefvoid{\rdaGroupName}{}{\rdaGroupName
+        \ifdefvoid{\rdaGroupType}{}{ \rdaGroupType}:
+      }\url{\rdaGroupUrl}\par%
+    \end{beamercolorbox}%
+  }%
+%    \end{macrocode}
+%
+% Lastly, we display whatever is in the optional argument, if one has been
+% provided.
+%
+%    \begin{macrocode}
+  \ifdefvoid{\rdaslides@finale@text}{}{%
+    \bigskip
+    \begin{beamercolorbox}[sep=0pt,center]{date}
+      \usebeamerfont{date}%
+      \rdaslides@finale@text\par%
+    \end{beamercolorbox}%
+  }
+  \vspace*{\stretch{1}}%
+}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme3>
 %<*class>
 % \fi
 %

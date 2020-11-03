@@ -5,8 +5,9 @@ The rdaslides LaTeX class is intended to produce slides for Research
 Data Alliance (RDA) presentations, or an accompanying transcript, or both.
 It is based on the [beamerswitch] class.
 
-Internally, rdaslides uses one of two presentation themes, called 'RDA'
-and 'RDA2016' respectively, which can be used independently within beamer.
+Internally, rdaslides uses one of three presentation themes, called ‘RDA’,
+‘RDA2016’ and ‘RDA2020’ respectively, which can be used independently
+within beamer.
 
 Installation
 ------------
@@ -29,12 +30,14 @@ A makefile is provided which you can use with the Make utility:
       - rdacolors.sty
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
+      - beamerthemeRDA2020.sty
       - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
       - rdaslides.ins
       - rdaslides-sample-RDA.tex
       - rdaslides-sample-RDA2016.tex
+      - rdaslides-sample-RDA2020.tex
 
   * Running `make` generates the above plus
 
@@ -43,6 +46,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-slides.pdf
       - rdaslides-sample-RDA.pdf
       - rdaslides-sample-RDA2016.pdf
+      - rdaslides-sample-RDA2020.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
