@@ -1467,8 +1467,6 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme|theme2>
 % \fi
 %
-% 
-%
 %    \begin{macrocode}
 \setbeamertemplate{background}{%
   \iftoggle{bgpicture}{%
@@ -1494,7 +1492,7 @@ numbers here are totally fictitious when it comes to the actual files.
     \adjustimage{%
       height=\paperheight,
       min width=\paperwidth,
-      center=\paperwidth}{\bgpicture}%    
+      center=\paperwidth}{\bgpicture}%
     \begin{adjustbox}{llap}
       \begin{tikzpicture}
         \ifdefstrequal{\bgpicture}{\defaultbgpicture}{%
@@ -2633,8 +2631,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
       \ifdefvoid{\rdaGroupName}{%
-        The Research Data Alliance is supported by the
-        European Commission, the US Government and the Australian Government.\par
+        The Research Data Alliance is supported by the European Commission,
+        the National Science Foundation and other U.S. agencies,
+        and the Australian Government.\par
         \vspace{1ex}%
         For more information, please visit \url{https://rd-alliance.org/}%
 %    \end{macrocode}
@@ -2643,9 +2642,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 %    \begin{macrocode}
       }{%
-        The \rdaGroupName\ifdefvoid{\rdaGroupType}{}{ \rdaGroupType}
-        is part of the Research Data Alliance, which is supported by the
-        European Commission, the US Government and the Australian Government.
+        This work was developed as part of the Research Data Alliance (RDA)
+        \rdaGroupName\ifdefvoid{\rdaGroupType}{}{ \rdaGroupType}, and we
+        acknowledge the support provided by the RDA community and structures.
         \ifdefvoid{\rdaGroupUrl}{}{%
           \par\vspace{1ex}%
           For more information, please visit \url{\rdaGroupUrl}%
