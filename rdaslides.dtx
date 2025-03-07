@@ -180,7 +180,7 @@ first five steps.
       - `source/latex/rdaslides`:
         rdaslides.dtx,
         rdaslides.ins
-      - `tex/generic/logos-rda` :
+      - `tex/generic/logos-rda`:
         rda-logo.eps,
         rda-logo.pdf
       - `tex/latex/rdaslides`:
@@ -322,6 +322,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
 \ProvidesFile{rdaslides.dtx}
     [\Version\space Class for Research Data Alliance presentations]
 \PassOptionsToClass{aspectratio=169}{beamer}
+\PassOptionsToPackage{highlightmode=immediate}{minted}
 \documentclass[article,2020]{rdaslides}
 \let\RdaslidesMaketitle=\maketitle
 

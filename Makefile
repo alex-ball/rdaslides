@@ -29,7 +29,8 @@ clean:
 	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
 	rm -f $(NAME)-{slides,sample-RDA,sample-RDA2016,sample-RDA2020}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
 	rm -f rda{mi,mscw,msdw}g.doc
-	rm -rf _minted-*
+	rm -f *.minted
+	rm -rf _minted*
 distclean: clean
 	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf}
 inst: all
