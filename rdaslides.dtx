@@ -8,15 +8,15 @@
 \fi
 % \iffalse
 %</internal>
-%<*internal|class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
-\def\Version{2020/11/03 v4}
-%</internal|class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
+%<*internal|class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
+\def\Version{2025/03/07 v5}
+%</internal|class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
 %<*internal>
 \iffalse
 %</internal>
-%<*class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
+%<*class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%</class|theme|theme2|theme3|palette|mscwg|msdwg|mig>
+%</class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
 %<*class>
 \ProvidesClass{rdaslides}
     [\Version\space Class for Research Data Alliance presentations]
@@ -33,6 +33,10 @@
 \ProvidesPackage{beamerthemeRDA2020}
     [\Version\space Beamer theme for Research Data Alliance presentations (2020 version)]
 %</theme3>
+%<*theme4>
+\ProvidesPackage{beamerthemeRDA2024}
+    [\Version\space Beamer theme for Research Data Alliance presentations (2024 version)]
+%</theme4>
 %<*palette>
 \ProvidesPackage{rdacolors}
     [\Version\space Colour palette for Research Data Alliance documents]
@@ -50,16 +54,22 @@
 [\Version\space Logo and details of the RDA Metadata Interest Group]
 %</mig>
 %<*sample1>
-\documentclass{rdaslides}
+\documentclass[beameroptions={ignorenonframetext,aspectratio=169}]{rdaslides}
 %</sample1>
 %<*sample2>
-\documentclass[2016]{rdaslides}
+\documentclass[2016,beameroptions={ignorenonframetext,aspectratio=169}]{rdaslides}
 %</sample2>
 %<*sample3>
-\documentclass[2020]{rdaslides}
+\documentclass[2020,beameroptions={ignorenonframetext,aspectratio=169}]{rdaslides}
 %</sample3>
-%<*sample1|sample2|sample3>
-\usepackage{charity}
+%<*sample4>
+\documentclass[2024,beameroptions={ignorenonframetext,aspectratio=169}]{rdaslides}
+%</sample4>
+%<*sample1|sample2|sample3|sample4>
+\usepackage[scaled=0.96,sups]{XCharter}
+\usepackage[scaled=0.95,tabular]{sourcesanspro}
+\usepackage[varl,varqu]{zi4}
+\makeatletter\def\mdseries@tt{m}\makeatother
 \title{Sample Presentation}
 \author{Anne Author}
 \date{2016-07-01}
@@ -83,7 +93,7 @@
     \end{itemize}
   \end{frame}
 \end{document}
-%</sample1|sample2|sample3>
+%</sample1|sample2|sample3|sample4>
 %<*readme>
 The rdaslides class: Research Data Alliance presentations
 =========================================================
@@ -118,6 +128,7 @@ A makefile is provided which you can use with the Make utility:
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
       - beamerthemeRDA2020.sty
+      - beamerthemeRDA2024.sty
       - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
@@ -125,6 +136,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-sample-RDA.tex
       - rdaslides-sample-RDA2016.tex
       - rdaslides-sample-RDA2020.tex
+      - rdaslides-sample-RDA2024.tex
 
   * Running `make` generates the above plus
 
@@ -134,6 +146,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-sample-RDA.pdf
       - rdaslides-sample-RDA2016.pdf
       - rdaslides-sample-RDA2020.pdf
+      - rdaslides-sample-RDA2024.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
@@ -188,18 +201,31 @@ first five steps.
         rdacolors.sty,
         beamerthemeRDA.sty,
         beamerthemeRDA2016.sty,
+        beamerthemeRDA2020.sty,
+        beamerthemeRDA2024.sty,
         rdamig.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
+      - `tex/latex/rdaslides/img2013`:
         rda-bg-normal.jpeg,
         rda-bg-title1.jpeg,
         rda-bg-title2.jpeg
+      - `tex/latex/rdaslides/img2020`:
+        rda-bg-watermark.jpeg
+        rda-link-white.png
+        rda-twitter-white.png
+      - `tex/latex/rdaslides/img2024`:
+        rda24-*.png
       - `doc/latex/rdaslides`:
         rdaslides.pdf,
         rdaslides-sample-RDA.tex,
         rdaslides-sample-RDA.pdf,
         rdaslides-sample-RDA2016.tex,
         rdaslides-sample-RDA2016.pdf,
+        rdaslides-sample-RDA2020.tex,
+        rdaslides-sample-RDA2020.pdf,
+        rdaslides-sample-RDA2024.tex,
+        rdaslides-sample-RDA2024.pdf,
         rdaslides-slides.pdf,
         README.md
 
@@ -211,8 +237,7 @@ Licence
 
 Copyright 2016 Alex Ball.
 
-This work consists of four image files (rda-logo.pdf, rda-bg-normal.jpeg,
-rda-bg-title1.jpeg, and rda-bg-title2.jpeg), the documented LaTeX file
+This work consists of various image files, the documented LaTeX file
 rdaslides.dtx, and a Makefile.
 
 The text files contained in this work may be distributed and/or modified
@@ -220,8 +245,9 @@ under the conditions of the [LaTeX Project Public License (LPPL)][lppl],
 either version 1.3c of this license or (at your option) any later
 version.
 
-The rights to the image files distributed with this bundle are held by
-the [Research Data Alliance][rda].
+The rights to the image files distributed with this bundle (except
+rda-twitter-white.png) are held by the [Research Data Alliance][rda].
+Usage guidelines may be found with the [RDA Communication Kit][rda-kit].
 
 This work is "maintained" (as per LPPL maintenance status) by
 [Alex Ball][me].
@@ -230,6 +256,7 @@ This work is "maintained" (as per LPPL maintenance status) by
 [Releases]: https://github.com/alex-ball/rdaslides/releases
 [lppl]: http://www.latex-project.org/lppl.txt
 [rda]: https://rd-alliance.org/
+[rda-kit]: https://www.rd-alliance.org/communication-kit/
 [me]: http://alexball.me.uk/
 
 %</readme>
@@ -288,6 +315,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{beamerthemeRDA.sty}{\from{\jobname.dtx}{theme}}
   \file{beamerthemeRDA2016.sty}{\from{\jobname.dtx}{theme2}}
   \file{beamerthemeRDA2020.sty}{\from{\jobname.dtx}{theme3}}
+  \file{beamerthemeRDA2024.sty}{\from{\jobname.dtx}{theme4}}
   \file{rdamig.sty}{\from{\jobname.dtx}{mig}}
   \file{rdamsdwg.sty}{\from{\jobname.dtx}{msdwg}}
   \file{rdamscwg.sty}{\from{\jobname.dtx}{mscwg}}
@@ -297,6 +325,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   \file{rdaslides-sample-RDA.tex}{\from{\jobname.dtx}{sample1}}
   \file{rdaslides-sample-RDA2016.tex}{\from{\jobname.dtx}{sample2}}
   \file{rdaslides-sample-RDA2020.tex}{\from{\jobname.dtx}{sample3}}
+  \file{rdaslides-sample-RDA2024.tex}{\from{\jobname.dtx}{sample4}}
 }
 %</install>
 %<install>\endbatchfile
@@ -647,22 +676,21 @@ shorthand for \key{article} and \key{alsobeamer}.
 \setlength{\fboxsep}{0pt}%
 \only<presentation>{\setlength{\columnsep}{7mm}}%
 \only<article>{\setlength{\columnsep}{12mm}}%
-\begin{multicols}{3}[There are also options for choosing between the three available themes.]
+\begin{multicols}{2}[There are also options for choosing between the four available themes.]
 \begin{docKey}{2013}{}{initially set}
   Use the \bthm{RDA} theme.
 \end{docKey}
 \par\only<presentation>{\medskip}%
 \par\bgroup\centering
-\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA}}
+\fbox{\includegraphics[width=6.4cm]{rdaslides-sample-RDA}}
 \par\egroup
-\columnbreak
 \begin{docKey}{2016}{}{initially unset}
 \raggedright
   Use the \bthm{RDA2016} theme.
 \end{docKey}
 \par\only<presentation>{\medskip}%
 \par\bgroup\centering
-\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA2016}}
+\fbox{\includegraphics[width=6.4cm]{rdaslides-sample-RDA2016}}
 \par\egroup
 \columnbreak
 \begin{docKey}{2020}{}{initially unset}
@@ -671,7 +699,15 @@ shorthand for \key{article} and \key{alsobeamer}.
 \end{docKey}
 \par\only<presentation>{\medskip}%
 \par\bgroup\centering
-\fbox{\includegraphics[width=4.2cm]{rdaslides-sample-RDA2020}}
+\fbox{\includegraphics[width=6.4cm]{rdaslides-sample-RDA2020}}
+\par\egroup
+\begin{docKey}{2024}{}{initially unset}
+\raggedright
+  Use the \bthm{RDA2024} theme.
+\end{docKey}
+\par\only<presentation>{\medskip}%
+\par\bgroup\centering
+\fbox{\includegraphics[width=6.4cm]{rdaslides-sample-RDA2024}}
 \par\egroup
 \end{multicols}
 \end{frame}
@@ -684,12 +720,11 @@ shorthand for \key{article} and \key{alsobeamer}.
 If you don't want the article mode settings introduced by the full class,
 you can simply load the theme directly into \pkg{beamer}:
 
-\begin{multicols}{3}
+\begin{multicols}{2}
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA}
 \end{dispListing}
-\columnbreak
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA2016}
@@ -698,6 +733,10 @@ you can simply load the theme directly into \pkg{beamer}:
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA2020}
+\end{dispListing}
+\begin{dispListing}
+\documentclass{beamer}
+\usetheme{RDA2024}
 \end{dispListing}
 \end{multicols}
 \end{frame}
@@ -832,21 +871,48 @@ so you can tell them apart.
 \begin{frame}[fragile]{New frame options}
 The class provides two new options for frames.
 
-\begin{docKey}{background}{=\meta{filename}}{default \texttt{rda-bg-normal}}
+\begin{docKey}{background}{=\meta{filename}}{default depends on theme}
 Use this option on its own to restore the usual slide background.
 Use it with an image filename to use that image as the background instead.
+\only<article>{\par
+The class themes come with various backgrounds you can use:
+
+\begin{itemize}
+\item\textbf{2014} (4:3 aspect ratio)
+\begin{itemize}
+\item \texttt{rda-bg-title1}
+\item \texttt{rda-bg-title2}
+\item \texttt{rda-bg-normal}
+\end{itemize}
+\item\textbf{2020} (16:9 aspect ratio)
+\begin{itemize}
+\item \texttt{rda-bg-wmark}
+\end{itemize}
+\item\textbf{2024} (16:9 aspect ratio)
+\begin{itemize}
+\item \texttt{rda24-title}
+\item \texttt{rda24-part-L}, \texttt{rda24-part-R}
+\item \texttt{rda24-chap-L}, \texttt{rda24-chap-R}
+\item \texttt{rda24-sect-L}, \texttt{rda24-sect-R}
+\item \texttt{rda24-body-L1}, \texttt{rda24-body-L2}, \texttt{rda24-body-R1}, \texttt{rda24-body-R2}
+\item \texttt{rda24-finale}
+\end{itemize}
+\end{itemize}
+}
 \end{docKey}
 \begin{docKey}{nobackground}{}{no value}
 This gives the slide a plain white background. Initially, this option is
-\emph{unset} in the original RDA theme and \emph{set} in the RDA2016 theme.
+\emph{set} in the RDA2016 theme and \emph{unset} in the other RDA themes.
 \end{docKey}
 \end{frame}
 
 Note that the background image will be resized to fill the slide completely,
 so to avoid distortion use an image that has approximately the right aspect ratio.
-By default, \pkg{beamer} slides are 128\,mm $\times$ 96\,mm, which is a 4:3 ratio.
+By default, \pkg{beamer} slides are 128\,mm $\times$ 96\,mm, which is a 4:3 ratio,
+but a different ratio can be chosen with the \key{aspectratio} option to the
+\pkg{beamer} class.
 
-These two options have no effect in article mode.
+The above two options have no effect in article mode.
 
 \begin{frame}[fragile]{Progress meter}
 Slides show progress information at the bottom right in the form of a charge-style indicator.
@@ -943,6 +1009,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \begin{optionkey}{2013}
 % \begin{optionkey}{2016}
 % \begin{optionkey}{2020}
+% \begin{optionkey}{2024}
 % We provide keys for choosing between the available themes.
 %
 %    \begin{macrocode}
@@ -950,7 +1017,9 @@ numbers here are totally fictitious when it comes to the actual files.
 \DeclareOption{2013}{\def\rdaslides@theme{RDA}}
 \DeclareOption{2016}{\def\rdaslides@theme{RDA2016}}
 \DeclareOption{2020}{\def\rdaslides@theme{RDA2020}}
+\DeclareOption{2024}{\def\rdaslides@theme{RDA2024}}
 %    \end{macrocode}
+% \end{optionkey}
 % \end{optionkey}
 % \end{optionkey}
 % \end{optionkey}
@@ -1115,7 +1184,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme|theme2|theme3>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \subsection{Theme: Presentation font theme}
@@ -1130,7 +1199,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -1154,7 +1223,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % The \bthm{RDA2020} has larger title text:
@@ -1165,8 +1234,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
-%<*class|theme|theme2|theme3>
+%</theme3|theme4>
+%<*class|theme|theme2|theme3|theme4>
 % \fi
 %
 % \subsection{Theme: Presentation colour theme}
@@ -1180,8 +1249,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</class|theme|theme2|theme3>
-%<*theme|theme2|theme3>
+%</class|theme|theme2|theme3|theme4>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % Here are the basic colours:
@@ -1194,7 +1263,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -1254,7 +1323,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % \subsubsection{\bthm{RDA2020} theme}
@@ -1282,12 +1351,12 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{progress}{bg=white,fg=rdalightbrown}
 %    \end{macrocode}
 % \iffalse
-%</theme3>
-%<*theme|theme2|theme3>
+%</theme3|theme4>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*class>
 % \fi
 %
@@ -1373,7 +1442,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</class>
-%<*theme|theme2|theme3>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \subsection{Theme: Presentation outer theme}
@@ -1393,7 +1462,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme2>
 % \fi
 %
@@ -1405,7 +1474,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme|theme3>
+%<*theme|theme3|theme4>
 % \fi
 %
 % The \bthm{RDA} and \bthm{RDA2020} themes, however, use some distinctive slide backgrounds.
@@ -1415,8 +1484,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme3>
-%<*theme2|theme3>
+%</theme|theme3|theme4>
+%<*theme2|theme3|theme4>
 % \fi
 %
 % The \bthm{RDA2020} theme uses this background, but faded.
@@ -1426,7 +1495,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme2|theme3>
+%</theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -1438,7 +1507,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme>
-%<*theme|theme2|theme3>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \begin{macro}{bgpicture}
@@ -1464,7 +1533,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme|theme2>
 % \fi
 %
@@ -1478,7 +1547,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme|theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % In the \bthm{2020} theme, we try to be a bit cleverer and scale the
@@ -1526,8 +1595,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
-%<*theme|theme3>
+%</theme3|theme4>
+%<*theme|theme3|theme4>
 % \fi
 %
 % To prevent the settings for these switches persisting between slides, we reset
@@ -1539,7 +1608,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme3>
+%</theme|theme3|theme4>
 %<*theme2>
 % \fi
 %
@@ -1592,7 +1661,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % We do something similar with the \bthm{2020} theme, but lay it out
@@ -1635,7 +1704,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
+%</theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -1754,7 +1823,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % Here is the corresponding version for the \bthm{RDA2020} theme.
@@ -1791,8 +1860,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
-%<*theme|theme2|theme3>
+%</theme3|theme4>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % We provide a variety of progress indicators.
@@ -1825,8 +1894,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme|theme2|theme3>
-%<*theme2|theme3>
+%</theme|theme2|theme3|theme4>
+%<*theme2|theme3|theme4>
 % \fi
 %
 % In the \bthm{RDA2016} theme, we can use this directly as it will sit on the
@@ -1837,7 +1906,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme2|theme3>
+%</theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -1850,7 +1919,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme>
-%<*theme|theme2|theme3>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % As an alternative, progress can be shown as a fraction of frame number over
@@ -1886,7 +1955,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % The \pkg{beamer} footline template lays out elements along the bottom of the screen.
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -2015,7 +2084,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % In the \bthm{RDA2020} theme, the footline is the same on all slides, and
@@ -2081,8 +2150,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % the title graphic or licence logo, so we will have to fix that later.
 %
 % \iffalse
-%</theme3>
-%<*theme|theme2|theme3>
+%</theme3|theme4>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % By default we remove the tell-tale and seldom used \pkg{beamer} navigation symbols.
@@ -2113,7 +2182,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -2139,7 +2208,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 % In the \bthm{RDA2020} theme, itemized lists use little RDA logos at
 % the top level, chevrons at the second, and en dashes at the third.
@@ -2153,7 +2222,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
+%</theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -2285,7 +2354,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % The \bthm{RDA2020} theme has the same small logo as all other
@@ -2340,8 +2409,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
-%<*theme|theme2|theme3>
+%</theme3|theme4>
+%<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \subsection{Finishing off}
@@ -2371,7 +2440,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{macro}
 %
 % \iffalse
-%</theme|theme2|theme3>
+%</theme|theme2|theme3|theme4>
 %<*theme>
 % \fi
 %
@@ -2509,7 +2578,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme2>
-%<*theme3>
+%<*theme3|theme4>
 % \fi
 %
 % Here is the corresponding template for the \bthm{RDA2016} theme. As with the
@@ -2573,7 +2642,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</theme3>
+%</theme3|theme4>
 %<*class>
 % \fi
 %

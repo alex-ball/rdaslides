@@ -31,6 +31,7 @@ A makefile is provided which you can use with the Make utility:
       - beamerthemeRDA.sty
       - beamerthemeRDA2016.sty
       - beamerthemeRDA2020.sty
+      - beamerthemeRDA2024.sty
       - rdamig.sty
       - rdamscwg.sty
       - rdamsdwg.sty
@@ -38,6 +39,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-sample-RDA.tex
       - rdaslides-sample-RDA2016.tex
       - rdaslides-sample-RDA2020.tex
+      - rdaslides-sample-RDA2024.tex
 
   * Running `make` generates the above plus
 
@@ -47,6 +49,7 @@ A makefile is provided which you can use with the Make utility:
       - rdaslides-sample-RDA.pdf
       - rdaslides-sample-RDA2016.pdf
       - rdaslides-sample-RDA2020.pdf
+      - rdaslides-sample-RDA2024.pdf
 
   * Running `make inst` installs the files (and images) in the user's
     TeX tree.  (To undo, run `make uninst`.)
@@ -93,7 +96,7 @@ first five steps.
       - `source/latex/rdaslides`:
         rdaslides.dtx,
         rdaslides.ins
-      - `tex/generic/logos-rda` :
+      - `tex/generic/logos-rda`:
         rda-logo.eps,
         rda-logo.pdf
       - `tex/latex/rdaslides`:
@@ -101,18 +104,31 @@ first five steps.
         rdacolors.sty,
         beamerthemeRDA.sty,
         beamerthemeRDA2016.sty,
+        beamerthemeRDA2020.sty,
+        beamerthemeRDA2024.sty,
         rdamig.sty,
         rdamscwg.sty,
         rdamsdwg.sty,
+      - `tex/latex/rdaslides/img2013`:
         rda-bg-normal.jpeg,
         rda-bg-title1.jpeg,
         rda-bg-title2.jpeg
+      - `tex/latex/rdaslides/img2020`:
+        rda-bg-watermark.jpeg
+        rda-link-white.png
+        rda-twitter-white.png
+      - `tex/latex/rdaslides/img2024`:
+        rda24-*.png
       - `doc/latex/rdaslides`:
         rdaslides.pdf,
         rdaslides-sample-RDA.tex,
         rdaslides-sample-RDA.pdf,
         rdaslides-sample-RDA2016.tex,
         rdaslides-sample-RDA2016.pdf,
+        rdaslides-sample-RDA2020.tex,
+        rdaslides-sample-RDA2020.pdf,
+        rdaslides-sample-RDA2024.tex,
+        rdaslides-sample-RDA2024.pdf,
         rdaslides-slides.pdf,
         README.md
 
@@ -124,8 +140,7 @@ Licence
 
 Copyright 2016 Alex Ball.
 
-This work consists of four image files (rda-logo.pdf, rda-bg-normal.jpeg,
-rda-bg-title1.jpeg, and rda-bg-title2.jpeg), the documented LaTeX file
+This work consists of various image files, the documented LaTeX file
 rdaslides.dtx, and a Makefile.
 
 The text files contained in this work may be distributed and/or modified
@@ -133,8 +148,9 @@ under the conditions of the [LaTeX Project Public License (LPPL)][lppl],
 either version 1.3c of this license or (at your option) any later
 version.
 
-The rights to the image files distributed with this bundle are held by
-the [Research Data Alliance][rda].
+The rights to the image files distributed with this bundle (except
+rda-twitter-white.png) are held by the [Research Data Alliance][rda].
+Usage guidelines may be found with the [RDA Communication Kit][rda-kit].
 
 This work is "maintained" (as per LPPL maintenance status) by
 [Alex Ball][me].
@@ -143,5 +159,6 @@ This work is "maintained" (as per LPPL maintenance status) by
 [Releases]: https://github.com/alex-ball/rdaslides/releases
 [lppl]: http://www.latex-project.org/lppl.txt
 [rda]: https://rd-alliance.org/
+[rda-kit]: https://www.rd-alliance.org/communication-kit/
 [me]: http://alexball.me.uk/
 

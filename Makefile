@@ -6,58 +6,87 @@ TDIR  = $(TEMP)/$(NAME)
 VERS  = $(shell ltxfileinfo -v $(NAME).dtx)
 LOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
 UTREE = $(shell kpsewhich --var-value TEXMFHOME)
+THEMES= RDA RDA2016 RDA2020 RDA2024
+BTHMS = $(THEMES:%=beamertheme%.sty)
+STHMS = $(THEMES:%=$(NAME)-sample-%)
+GROUPS= rdamig rdamsdwg rdamscwg
+AUX   = aux bbl bcf blg doc fdb_latexmk fls glo gls hd idx ilg ind listing log nav out run.xml snm synctex.gz tcbtemp toc vrb
+IMG00 = rda-logo.eps rda-logo.pdf rda-logo-notext.png
+IMG13 = rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg
+IMG20 = rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png
+IMG24 = rda24-body-L1.png rda24-body-L2.png rda24-body-R1.png rda24-body-R2.png rda24-chap-L.png rda24-chap-R.png rda24-finale.png rda24-part-L.png rda24-part-R.png rda24-sect-L.png rda24-sect-R.png rda24-title.png
 
 .PHONY: clean dist-clean inst install uninst uninstall zip
 
-all:	$(NAME).pdf $(NAME)-slides.pdf rda-logo.eps clean
+all: $(NAME).pdf $(NAME)-slides.pdf rda-logo.eps clean
 	@exit 0
-$(NAME).cls $(NAME)-sample-RDA.tex $(NAME)-sample-RDA2016.tex $(NAME)-sample-RDA2020.tex: $(NAME).dtx
-	etex -interaction=batchmode $(NAME).dtx >/dev/null
-$(NAME)-sample-RDA.pdf: $(NAME)-sample-RDA.tex $(NAME).cls
-	latexmk -silent -lualatex -shell-escape -interaction=batchmode $< >/dev/null
-$(NAME)-sample-RDA2016.pdf: $(NAME)-sample-RDA2016.tex $(NAME).cls
-	latexmk -silent -lualatex -shell-escape -interaction=batchmode $< >/dev/null
-$(NAME)-sample-RDA2020.pdf: $(NAME)-sample-RDA2020.tex $(NAME).cls
-	latexmk -silent -lualatex -shell-escape -interaction=batchmode $< >/dev/null
-$(NAME).pdf: $(NAME).cls $(NAME)-sample-RDA.pdf $(NAME)-sample-RDA2016.pdf $(NAME)-sample-RDA2020.pdf
-	latexmk -silent -lualatex -shell-escape -interaction=batchmode $(NAME).dtx >/dev/null
-$(NAME)-slides.pdf: $(NAME).cls $(NAME)-sample-RDA.pdf $(NAME)-sample-RDA2016.pdf $(NAME)-sample-RDA2020.pdf
+
+$(NAME).cls rdacolors.sty $(BTHMS) $(STHMS:%=%.tex) $(GROUPS:%=%.sty): $(NAME).dtx
+	etex -interaction=batchmode $< >/dev/null
+
+$(NAME)-sample-%.pdf: $(NAME)-sample-%.tex beamertheme%.sty $(NAME).cls
+	latexmk -silent -pdflua -shell-escape -interaction=batchmode $< >/dev/null
+
+$(NAME).pdf: $(NAME).dtx $(NAME).cls $(STHMS:%=%.pdf)
+	latexmk -silent -pdflua -shell-escape -interaction=batchmode $< >/dev/null
+
+$(NAME)-slides.pdf:$(NAME).dtx $(NAME).cls $(STHMS:%=%.pdf)
 	latexmk -silent -lualatex -shell-escape -interaction=batchmode -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
+
 rda-logo.eps: rda-logo.pdf
 	pdftops -f 1 -l 1 -eps rda-logo.pdf rda-logo.eps
+
 clean:
-	rm -f $(NAME).{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
-	rm -f $(NAME)-{slides,sample-RDA,sample-RDA2016,sample-RDA2020}.{aux,bbl,bcf,blg,doc,fdb_latexmk,fls,glo,gls,hd,idx,ilg,ind,ins,listing,log,nav,out,run.xml,snm,synctex.gz,tcbtemp,toc,vrb}
-	rm -f rda{mi,mscw,msdw}g.doc
+	rm -f $(AUX:%=$(NAME).%)
+	rm -f $(AUX:%=$(NAME)-slides.%)
+	rm -f $(foreach STHM, $(STHMS), $(AUX:%=$(STHM).%))
 	rm -f *.minted
 	rm -rf _minted*
+
 distclean: clean
-	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf}
+	rm -f $(NAME).{pdf,ins} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty $(BTHMS) $(GROUPS:%=%.sty) $(STHMS:%=%.tex) $(STHMS:%=%.pdf)
+
 inst: all
-	mkdir -p $(UTREE)/{tex,source,doc}/latex/$(NAME)
-	mkdir -p $(UTREE)/tex/generic/logos-rda
+	mkdir -p $(UTREE)/{source,doc,tex}/latex/$(NAME)
 	cp $(NAME).dtx $(NAME).ins $(UTREE)/source/latex/$(NAME)
-	cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png $(UTREE)/tex/latex/$(NAME)
-	cp $(NAME).pdf $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} $(NAME)-slides.pdf README.md $(UTREE)/doc/latex/$(NAME)
-	cp rda-logo.{eps,pdf} rda-logo-notext.png $(UTREE)/tex/generic/logos-rda
+	cp $(NAME).pdf $(NAME)-slides.pdf $(STHMS:%=%.tex) $(STHMS:%=%.pdf) README.md $(UTREE)/doc/latex/$(NAME)
+	cp $(NAME).cls rdacolors.sty $(BTHMS) $(GROUPS:%=%.sty) $(UTREE)/tex/latex/$(NAME)
+	mkdir -p $(UTREE)/tex/latex/$(NAME)/img{2013,2020,2024}
+	cp $(IMG13:%=img2013/%) $(UTREE)/tex/latex/$(NAME)/img2013
+	cp $(IMG20:%=img2020/%) $(UTREE)/tex/latex/$(NAME)/img2020
+	cp $(IMG24:%=img2024/%) $(UTREE)/tex/latex/$(NAME)/img2024
+	mkdir -p $(UTREE)/tex/generic/logos-rda
+	cp $(IMG00) $(UTREE)/tex/generic/logos-rda
+
 uninst:
 	rm -r $(UTREE)/{tex,source,doc}/latex/$(NAME)
-	rm $(UTREE)/tex/generic/logos-rda/rda-logo.{eps,pdf} rda-logo-notext.png
+	rm $(IMG00:%=$(UTREE)/tex/generic/logos-rda/%)
 	rmdir --ignore-fail-on-non-empty $(UTREE)/tex/generic/logos-rda
 	mktexlsr
+
 install: all
-	sudo mkdir -p $(LOCAL)/{tex,source,doc}/latex/$(NAME)
-	sudo mkdir -p $(LOCAL)/tex/generic/logos-rda
+	sudo mkdir -p $(LOCAL)/{source,doc,tex}/latex/$(NAME)
 	sudo cp $(NAME).dtx $(NAME).ins $(LOCAL)/source/latex/$(NAME)
-	sudo cp $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png $(LOCAL)/tex/latex/$(NAME)
-	sudo cp $(NAME).pdf $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} $(NAME)-slides.pdf README.md $(LOCAL)/doc/latex/$(NAME)
-	sudo cp rda-logo.{eps,pdf} rda-logo-notext.png $(LOCAL)/tex/generic/logos-rda
+	sudo cp $(NAME).pdf $(NAME)-slides.pdf $(STHMS:%=%.tex) $(STHMS:%=%.pdf) README.md $(LOCAL)/doc/latex/$(NAME)
+	sudo cp $(NAME).cls rdacolors.sty $(BTHMS) $(GROUPS:%=%.sty) $(LOCAL)/tex/latex/$(NAME)
+	sudo mkdir -p $(LOCAL)/tex/latex/$(NAME)/img{2013,2020,2024}
+	sudo cp $(IMG13:%=img2013/%) $(LOCAL)/tex/latex/$(NAME)/img2013
+	sudo cp $(IMG20:%=img2020/%) $(LOCAL)/tex/latex/$(NAME)/img2020
+	sudo cp $(IMG24:%=img2024/%) $(LOCAL)/tex/latex/$(NAME)/img2024
+	sudo mkdir -p $(LOCAL)/tex/generic/logos-rda
+	sudo cp $(IMG00) $(LOCAL)/tex/generic/logos-rda
+
 uninstall:
 	sudo rm -r $(LOCAL)/{tex,source,doc}/latex/$(NAME)
-	sudo rm $(LOCAL)/tex/generic/logos-rda/rda-logo.{eps,pdf} rda-logo-notext.png
+	sudo rm $(IMG00:%=$(LOCAL)/tex/generic/logos-rda/%)
 	sudo rmdir --ignore-fail-on-non-empty $(LOCAL)/tex/generic/logos-rda
 	mktexlsr
+
 zip: all
 	mkdir $(TDIR)
-	cp $(NAME).{pdf,dtx} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty beamertheme{RDA,RDA2016,RDA2020}.sty rda{mi,mscw,msdw}g.sty $(NAME)-sample-{RDA,RDA2016,RDA2020}.{tex,pdf} README.md Makefile rda-bg-normal.jpeg rda-bg-title1.jpeg rda-bg-title2.jpeg rda-bg-wmark.jpeg rda-bullet.png rda-link-white.png rda-twitter-white.png rda-logo.{eps,pdf} rda-logo-notext.png $(TDIR)
+	cp $(NAME).{pdf,dtx} $(NAME)-slides.pdf $(NAME).cls rdacolors.sty $(BTHMS) $(GROUPS:%=%.sty) $(STHMS:%=%.tex) $(STHMS:%=%.pdf) README.md Makefile $(IMG00) $(TDIR)
+	mkdir -p $(TDIR)/img{2013,2020,2024}
+	cp $(IMG13:%=img2013/%) $(TDIR)/img2013
+	cp $(IMG20:%=img2020/%) $(TDIR)/img2020
+	cp $(IMG24:%=img2024/%) $(TDIR)/img2024
 	cd $(TEMP); zip -Drq $(PWD)/$(NAME)-$(VERS).zip $(NAME)
