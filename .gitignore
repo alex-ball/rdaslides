@@ -27,6 +27,7 @@ rdaslides-v*.zip
 
 ## Build tool auxiliary files:
 *.fdb_latexmk
+*.ins
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
@@ -52,6 +53,9 @@ rdaslides-v*.zip
 *.glo
 *.gls
 
+# hypdoc
+*.hd
+
 # hyperref
 *.brf
 
@@ -70,7 +74,9 @@ rdaslides-v*.zip
 *.mtc0
 
 # minted
+_minted/
 *.pyg
+*.message.minted
 
 # nicedoc
 *.doc
@@ -90,10 +96,19 @@ sympy-plots-for-*.tex/
 
 # tcolorbox
 *.listing
+*.tcbtemp
 
 # todonotes
 *.tdo
 
 # xindy
 *.xdy
+
+## Compiled files
 /rda-logo.eps
+/beamertheme*.sty
+/rda*.sty
+/rdaslides-sample-*.*
+/rdaslides-slides.pdf
+/rdaslides.cls
+/rdaslides.pdf
