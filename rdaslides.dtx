@@ -401,9 +401,10 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
   , minted options=
     { breaklines
     , fontsize=\footnotesize
-    , linenos
-    , numbersep=20pt
-    , firstnumber=last
+    %, linenos
+    %, numbersep=20pt
+    %, firstnumber=last
+    , stripnl
     }
   , index format=pgf
   , color command=Command
@@ -971,8 +972,12 @@ a brief statement about RDA.
 \newpage
 \section{Implementation}
 
-Note that some code is duplicated across several files. Therefore the line
-numbers here are totally fictitious when it comes to the actual files.
+Sections marked `Class' appear in \texttt{rdaslides.cls}.
+Sections marked `Theme' appear in one or more of \texttt{beamerthemeRDA.sty},
+\texttt{beamerthemeRDA2016.sty}, \texttt{beamerthemeRDA2020.sty}, or
+\texttt{beamerthemeRDA2024.sty}, as indicated in the text.
+
+The final few sections each document a different separate helper package.
 
 \setcounter{FancyVerbLine}{0}%
 \DocInput{\jobname.dtx}
@@ -980,13 +985,14 @@ numbers here are totally fictitious when it comes to the actual files.
 %</driver>
 % \fi
 % \iffalse
-%<*class|theme>
+%<*class|theme|theme2|theme3|theme4>
 % \fi
 %
-% \subsection{Internal conveniences}
+% \subsection{Class and Theme: Internal conveniences}
 %
-% We will need the \pkg{etoolbox} package's patching utilities, and \pkg{calc} will be
-% helpful for calculating lengths.
+% We will need the \pkg{etoolbox} package's patching utilities;
+% \pkg{calc} is helpful for calculating lengths;
+% \pkg{adjustbox} is helpful for precise positioning.
 %
 %    \begin{macrocode}
 \RequirePackage{etoolbox, calc, adjustbox}
@@ -994,7 +1000,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \end{macrocode}
 %
 % \iffalse
-%</class|theme>
+%</class|theme|theme2|theme3|theme4>
 %<*class>
 % \fi
 %
@@ -1048,7 +1054,7 @@ numbers here are totally fictitious when it comes to the actual files.
 \PassOptionsToClass{textinst}{beamerswitch}
 %    \end{macrocode}
 %
-% In article mode, we use 12pt text to keep it readable on the podium.
+% In article mode, we default to 12pt text to keep it readable on the podium.
 %
 %    \begin{macrocode}
 \PassOptionsToClass{a4paper,12pt}{article}
@@ -1073,7 +1079,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Class: Layout, orthography and typography}
 %
-% In handout mode, we lay out two slides to an A4 page.
+% In handout mode, we lay out two slides to an A4 page (by default).
 %
 %    \begin{macrocode}
 \handoutlayout{paper=a4paper,nup=2,pnos}
@@ -1167,8 +1173,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % period more intelligent using \cs{@addpunct} from \pkg{amsthm}.
 %
 %    \begin{macrocode}
-  \usepackage[format=hang,justification=raggedright,labelfont=bf]{caption}
-  \usepackage{amsthm}
+  \RequirePackage[format=hang,justification=raggedright,labelfont=bf]{caption}
+  \RequirePackage{amsthm}
   \DeclareCaptionTextFormat{condperiod}{#1\@addpunct{.}}
   \captionsetup{textformat=condperiod}
 %    \end{macrocode}
@@ -1176,7 +1182,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % We also make footnotes look a little neater.
 %
 %    \begin{macrocode}
-  \usepackage[hang,multiple,bottom]{footmisc}
+  \RequirePackage[hang,multiple,bottom]{footmisc}
   \setlength{\footnotemargin}{1em}
 }
 
@@ -1189,7 +1195,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsection{Theme: Presentation font theme}
 %
-% Some sensible font sizes and weights for use on slides.
+% Here are font sizes and weights common to all themes.
 %
 %    \begin{macrocode}
 \setbeamerfont{alerted text}{series=\bfseries}
@@ -1202,8 +1208,9 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme>
 % \fi
 %
-% Where the themes differ is that the \bthm{RDA} theme has \cs{scriptsize}
-% footline text:
+% There are small differences in the fonts used for RDA group information
+% (\key{headline} and \key{subheadline}), and text in the \key{footline} (e.g.\@
+% hashtag, progress indicator). Here are the settings for the \bthm{RDA} theme:
 %
 %    \begin{macrocode}
 \setbeamerfont{headline}{size=\LARGE}
@@ -1216,7 +1223,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme2>
 % \fi
 %
-% The \bthm{RDA2016} theme, meanwhile, has \cs{tiny} footline text:
+% Here are the settings for the \bthm{RDA2016} theme:
 %
 %    \begin{macrocode}
 \setbeamerfont{headline}{size=\LARGE}
@@ -1229,7 +1236,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme3>
 % \fi
 %
-% The \bthm{RDA2020} has larger title text:
+% The \bthm{RDA2020} theme also has larger title text (the title slide is roomier):
 %
 %    \begin{macrocode}
 \setbeamerfont{headline}{size=\LARGE}
@@ -1243,10 +1250,11 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme4>
 % \fi
 %
-% Some sensible font sizes and weights for use on slides.
+% The \bthm{RDA2020} theme needs a bold title; unlike the others, it has a unique
+% style for the thank you message on the finale slide.
 %
 %    \begin{macrocode}
-\setbeamerfont{headline}{size=\normalsize}
+\setbeamerfont{headline}{parent=date}
 \setbeamerfont{subheadline}{size=\small,shape=\scshape}
 \setbeamerfont{footline}{size=\tiny}
 \setbeamerfont{title}{series=\bfseries}
@@ -1262,7 +1270,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \subsubsection{Common code}
 %
-% We load the RDA colour palette.
+% We load the RDA colour palette as defined in section~\ref{sec:rdacolors}.
 %
 %    \begin{macrocode}
 \RequirePackage{rdacolors}
@@ -1332,7 +1340,6 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{subsubitem}{fg=rdayellow}
 %    \end{macrocode}
 %
-%
 % Here are the colours for the outer theme elements:
 %
 %    \begin{macrocode}
@@ -1360,7 +1367,6 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{subitem}{fg=rdagreen}
 \setbeamercolor{subsubitem}{fg=rdabrown}
 %    \end{macrocode}
-%
 %
 % Here are the colours for the outer theme elements:
 %
@@ -1391,7 +1397,6 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{thanks}{fg=rdagreen}
 %    \end{macrocode}
 %
-%
 % Here are the colours for the outer theme elements:
 %
 %    \begin{macrocode}
@@ -1401,13 +1406,9 @@ numbers here are totally fictitious when it comes to the actual files.
 \setbeamercolor{footline}{bg=,fg=rdagreen}
 \setbeamercolor{progress}{bg=white,fg=rdamidgreen}
 %    \end{macrocode}
-% \iffalse
-%</theme4>
-%<*theme|theme2|theme3|theme4>
-% \fi
 %
 % \iffalse
-%</theme|theme2|theme3|theme4>
+%</theme4>
 %<*class>
 % \fi
 %
@@ -1528,7 +1529,7 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme|theme3|theme4>
 % \fi
 %
-% The \bthm{RDA} and \bthm{RDA2020} themes, however, use some distinctive slide backgrounds.
+% The other themes, however, use some distinctive slide backgrounds.
 %
 %    \begin{macrocode}
 \toggletrue{bgpicture}
@@ -1536,10 +1537,24 @@ numbers here are totally fictitious when it comes to the actual files.
 %
 % \iffalse
 %</theme|theme3|theme4>
+%<*theme>
+% \fi
+%
+% \begin{macro}{defaultbgpicture}
+% The \bthm{RDA} theme defaults to this background.
+%
+%    \begin{macrocode}
+\newcommand{\defaultbgpicture}{rda-bg-normal}
+%    \end{macrocode}
+%
+% \iffalse
+%</theme>
 %<*theme2|theme3>
 % \fi
 %
-% The \bthm{RDA2020} theme uses this background, but faded.
+% The \bthm{RDA2020} theme defaults to this background, which requires some
+% special handling (see below). It is also used as the default if the background
+% is switched on in the \bthm{RDA2016} theme.
 %
 %    \begin{macrocode}
 \newcommand{\defaultbgpicture}{rda-bg-wmark}
@@ -1550,36 +1565,28 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme4>
 % \fi
 %
-% The \bthm{RDA2024} theme uses this full saturation background.
+% The \bthm{RDA2024} theme defaults to this background. There are at least
+% another three good candidates, but this one seems to be preferred in the
+% RDA Style Guide 2024.
 %
 %    \begin{macrocode}
 \newcommand{\defaultbgpicture}{rda24-body-L1}
 %    \end{macrocode}
+% \end{macro}
 %
 % \iffalse
 %</theme4>
-%<*theme>
-% \fi
-%
-% The \bthm{RDA} theme uses this full saturation background.
-%
-%    \begin{macrocode}
-\newcommand{\defaultbgpicture}{rda-bg-normal}
-%    \end{macrocode}
-%
-% \iffalse
-%</theme>
 %<*theme|theme2|theme3|theme4>
 % \fi
 %
 % \begin{macro}{bgpicture}
 % \begin{optionkey}{background}
 % \begin{optionkey}{nobackground}
-% We allow the user to select an image to use as a slide background, defaulting to
-% the theme-dependent \cs{defaultbgpicture}.
-% The method used is to save the filename of the image to \cs{bgpicture}, and let
-% the user change it with a frame option, \key{background}. The image can be turned
-% off entirely by issuing with the frame option \key{nobackground}.
+% We allow the user to select an image to use as a slide background, defaulting
+% to the theme-dependent \cs{defaultbgpicture} as defined above.
+% The method used is to save the filename of the image to \cs{bgpicture}, and
+% let the user change it with a frame option, \key{background}. The image can be
+% turned off entirely by issuing with the frame option \key{nobackground}.
 %
 %    \begin{macrocode}
 \let\bgpicture\defaultbgpicture
@@ -1594,16 +1601,11 @@ numbers here are totally fictitious when it comes to the actual files.
 % \end{optionkey}
 % \end{macro}
 %
-% \iffalse
-%</theme|theme2|theme3|theme4>
-%<*theme|theme2|theme4>
-% \fi
-%
-% We stretch the aspect ratio of the background to fill the slide.
-% The \texttt{rda-bg-wmark} image is handled specially, as it is
-% a full-saturation tiling pattern: it is first scaled to the page
-% height, then (if necessary) scaled up further to fill the width and
-% cropped, then desaturated with a white overlay.
+% We stretch the aspect ratio of the background to fill the slide. The
+% \texttt{rda-bg-wmark} image is handled specially, as it is a full-saturation
+% tiling pattern: it is first scaled to the page height, then (if necessary)
+% scaled up further to fill the width and cropped, then desaturated with a white
+% overlay.
 %
 %    \begin{macrocode}
 \setbeamertemplate{background canvas}{%
@@ -1622,6 +1624,17 @@ numbers here are totally fictitious when it comes to the actual files.
     }{%
       \adjustimage{height=\paperheight,width=\paperwidth}{\bgpicture}%
     }%
+%    \end{macrocode}
+%
+% \iffalse
+%</theme|theme2|theme3|theme4>
+%<*theme|theme2|theme4>
+% \fi
+%
+% In the \bthm{RDA}, \bthm{RDA2016}, and \bthm{RDA2024} themes, that's all we
+% need to do on the background canvas.
+%
+%    \begin{macrocode}
   }{}%
 }
 %    \end{macrocode}
@@ -1631,26 +1644,10 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme3>
 % \fi
 %
-% In the \bthm{RDA2020} theme, we also add the bottom brown strip
-% to the background canvas and add the logo to the background.
+% In the \bthm{RDA2020} theme, we also add the bottom brown strip to the 
+% background canvas and add the logo to the background.
 %
 %    \begin{macrocode}
-\setbeamertemplate{background canvas}{%
-  \iftoggle{bgpicture}{%
-    \ifdefstring{\bgpicture}{rda-bg-wmark}{%
-      \adjustimage{%
-        height=\paperheight,
-        min width=\paperwidth,
-        center=\paperwidth}{\bgpicture}%
-      \begin{adjustbox}{llap}%
-        \begin{tikzpicture}
-          \fill[white,ultra nearly opaque]
-            (0mm,0mm) rectangle (\paperwidth,\paperheight);
-        \end{tikzpicture}%
-      \end{adjustbox}%
-    }{%
-      \adjustimage{height=\paperheight,width=\paperwidth}{\bgpicture}%
-    }%
     \begin{adjustbox}{llap}%
       \begin{tikzpicture}
         \useasboundingbox
@@ -1681,8 +1678,8 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % To prevent the settings for these switches persisting between slides, we reset
-% them as part of the set-up of `frame' environments. We have to do this twice,
-% once for the \bthm{RDA} and \bthm{RDA2020} themes\dots
+% them as part of the set-up of \env{frame} environments. Here's the reset for
+% the \bthm{RDA}, \bthm{RDA2020}, and \bthm{RDA2024} themes:
 %
 %    \begin{macrocode}
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{background}\togglefalse{titlepage}}
@@ -1693,49 +1690,42 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme2>
 % \fi
 %
-% \dots and once for the \bthm{RDA2016} theme:
+% Here's the reset for the \bthm{RDA2016} theme:
 %
 %    \begin{macrocode}
 \preto\beamer@reseteecodes{\setkeys{beamerframe}{nobackground}\togglefalse{titlepage}}
 %    \end{macrocode}
 %
-% Normal slides do not have a headline, but we can use the headline template to
+% Normal slides do not have a headline, but we can use the \texttt{headline} template to
 % add (optionally) details of the RDA group to the title slides. In the
-% \bthm{RDA2016} theme, we also need to use it to add the RDA logo since we don't
-% have the background image that contains it.
+% \bthm{RDA2016} theme, we also need to use it to add the big RDA logo since we
+% don't have the background image that contains it.
+%
+% If provided, the group logo goes in a 16mm box in the top left;
+% the main logo is central, and at this scale has roughly a 3mm white border;
+% and if provided, the group name and type go in a 42mm box in the top right.
+% All are top-aligned.
 %
 %    \begin{macrocode}
 \defbeamertemplate*{headline}{RDA headline}{%
   \iftoggle{titlepage}{
-%    \end{macrocode}
-%
-% We remove vertical white space and use centering that can overlap the margins.
-%
-%    \begin{macrocode}
-    \parindent \z@
-    \leftskip \z@ \@plus 1fil \@minus \textwidth
-    \rightskip\leftskip
-    \parfillskip \z@skip
-%    \end{macrocode}
-%
-% We apply new margins using a \env{minipage}. We insert some hooks so that
-% users can customize the title space with details of an RDA group by defining
-% \cs{rdaGroupLogo}, \cs{rdaGroupName} and \cs{rdaGroupType}.
-%
-%    \begin{macrocode}
-    \begin{minipage}{\paperwidth - 6mm}
-      \ifdefvoid{\rdaGroupLogo}{\raisebox{-\height}{\hbox{}}}{%
-        \raisebox{-3mm - \height}{\makebox[0pt][l]{\parbox{16mm}{\rdaGroupLogo}}}%
+    \begin{beamercolorbox}[sep=0pt]{headline}
+      \ifdefvoid{\rdaGroupLogo}{%
+        \adjustbox{set vsize={0pt}{0pt}}{}%
+      }{%
+        \adjustbox{width=16mm,margin=3mm,raise=-\height,left=0pt}{%
+          \rdaGroupLogo}%
       }\hfill
-      \raisebox{-\height}{\includegraphics[height=33.8mm]{rda-logo}}%
-      \hfill
-      \ifdefvoid{\rdaGroupName}{\raisebox{-\height}{\hbox{}}}{%
-        \raisebox{-3mm - \height}{\makebox[0pt][r]{\parbox{42mm}{%
-          \raggedleft{\linespread{0.75}\usebeamerfont{headline}\selectfont\rdaGroupName\par}
-          \ifdefvoid{\rdaGroupType}{}{\smallskip{\usebeamerfont{subheadline}\rdaGroupType\par}}%
-        }}}%
-      }%
-    \end{minipage}\par
+      \adjustimage{height=33.8mm,raise=-\height}{rda-logo}\hfill
+      \ifdefvoid{\rdaGroupLogo}{%
+        \adjustbox{set vsize={0pt}{0pt}}{}%
+      }{%
+        \adjustbox{minipage=42mm,margin=3mm,raise=-\height,right=0pt}{%
+          \raggedleft
+          {\linespread{0.75}\selectfont\rdaGroupName\par}%
+          \ifdefvoid{\rdaGroupType}{}{%
+            \smallskip{\usebeamerfont{subheadline}\rdaGroupType\par}}}}%
+    \end{beamercolorbox}%
   }{}%
 }
 %    \end{macrocode}
@@ -1745,41 +1735,34 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme3>
 % \fi
 %
-% We do something similar with the \bthm{RDA2020} theme, but lay it out
-% more like a frametitle
+% In the \bthm{RDA2020} theme, the group logo (if provided) again goes in a
+% 16mm box, but this time it sits top right, aligned vertically centred
+% relative to the RDA logo that was added to the background template above.
+% The group name and type, looking very similar to a frame title and subtitle,
+% are left-aligned in a box that is right-aligned against the group logo; its
+% maximum width is determined by the 1.7mm margins, the 25.5mm and 16mm logos,
+% and two 1em spaces adjacent to the logos.
 %
 %    \begin{macrocode}
 \defbeamertemplate*{headline}{RDA headline}{%
   \iftoggle{titlepage}{
-%    \end{macrocode}
-%
-% We insert some hooks so that
-% users can customize the title space with details of an RDA group by defining
-% \cs{rdaGroupLogo}, \cs{rdaGroupName} and \cs{rdaGroupType}.
-%
-%    \begin{macrocode}
-    \vspace*{10.185mm}\par
-    \hbox{}\hfill
-    \ifdefvoid{\rdaGroupName}{}{%
-      \begin{adjustbox}%
-      { varwidth=\dimexpr\paperwidth-47.7mm-1em\relax,
-        valign=M,
-        set vsize={0pt}{0pt}%
-      }%
-        \linespread{0.75}\usebeamerfont{headline}%
-        \usebeamercolor{frametitle}%
-        \textcolor{fg}{\rdaGroupName}\par
-        \ifdefvoid{\rdaGroupType}{}{%
-          \usebeamerfont{subheadline}%
-          \textcolor{fg}{\rdaGroupType}\par
+    \begin{beamercolorbox}[sep=1.7mm]{headline}
+      \rule{0pt}{8.485mm}\hfill
+      \ifdefvoid{\rdaGroupName}{}{%
+        \begin{adjustbox}%
+        { varwidth=\dimexpr\paperwidth-44.9mm-2em\relax
+        , valign=M
+        , set vsize={0pt}{0pt}
         }%
-      \end{adjustbox}%
-    }\quad
-    \ifdefvoid{\rdaGroupLogo}{}{%
-      \adjustbox{width=16mm,valign=M,set vsize={0pt}{0pt}}{\rdaGroupLogo}%
-    }%
-    \hspace*{1.7mm}%
-    \par
+          {\linespread{0.75}\selectfont\rdaGroupName\par}%
+          \ifdefvoid{\rdaGroupType}{}{%
+            {\usebeamerfont{subheadline}\rdaGroupType\par}}%
+        \end{adjustbox}%
+      }\quad
+      \ifdefvoid{\rdaGroupLogo}{}{%
+        \adjustbox{width=16mm,valign=M,set vsize={0pt}{0pt}}{\rdaGroupLogo}%
+      }%
+    \end{beamercolorbox}%
   }{}%
 }
 %    \end{macrocode}
@@ -1789,50 +1772,44 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme4>
 % \fi
 %
-% We do something similar with the \bthm{RDA2024} theme, but lay it out
-% more like a frametitle
+% In the \bthm{RDA2024} theme, the group information block is at the top right,
+% but the design here has to cope with the RDA logo being absent on the title
+% slide and present on the finale slide (0.0725\cs{paperwidth} wide, inset
+% 0.03\cs{paperwidth} from the right edge and 3.5mm from the top edge).
 %
 %    \begin{macrocode}
 \defbeamertemplate*{headline}{RDA headline}{%
-  \iftoggle{titlepage}{%
-%    \end{macrocode}
-%
-% We insert some hooks so that
-% users can customize the title space with details of an RDA group by defining
-% \cs{rdaGroupLogo}, \cs{rdaGroupName} and \cs{rdaGroupType}.
-%
-%    \begin{macrocode}
-    \parindent \z@
-    \leftskip \z@ \@plus 1fil \@minus \textwidth
-    \rightskip\leftskip
-    \parfillskip \z@skip
-    \vspace*{3mm}\par
-    \begin{adjustbox}%
-    {minipage=\dimexpr0.292\paperwidth\relax
-    ,valign=T
-    ,margin=0.03\paperwidth 0pt
-    ,right=\paperwidth
-    ,set vsize={0pt}{0pt}
-    }%
-      \begin{beamercolorbox}[sep=0pt,center]{headline}
-      \rule[-4mm]{0pt}{8mm}%
-      \ifdefvoid{\rdaGroupLogo}{}{%
-        \adjustbox{width=8mm,max height=8mm}{\rdaGroupLogo}%
-      }\par
-      \ifdefvoid{\rdaGroupName}{}{%
-        \smallskip
-        \hrule
-        \medskip
-        \usebeamerfont{headline}%
-        \rdaGroupName\par
-        \ifdefvoid{\rdaGroupType}{}{%
-          \usebeamerfont{subheadline}%
-          \rdaGroupType\par
+  \ifboolexpr{
+    togl {titlepage}
+    and not test {\ifdefvoid{\rdaGroupName}}
+  }{%
+    \begin{beamercolorbox}[sep=0pt,right]{headline}
+      \begin{adjustbox}%
+      { minipage={0.292\paperwidth}
+      , margin={0.03\paperwidth} 3.5mm
+      }\centering
+        \adjustbox{set vsize={7mm}{2mm}}{%
+          \ifdefvoid{\rdaGroupLogo}{}{%
+            \adjustbox{width=7.3mm,valign=B}{\rdaGroupLogo}}%
+        }\par
+        \ifdefvoid{\rdaGroupLogo}{}{\hrule}%
+        \ifboolexpr {
+            test {\ifdefvoid{\rdaGroupLogo}}
+            or
+            test {\ifdefvoid{\rdaGroupName}}
+        }{}{\hrule}%
+        \ifdefvoid{\rdaGroupName}{}{%
+          \begin{adjustbox}%
+          { minipage={\linewidth}
+          , margin=0pt 2mm
+          }\centering
+            {\linespread{0.75}\selectfont\rdaGroupName\par}
+            \ifdefvoid{\rdaGroupType}{}{%
+              {\usebeamerfont{subheadline}\rdaGroupType\par}}%
+          \end{adjustbox}%
         }%
-      }
-      \end{beamercolorbox}%
-    \end{adjustbox}%
-    \par
+      \end{adjustbox}%
+    \end{beamercolorbox}%
   }{}%
 }
 %    \end{macrocode}
@@ -1842,33 +1819,32 @@ numbers here are totally fictitious when it comes to the actual files.
 %<*theme>
 % \fi
 %
-% Here is the same template for the \bthm{RDA} theme. The main differences are
-% these:
-% \begin{itemize}
-% \item the \env{minipage} is fixed to fit exactly over the upper third of the
-%   background image, with the content centered vertically;
-% \item the group logo and name are also centered vertically with respect to
-%   one another;
-% \item the central RDA logo is omitted as it is part of the background image.
-% \end{itemize}
+% The \texttt{headline} template in the \bthm{RDA} theme is almost the same as the one
+% for the \bthm{RDA2016} theme, except that the central logo doesn't need to be
+% added (it's in the background image), and the group logo and name are
+% vertically centred in the top 24mm of the slide instead of being top-aligned.
 %
 %    \begin{macrocode}
 \defbeamertemplate*{headline}{RDA headline}{%
   \iftoggle{titlepage}{
-    \parindent \z@
-    \leftskip \z@ \@plus 1fil \@minus \textwidth
-    \rightskip\leftskip
-    \parfillskip \z@skip
-    \begin{minipage}[b][24mm][c]{\paperwidth - 6mm}%
-      \ifdefvoid{\rdaGroupLogo}{\hbox{}}{\makebox[0pt][l]{\parbox[c]{16mm}{\rdaGroupLogo}}}%
-      \hfill
-      \ifdefvoid{\rdaGroupName}{\hbox{}}{%
-        \makebox[0pt][r]{\parbox[c]{42mm}{%
-          \raggedleft{\usebeamerfont{headline}\linespread{0.75}\selectfont\rdaGroupName\par}
-          \ifdefvoid{\rdaGroupType}{}{\smallskip{\usebeamerfont{subheadline}\rdaGroupType\par}}%
-        }}%
-      }%
-    \end{minipage}\par
+    \begin{beamercolorbox}[sep=0pt,center]{headline}
+      \begin{adjustbox}{minipage=[b][24mm][c]{\paperwidth-6mm}}%
+        \ifdefvoid{\rdaGroupLogo}{%
+          \adjustbox{set vsize={0pt}{0pt}}{}%
+        }{%
+          \adjustbox{width=16mm,valign=M,left=0pt}{%
+            \rdaGroupLogo}%
+        }\hfill
+        \ifdefvoid{\rdaGroupLogo}{%
+          \adjustbox{set vsize={0pt}{0pt}}{}%
+        }{%
+          \adjustbox{minipage=42mm,valign=M,right=0pt}{%
+            \raggedleft
+            {\linespread{0.75}\selectfont\rdaGroupName\par}%
+            \ifdefvoid{\rdaGroupType}{}{%
+              \smallskip{\usebeamerfont{subheadline}\rdaGroupType\par}}}}%
+      \end{adjustbox}%
+    \end{beamercolorbox}%
   }{}%
 }
 %    \end{macrocode}
@@ -2064,6 +2040,7 @@ numbers here are totally fictitious when it comes to the actual files.
 }
 \defbeamertemplate*{progress}{charge}{\ProgressBar}
 %    \end{macrocode}
+% \end{macro}
 %
 % As an alternative, progress can be shown as a fraction of frame number over
 % total number of frames. We make sure it takes up the same space on all slides
@@ -2147,7 +2124,6 @@ numbers here are totally fictitious when it comes to the actual files.
           \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
         }%
       }%
-      \global\togglefalse{titlepage}%
 %    \end{macrocode}
 %
 % In the standard background image the right hand box is occupied by the RDA
@@ -2358,7 +2334,6 @@ numbers here are totally fictitious when it comes to the actual files.
           }%
         }%
       }%
-      \global\togglefalse{titlepage}%
     }{%
       \ifdefvoid{\footRHShook}{}{\footRHShook}%
     }%
@@ -3104,6 +3079,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % \subsection{Research Data Alliance colour palette}
+% \label{sec:rdacolors}
 %
 % These settings are separated out into \texttt{rdacolors.sty}.
 %
@@ -3155,6 +3131,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % \subsection{Sample RDA group package: MSCWG}
+% \label{sec:rdamig}
 %
 % \subsubsection{Group logo}
 %
@@ -3357,6 +3334,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % \subsection{Sample RDA group package: MSDWG}
+% \label{sec:rdamsdwg}
 %
 % \begin{macro}{rdaGroupName}
 % \begin{macro}{rdaGroupUrl}
@@ -3366,7 +3344,8 @@ numbers here are totally fictitious when it comes to the actual files.
 %    \begin{macrocode}
 \RequirePackage{rdamscwg}
 \def\rdaGroupName{Metadata Standards Directory}
-\def\rdaGroupUrl{https://rd-alliance.org/groups/metadata-standards-directory-working-group.html}
+\def\rdaGroupUrl{%
+  https://rd-alliance.org/groups/metadata-standards-directory-working-group.html}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -3377,6 +3356,7 @@ numbers here are totally fictitious when it comes to the actual files.
 % \fi
 %
 % \subsection{Sample RDA group package: MIG}
+% \label{sec:rdamig}
 %
 % \subsubsection{Group logo}
 %
