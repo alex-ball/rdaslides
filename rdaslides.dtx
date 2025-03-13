@@ -9,7 +9,7 @@
 % \iffalse
 %</internal>
 %<*internal|class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
-\def\Version{2025/03/13 v5}
+\def\Version{2025/03/14 v5}
 %</internal|class|theme|theme2|theme3|theme4|palette|mscwg|msdwg|mig>
 %<*internal>
 \iffalse
@@ -354,7 +354,7 @@ Copyright (C) 2016 Alex Ball <a.j.ball@bath.ac.uk>
     [\Version\space Class for Research Data Alliance presentations]
 \PassOptionsToClass{aspectratio=169}{beamer}
 \PassOptionsToPackage{highlightmode=immediate}{minted}
-\documentclass[article,2020]{rdaslides}
+\documentclass[article,2024]{rdaslides}
 \let\RdaslidesMaketitle=\maketitle
 
 % Basic typography
@@ -681,7 +681,13 @@ shorthand for \key{article} and \key{alsobeamer}.
 \par\bgroup\centering
 \fbox{\includegraphics[height=3.6cm]{rdaslides-sample-RDA2016}}
 \par\egroup
-\columnbreak
+\end{multicols}
+\end{frame}
+\begin{frame}[fragile]{Using the class}
+\setlength{\fboxsep}{0pt}%
+\only<presentation>{\setlength{\columnsep}{7mm}}%
+\only<article>{\setlength{\columnsep}{12mm}}%
+\begin{multicols}{2}
 \begin{docKey}{2020}{}{initially unset}
 \raggedright
   Use the \bthm{RDA2020} theme.
@@ -718,7 +724,8 @@ you can simply load the theme directly into \pkg{beamer}:
 \documentclass{beamer}
 \usetheme{RDA2016}
 \end{dispListing}
-\columnbreak
+\end{multicols}
+\begin{multicols}{2}
 \begin{dispListing}
 \documentclass{beamer}
 \usetheme{RDA2020}
@@ -1986,14 +1993,18 @@ The final few sections each document a different separate helper package.
 \defbeamertemplate*{frametitle}{RDA theme}{%
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
   \iftoggle{titlepage}{}{%
-    \begin{adjustbox}{minipage=[c][0.14\paperheight]{0.73\paperwidth},center}%
-      \begin{beamercolorbox}[sep=0pt,center]{frametitle}
+    \begin{adjustbox}%
+    { minipage=[c][0.13\paperheight]{0.73\paperwidth}
+    , set depth=0.03\paperheight
+    , center
+    }%
+      \begin{beamercolorbox}[sep=0pt,dp=0pt,center]{frametitle}
         \linespread{0.75}\selectfont\insertframetitle\par%
         {%
           \ifdefvoid{\insertframesubtitle}{}{%
             \usebeamerfont{framesubtitle}%
             \usebeamercolor[fg]{framesubtitle}%
-            \insertframesubtitle\strut\par
+            \insertframesubtitle\par
           }%
         }%
       \end{beamercolorbox}%
@@ -2345,8 +2356,8 @@ The final few sections each document a different separate helper package.
     \ifdefvoid{\footRThook}{}{\footRThook}%
     \iftoggle{titlepage}{%
       \hfill
-      \adjustbox{width=18mm,set vsize={0pt}{0pt}}{%
-        \ifdefvoid{\licenseLogo}{}{%
+      \ifdefvoid{\licenseLogo}{\hbox{}}{%
+        \adjustbox{width=18mm,set vsize={0pt}{0pt}}{%
           \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
         }%
       }%
