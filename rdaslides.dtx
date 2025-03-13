@@ -988,7 +988,9 @@ The final few sections each document a different separate helper package.
 %<*class|theme|theme2|theme3|theme4>
 % \fi
 %
-% \subsection{Class and Theme: Internal conveniences}
+% \subsection{General dependencies}
+%
+% \subsubsection{Class and Theme}
 %
 % We will need the \pkg{etoolbox} package's patching utilities;
 % \pkg{calc} is helpful for calculating lengths;
@@ -996,11 +998,24 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \RequirePackage{etoolbox, calc, adjustbox}
-
 %    \end{macrocode}
 %
 % \iffalse
 %</class|theme|theme2|theme3|theme4>
+%<*theme|theme2|theme3|theme4>
+% \fi
+%
+% \subsubsection{Theme only}
+%
+% We need \pkg{tikz} for drawing and layout.
+%
+%    \begin{macrocode}
+\RequirePackage{tikz}
+
+%    \end{macrocode}
+%
+% \iffalse
+%</theme|theme2|theme3|theme4>
 %<*class>
 % \fi
 %
@@ -1013,6 +1028,7 @@ The final few sections each document a different separate helper package.
 % We provide keys for choosing between the available themes.
 %
 %    \begin{macrocode}
+
 \def\rdaslides@theme{RDA}
 \DeclareOption{2013}{\def\rdaslides@theme{RDA}}
 \DeclareOption{2016}{\def\rdaslides@theme{RDA2016}}
@@ -1073,7 +1089,6 @@ The final few sections each document a different separate helper package.
 %    \begin{macrocode}
 \PassOptionsToPackage{table}{xcolor}
 \LoadClass{beamerswitch}
-\RequirePackage{tikz}
 
 %    \end{macrocode}
 %
@@ -1250,7 +1265,7 @@ The final few sections each document a different separate helper package.
 %<*theme4>
 % \fi
 %
-% The \bthm{RDA2020} theme needs a bold title; unlike the others, it has a unique
+% The \bthm{RDA2024} theme needs a bold title; unlike the others, it has a unique
 % style for the thank you message on the finale slide.
 %
 %    \begin{macrocode}
@@ -1258,6 +1273,7 @@ The final few sections each document a different separate helper package.
 \setbeamerfont{subheadline}{size=\small,shape=\scshape}
 \setbeamerfont{footline}{size=\tiny}
 \setbeamerfont{title}{series=\bfseries}
+\setbeamerfont{negdate}{series=\bfseries}
 \setbeamerfont{thanks}{parent=title,size=\huge}
 %    \end{macrocode}
 %
@@ -1392,6 +1408,7 @@ The final few sections each document a different separate helper package.
 \setbeamercolor{author}{parent=title}
 \setbeamercolor{institute}{parent=title}
 \setbeamercolor{date}{parent=title}
+\setbeamercolor{negdate}{fg=white}
 \setbeamercolor{item}{fg=rdabrown}
 \setbeamercolor{subitem}{fg=rdagreen}
 \setbeamercolor{subsubitem}{fg=rdayellow}
@@ -1441,7 +1458,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \newcommand*{\hashtag}[1]{%
-  \newcommand*{\inserthashtag}{\href{https://twitter.com/hashtag/#1}{\##1}}%
+  \newcommand*{\inserthashtag}{\href{https://bsky.app/hashtag/#1}{\##1}}%
 }
 \newcommand{\RDAFormatHandle}[1]{ \textbar\ \href{https://twitter.com/#1}{@#1}}
 \newcommand{\handles}[1]{\def\handlecsv{{#1}}}
@@ -1506,10 +1523,14 @@ The final few sections each document a different separate helper package.
 %
 % We introduce a toggle, |titlepage|, that can be used to provide a
 % different layout depending on whether this is a normal or a title slide.
+% Another toggle, |finalepage|, is used to distinguish whether the regular
+% title background or the finale background is used (in some themes this is the
+% same).
 %
 %    \begin{macrocode}
 
 \newtoggle{titlepage}
+\newtoggle{finalepage}
 %    \end{macrocode}
 %
 % We provide another toggle, |bgpicture|, which is used to decide whether
@@ -1785,8 +1806,7 @@ The final few sections each document a different separate helper package.
 %
 % In the \bthm{RDA2024} theme, the group information block is at the top right,
 % but the design here has to cope with the RDA logo being absent on the title
-% slide and present on the finale slide (0.0725\cs{paperwidth} wide, inset
-% 0.03\cs{paperwidth} from the right edge and 3.5mm from the top edge).
+% slide and present on the finale slide, so the group logo has to shunt over.
 % The top left is already busy on the finale slide so we avoid it.
 %
 %    \begin{macrocode}
@@ -1795,31 +1815,20 @@ The final few sections each document a different separate helper package.
     togl {titlepage}
     and not test {\ifdefvoid{\rdaGroupName}}
   }{%
-    \begin{beamercolorbox}[sep=0pt,right]{headline}
+    \begin{beamercolorbox}[sep=0pt,right]{headline}%
       \begin{adjustbox}%
       { minipage={0.292\paperwidth}
-      , margin={0.03\paperwidth} 3.5mm
-      }\centering
-        \adjustbox{set vsize={7mm}{2mm}}{%
+      , margin={0.03\paperwidth} {0.038\paperheight}
+      }\raggedleft
+        \adjustbox{set vsize={0.065\paperheight}{0.03\paperheight}}{%
           \ifdefvoid{\rdaGroupLogo}{}{%
-            \adjustbox{width=7.3mm,valign=B}{\rdaGroupLogo}}%
-        }\par
-        \ifdefvoid{\rdaGroupLogo}{}{\hrule}%
-        \ifboolexpr {
-            test {\ifdefvoid{\rdaGroupLogo}}
-            or
-            test {\ifdefvoid{\rdaGroupName}}
-        }{}{\hrule}%
-        \ifdefvoid{\rdaGroupName}{}{%
-          \begin{adjustbox}%
-          { minipage={\linewidth}
-          , margin=0pt 2mm
-          }\centering
-            {\linespread{0.75}\selectfont\rdaGroupName\par}
-            \ifdefvoid{\rdaGroupType}{}{%
-              {\usebeamerfont{subheadline}\rdaGroupType\par}}%
-          \end{adjustbox}%
+            \adjustbox{width=0.065\paperheight,valign=B}{\rdaGroupLogo}}%
         }%
+        \iftoggle{finalepage}{\quad\hbox to 0.074\paperwidth{}}{}%
+        \par
+        {\linespread{0.75}\selectfont\rdaGroupName\par}
+        \ifdefvoid{\rdaGroupType}{}{%
+          {\usebeamerfont{subheadline}\rdaGroupType\par}}%
       \end{adjustbox}%
     \end{beamercolorbox}%
   }{}%
@@ -1977,7 +1986,7 @@ The final few sections each document a different separate helper package.
 \defbeamertemplate*{frametitle}{RDA theme}{%
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
   \iftoggle{titlepage}{}{%
-    \begin{adjustbox}{minipage=[c][13mm]{0.73\paperwidth},center}%
+    \begin{adjustbox}{minipage=[c][0.14\paperheight]{0.73\paperwidth},center}%
       \begin{beamercolorbox}[sep=0pt,center]{frametitle}
         \linespread{0.75}\selectfont\insertframetitle\par%
         {%
@@ -2280,19 +2289,19 @@ The final few sections each document a different separate helper package.
 %    \begin{macrocode}
   \hypersetup{urlcolor=fg}%
   \begin{adjustbox}%
-  {minipage=[t][4.5mm][t]{0.316\paperwidth}
-  ,margin={0.029\paperwidth} 3.9mm 0pt 0pt
+  {minipage=[b][0.05\paperheight][b]{0.316\paperwidth}
+  ,margin={0.029\paperwidth} {0.039\paperheight} 0pt 0pt
   ,left=0pt
-  }%
-    \strut\iftoggle{titlepage}{%
+  }\raggedleft\strut
+    \iftoggle{titlepage}{%
       \adjustbox{raise={\dimexpr-4.5mm+1em\relax}{0pt}{0pt}}{
         \usebeamercolor[fg]{titlegraphic}%
         \inserttitlegraphic
       }\hfill
       \ifdefvoid{\footLThook}{}{\footLThook}%
     }{%
-      \hfill\ifdefvoid{\footLHShook}{}{\footLHShook}%
-    }%
+      \ifdefvoid{\footLHShook}{}{\footLHShook}%
+    }\strut
   \end{adjustbox}%
   \hfill
 %    \end{macrocode}
@@ -2302,48 +2311,48 @@ The final few sections each document a different separate helper package.
 % \begin{macro}{footCThook}
 % We use the centre box (on non-title slides) for the progress meter and the
 % hashtag, if given. We provide a hook, \cs{footCThook}, for inserting content
-% there on title slides (but this will clash if \cs{finale} is used).
+% there on title slides (but not finale slides: that space is taken).
 %
 %    \begin{macrocode}
   \begin{adjustbox}%
-  {minipage=[t][8.4mm][t]{0.3\paperwidth}
-  }\centering
+  {minipage=[b][0.05\paperheight][b]{0.3\paperwidth}
+  ,margin=0pt {0.039\paperheight} 0pt 0pt
+  }\centering\strut
     \iftoggle{titlepage}{%
-      \ifdefvoid{\footCThook}{}{\footCThook}%
+      \iftoggle{finalepage}{}{%
+        \ifdefvoid{\footCThook}{}{\footCThook}}%
     }{%
       \usebeamertemplate*{progress}\\
       \ifdefvoid{\inserthashtag}{}{\inserthashtag}%
-    }%
+    }\strut
   \end{adjustbox}%
   \hfill
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{footLThook}
-% \begin{macro}{footLHShook}
+% \begin{macro}{footRThook}
+% \begin{macro}{footRHShook}
 % We only use the right hand box ib the title slide, for the licence image at
 % the right end. Again, there are hooks for inserting content at the left end,
 % \cs{footRThook} for title slides and \cs{footRHShook} on regular slides.
 %
 %    \begin{macrocode}
   \begin{adjustbox}%
-  {minipage=[t][4.5mm][t]{0.316\paperwidth}
-  ,margin=0pt 3.9mm {0.029\paperwidth} 0pt
+  {minipage=[b][0.05\paperheight][b]{0.316\paperwidth}
+  ,margin=0pt {0.039\paperheight} {0.029\paperwidth} 0pt
   ,right=0pt
-  }%
-    \strut\ifdefvoid{\footRThook}{}{\footRThook}%
+  }\strut
+    \ifdefvoid{\footRThook}{}{\footRThook}%
     \iftoggle{titlepage}{%
       \hfill
-      \adjustbox{raise={\dimexpr-4.5mm+1em\relax}{0pt}{0pt}}{
-        \adjustbox{width=18mm}{%
-          \ifdefvoid{\licenseLogo}{}{%
-            \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
-          }%
+      \adjustbox{width=18mm,set vsize={0pt}{0pt}}{%
+        \ifdefvoid{\licenseLogo}{}{%
+          \ifdefvoid{\licenseUrl}{\licenseLogo}{\href{\licenseUrl}{\licenseLogo}}%
         }%
       }%
     }{%
       \ifdefvoid{\footRHShook}{}{\footRHShook}%
-    }%
+    }\strut
   \end{adjustbox}%
 }
 %    \end{macrocode}
@@ -2611,58 +2620,84 @@ The final few sections each document a different separate helper package.
 %<*theme4>
 % \fi
 %
+% \begin{macro}{titleTLhook}
 % The \bthm{RDA2024} theme's title slide has several bold elements to work
 % around. In the top half, the middle third is the logo, and we've used the
-% right hand side in the \texttt{headline} for RDA group information, so the
-% left hand side is availble for the occasion and date.
+% right hand side in the \texttt{headline} for RDA group information, but the
+% left hand side is available. We supply a hook for putting stuff there. Text
+% should align with RDA group information if supplied
 %
 %    \begin{macrocode}
+\RequirePackage{abspos}
 \setbeamertemplate{title page}{%
-  \parindent \z@%
-  \leftskip \z@ \@plus 1fil \@minus \textwidth%
-  \rightskip\leftskip%
-  \parfillskip \z@skip%
   \global\toggletrue{titlepage}%
   \setkeys{beamerframe}{background=rda24-title}%
-  \begin{adjustbox}%
-  {minipage=[c][26mm]{\dimexpr0.292\paperwidth\relax}
-  ,valign=T
-  ,margin=0.03\paperwidth 0pt
-  ,left=\paperwidth
-  }%
-  \vspace*{1.5mm}%
-  \begin{beamercolorbox}[center]{date}
-    \usebeamerfont{date}%
-    \ifdefvoid{\insertoccasion}{}{\insertoccasion\\}%
-    \ifdef{\printdate}{\printdate{\insertdate}}{\insertdate}%
-  \end{beamercolorbox}%
-  \end{adjustbox}\\
+  \absput{%
+    \begin{adjustbox}%
+    { minipage=[b][0.87\paperheight]{0.94\paperwidth}
+    , margin=0pt {0.05\paperheight} 0pt 0pt
+    }
+      \begin{adjustbox}%
+      { minipage=[b][0.25\paperheight][t]{0.292\paperwidth}
+      , margin=0pt 0pt {0.03\paperwidth} {0.095\paperheight}
+      }
+        \ifdefvoid{\titleTLhook}{}{\titleTLhook}%
+      \end{adjustbox}\vfill
 %    \end{macrocode}
+% \end{macro}
 %
-% In the lower half, we have a sort of shallow inverted triangle into which to
-% cram the title, author and institute lines. We use stretchy skips to space the
-% elements evenly.
+% In the lower half, we have a very narrow clear strip into which to cram the
+% title, author and institute lines. We use stretchy skips to space the elements
+% evenly.
+%
+% The hills at the bottom left and right make an interesting backdrop for
+% occasion and date, but if the occasion is missing, there should be enough
+% space for the date in the middle valley.
 %
 %    \begin{macrocode}
-  \begin{minipage}[b][39mm][c]{\textwidth}
-    \vspace*{\stretch{1}}%
-    \begin{beamercolorbox}[sep=0pt,center]{title}
-      \usebeamerfont{title}\inserttitle\par%
-      \ifdefvoid{\insertsubtitle}{}{%
-        \vskip0.25em%
-        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-      }%
-    \end{beamercolorbox}%
-    \vspace{\stretch{1}}%
-    \begin{beamercolorbox}[sep=0pt,center]{author}
-      \usebeamerfont{author}\insertauthor
-    \end{beamercolorbox}
-    \begin{beamercolorbox}[sep=0pt,center]{institute}
-      \usebeamerfont{institute}\insertinstitute
-    \end{beamercolorbox}
-    \vspace*{\stretch{1}}%
-  \end{minipage}
-  \vspace*{2mm}
+      \begin{adjustbox}%
+      { minipage=[b][0.37\paperheight][c]{\textwidth}
+      , raise={-0.02\paperheight}{0.35\paperheight}{0pt}
+      }
+        \vspace*{\stretch{3}}%
+        \begin{beamercolorbox}[sep=0pt,center]{title}
+          \usebeamerfont{title}\inserttitle\par%
+          \ifdefvoid{\insertsubtitle}{}{\vskip0.25em{%
+            \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}%
+            \insertsubtitle\par
+          }}%
+        \end{beamercolorbox}%
+        \vspace{\stretch{2}}%
+        \begin{beamercolorbox}[sep=0pt,center]{author}
+          \usebeamerfont{author}\insertauthor
+        \end{beamercolorbox}
+        \begin{beamercolorbox}[sep=0pt,center]{institute}
+          \usebeamerfont{institute}\insertinstitute
+        \end{beamercolorbox}
+        \vspace{\stretch{2}}%
+        \begin{beamercolorbox}[sep=0pt,center]{date}
+          \ifdefvoid{\insertoccasion}{%
+            \usebeamercolor[fg]{date}\usebeamerfont{date}%
+            \ifdef{\printdate}{\printdate{\insertdate}}{\insertdate}%
+          }{}\strut
+        \end{beamercolorbox}
+      \end{adjustbox}\\
+      \begin{adjustbox}%
+      { minipage=[b][0.15\paperheight][t]{0.36\paperwidth}
+      }\centering
+        \ifdefvoid{\insertoccasion}{}{%
+          \usebeamercolor[fg]{date}\usebeamerfont{date}\insertoccasion}%
+      \end{adjustbox}\hfill
+      \begin{adjustbox}%
+      { minipage=[b][0.15\paperheight][t]{0.36\paperwidth}
+      }\centering
+        \ifdefvoid{\insertoccasion}{}{%
+          \usebeamercolor[fg]{negdate}\usebeamerfont{negdate}%
+          \ifdef{\printdate}{\printdate{\insertdate}}{\insertdate}%
+        }%
+      \end{adjustbox}%
+    \end{adjustbox}
+  }%
 }
 %    \end{macrocode}
 %
@@ -2675,8 +2710,6 @@ The final few sections each document a different separate helper package.
 %
 % We provide a \cs{finale} command for use on the last slide, to parallel
 % \cs{maketitle}. Here is the version for presentations.
-%
-% \subsubsection{In the presentation inner theme}
 %
 % \begin{macro}{finale}
 % \begin{macro}{rdaslides@finale@text}
@@ -2707,7 +2740,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \setbeamertemplate{finale page}{%
-  \global\toggletrue{titlepage}%
+  \global\toggletrue{titlepage}\global\toggletrue{finalepage}%
   \setkeys{beamerframe}{background=rda-bg-title2}%
   \vbox to 24mm{}%
 %    \end{macrocode}
@@ -2777,7 +2810,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \setbeamertemplate{finale page}{%
-  \global\toggletrue{titlepage}%
+  \global\toggletrue{titlepage}\global\toggletrue{finalepage}%
   \vbox to 33.8mm{}%
 %    \end{macrocode}
 %
@@ -2840,7 +2873,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \setbeamertemplate{finale page}{%
-  \global\toggletrue{titlepage}%
+  \global\toggletrue{titlepage}\global\toggletrue{finalepage}%
   \vspace*{12mm}%
 %    \end{macrocode}
 %
@@ -2903,7 +2936,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 \setbeamertemplate{finale page}{%
-  \global\toggletrue{titlepage}%
+  \global\toggletrue{titlepage}\global\toggletrue{finalepage}%
   \setkeys{beamerframe}{background=rda24-finale}%
   \vbox to 10mm {}\vfill
 %    \end{macrocode}
@@ -3120,7 +3153,7 @@ The final few sections each document a different separate helper package.
 % \fi
 %
 % \subsection{Sample RDA group package: MSCWG}
-% \label{sec:rdamig}
+% \label{sec:rdamscwg}
 %
 % \subsubsection{Group logo}
 %
