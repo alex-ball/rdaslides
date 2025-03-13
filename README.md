@@ -5,8 +5,8 @@ The rdaslides LaTeX class is intended to produce slides for Research
 Data Alliance (RDA) presentations, or an accompanying transcript, or both.
 It is based on the [beamerswitch] class.
 
-Internally, rdaslides uses one of three presentation themes, called ‘RDA’,
-‘RDA2016’ and ‘RDA2020’ respectively, which can be used independently
+Internally, rdaslides uses one of four presentation themes, called ‘RDA’,
+‘RDA2016’, ‘RDA2020’ and ‘RDA2024’ respectively, which can be used independently
 within beamer.
 
 Installation
@@ -14,7 +14,7 @@ Installation
 
 ### Pre-requisites ###
 
-The documentation uses fonts from the XCharter and sourcesanspro
+The documentation uses fonts from the sourceserifpro and sourcesanspro
 packages, as well as sourcecodepro if XeLaTeX or LuaLaTeX is used,
 or zi4 (inconsolata) otherwise. To compile the documentation
 successfully, you will need the minted package installed and working.
