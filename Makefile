@@ -31,7 +31,7 @@ $(NAME).pdf: $(NAME).dtx $(NAME).cls $(STHMS:%=%.pdf)
 	latexmk -silent -pdflua -shell-escape -interaction=batchmode $< >/dev/null
 
 $(NAME)-slides.pdf:$(NAME).dtx $(NAME).cls $(STHMS:%=%.pdf)
-	latexmk -silent -lualatex -shell-escape -interaction=batchmode -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
+	latexmk -silent -pdflua -shell-escape -interaction=batchmode -jobname=$(NAME)-slides $(NAME).dtx >/dev/null
 
 rda-logo.eps: rda-logo.pdf
 	pdftops -f 1 -l 1 -eps rda-logo.pdf rda-logo.eps
