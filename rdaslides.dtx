@@ -1536,6 +1536,7 @@ The final few sections each document a different separate helper package.
 %
 %    \begin{macrocode}
 
+\newcommand{\zeroparskip}{\setlength{\parskip}{0pt}}
 \newtoggle{titlepage}
 \newtoggle{finalepage}
 %    \end{macrocode}
@@ -1826,7 +1827,7 @@ The final few sections each document a different separate helper package.
       \begin{adjustbox}%
       { minipage={0.292\paperwidth}
       , margin={0.03\paperwidth} {0.038\paperheight}
-      }\raggedleft
+      }\zeroparskip\raggedleft
         \adjustbox{set vsize={0.065\paperheight}{0.03\paperheight}}{%
           \ifdefvoid{\rdaGroupLogo}{}{%
             \adjustbox{width=0.065\paperheight,valign=B}{\rdaGroupLogo}}%
